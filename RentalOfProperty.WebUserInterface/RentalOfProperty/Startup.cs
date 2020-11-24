@@ -34,8 +34,8 @@ namespace RentalOfProperty
 
                 var supportedCultures = new[]
                 {
-                new CultureInfo(English),
-                new CultureInfo(Russian),
+                    new CultureInfo(Russian),
+                    new CultureInfo(English)
                 };
 
                 options.DefaultRequestCulture = new RequestCulture(Russian);

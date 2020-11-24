@@ -8,7 +8,6 @@ namespace RentalOfProperty.Controllers.Settings
     public class SettingsController : Controller
     {
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
             const int YearsForSettings = 1;
@@ -22,7 +21,7 @@ namespace RentalOfProperty.Controllers.Settings
                 }
             );
 
-            return LocalRedirect(returnUrl);
+            return Ok(returnUrl);
         }
     }
 }
