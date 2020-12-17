@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using RentalOfProperty.BusinessLogicLayer.Configuration;
 
 namespace RentalOfProperty
 {
@@ -52,6 +53,8 @@ namespace RentalOfProperty
             //Adding logger
             services.AddLogging(loggingBuilder => loggingBuilder.AddFile("Logs/RentalOfProperty-{Date}.txt"));
 
+            //Adding bll configuration
+            services.ConfigureBusinessLogicLayerServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

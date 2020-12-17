@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RentalOfProperty.DataAccessLayer.Models;
 using RentalOfProperty.Models;
 
 namespace RentalOfProperty.Controllers

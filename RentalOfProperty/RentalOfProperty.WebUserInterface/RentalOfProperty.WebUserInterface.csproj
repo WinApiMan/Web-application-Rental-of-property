@@ -19,4 +19,8 @@
     <Folder Include="Logs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RentalOfProperty.BusinessLogicLayer\RentalOfProperty.BusinessLogicLayer.csproj" />
+  </ItemGroup>
+
 </Project>
