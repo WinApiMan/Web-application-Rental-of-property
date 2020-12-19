@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalOfProperty.WebUserInterface", "RentalOfProperty.WebUserInterface\RentalOfProperty.WebUserInterface.csproj", "{664B8E05-F594-44D9-AAF5-0D2B1A120E5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalOfProperty.DataAccessLayer", "RentalOfProperty.DataAccessLayer\RentalOfProperty.DataAccessLayer.csproj", "{AA481163-9CA7-4893-9A4F-5564F56B5455}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalOfProperty.DataAccessLayer", "RentalOfProperty.DataAccessLayer\RentalOfProperty.DataAccessLayer.csproj", "{AA481163-9CA7-4893-9A4F-5564F56B5455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalOfProperty.BusinessLogicLayer", "RentalOfProperty.BusinessLogicLayer\RentalOfProperty.BusinessLogicLayer.csproj", "{2D7329CC-B5C0-4BCF-8655-7C3ED1755121}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalOfProperty.BusinessLogicLayer", "RentalOfProperty.BusinessLogicLayer\RentalOfProperty.BusinessLogicLayer.csproj", "{2D7329CC-B5C0-4BCF-8655-7C3ED1755121}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{199FB271-4E4F-4F40-84B6-C547F71B0815}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
