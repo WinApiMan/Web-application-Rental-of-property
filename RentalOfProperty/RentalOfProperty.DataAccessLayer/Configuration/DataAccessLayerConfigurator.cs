@@ -39,14 +39,14 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = RequiredPasswordLength;
                 options.Password.RequiredUniqueChars = UniqueChars;
             })
             .AddEntityFrameworkStores<RentalOfPropertyContext>();
 
             // Adding classes injections
-            services.AddTransient<IRepository<UserDTO>, UsersRepository>();
+            services.AddTransient<IUserRepository<UserDTO>, UsersRepository>();
         }
     }
 }

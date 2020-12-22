@@ -8,8 +8,11 @@ namespace RentalOfProperty.WebUserInterface.Controllers
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Localization;
     using Microsoft.Extensions.Logging;
+    using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.BusinessLogicLayer.Models;
+    using RentalOfProperty.WebUserInterface.Models;
     using RentalOfProperty.WebUserInterface.Models.User;
 
     /// <summary>
@@ -21,15 +24,22 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly IUsersManager _usersManager;
+
+        private readonly IStringLocalizer<UsersController> _localizer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         /// <param name="logger">Error loger.</param>
         /// <param name="mapper">Models mapper.</param>
-        public UsersController(ILogger<UsersController> logger, IMapper mapper)
+        /// <param name="usersManager">User manager object.</param>
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer)
         {
             _logger = logger;
             _mapper = mapper;
+            _usersManager = usersManager;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -55,9 +65,17 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                 if (ModelState.IsValid)
                 {
                     var user = _mapper.Map<User>(registerModel);
-                    return RedirectToAction("Registration");
+
+                    await _usersManager.Create(user, Roles.User);
+
+                    return RedirectToAction("Index", "Home");
                 }
 
+                return View(registerModel);
+            }
+            catch (ArgumentException)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["CreateUserError"]);
                 return View(registerModel);
             }
             catch (Exception exception)

@@ -12,7 +12,7 @@ namespace RentalOfProperty.DataAccessLayer.Models
     public class UserDTO : IdentityUser
     {
         /// <summary>
-        /// Gets or sets full user name.
+        /// Gets or sets full name.
         /// </summary>
         public string FullName { get; set; }
 

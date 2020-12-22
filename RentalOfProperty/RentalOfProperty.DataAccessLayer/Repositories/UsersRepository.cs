@@ -6,6 +6,7 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
     using RentalOfProperty.DataAccessLayer.Interfaces;
@@ -14,7 +15,7 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
     /// <summary>
     /// Users main operations.
     /// </summary>
-    public class UsersRepository : IRepository<UserDTO>
+    public class UsersRepository : IUserRepository<UserDTO>
     {
         private readonly UserManager<UserDTO> _userManager;
 
@@ -28,62 +29,76 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// Method for adding item in table.
+        /// Method for adding user in table.
         /// </summary>
-        /// <param name="item">Adding item.</param>
-        /// <returns>Void return.</returns>
-        public async Task Create(UserDTO item)
+        /// <param name="user">User adding.</param>
+        /// <param name="password">User password.</param>
+        /// <param name="role">Role.</param>
+        /// <returns>Is successed result.</returns>
+        public async Task<bool> Create(UserDTO user, string password, string role)
         {
-            throw new NotImplementedException();
+            user.UserName = user.Email;
+
+            var createResult = await _userManager.CreateAsync(user, password);
+
+            if (createResult.Succeeded)
+            {
+                var createRoleResult = await _userManager.AddToRoleAsync(user, role);
+                return createRoleResult.Succeeded;
+            }
+            else
+            {
+                return createResult.Succeeded;
+            }
         }
 
         /// <summary>
-        /// Method for find item in table.
+        /// Method for find user in table.
         /// </summary>
         /// <param name="id">Primary key.</param>
-        /// <returns>Result item.</returns>
-        public async Task<UserDTO> FindById(int id)
+        /// <returns>User.</returns>
+        public async Task<UserDTO> FindById(string id)
         {
-            throw new NotImplementedException();
+            return await _userManager.FindByIdAsync(id);
         }
 
         /// <summary>
-        /// Method for getting all items from table.
+        /// Method for getting all users from table.
         /// </summary>
-        /// <returns>All items.</returns>
-        public async Task<IEnumerable<UserDTO>> Get()
+        /// <returns>Users.</returns>
+        public IEnumerable<UserDTO> Get()
         {
-            throw new NotImplementedException();
+            return _userManager.Users;
         }
 
         /// <summary>
-        /// Method for getting items from table with some filter.
+        /// Method for getting users from table with some filter.
         /// </summary>
         /// <param name="predicate">Search filter.</param>
-        /// <returns>Result items.</returns>
-        public async Task<IEnumerable<UserDTO>> Get(Func<UserDTO, bool> predicate)
+        /// <returns>Users.</returns>
+        public IEnumerable<UserDTO> Get(Func<UserDTO, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _userManager.Users.Where(predicate).ToList();
         }
 
         /// <summary>
-        /// Metohd for removing an item from table.
+        /// Metohd for removing an user from table.
         /// </summary>
-        /// <param name="item">Removing item.</param>
+        /// <param name="item">Removing user.</param>
         /// <returns>Void return.</returns>
-        public Task Remove(UserDTO item)
+        public async Task<IdentityResult> Remove(UserDTO item)
         {
-            throw new NotImplementedException();
+            return await _userManager.DeleteAsync(item);
         }
 
         /// <summary>
-        /// Method for updating item.
+        /// Method for updating user.
         /// </summary>
-        /// <param name="item">Updating item.</param>
+        /// <param name="item">User updating.</param>
         /// <returns>Void return.</returns>
-        public Task Update(UserDTO item)
+        public async Task<IdentityResult> Update(UserDTO item)
         {
-            throw new NotImplementedException();
+            return await _userManager.UpdateAsync(item);
         }
     }
 }

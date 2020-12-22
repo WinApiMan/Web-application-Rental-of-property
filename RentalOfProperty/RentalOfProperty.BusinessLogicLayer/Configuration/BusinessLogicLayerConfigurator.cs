@@ -4,8 +4,12 @@
 
 namespace RentalOfProperty.BusinessLogicLayer.Configuration
 {
+    using AutoMapper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using RentalOfProperty.BusinessLogicLayer.Interfaces;
+    using RentalOfProperty.BusinessLogicLayer.Managers;
+    using RentalOfProperty.BusinessLogicLayer.Mapper;
     using RentalOfProperty.DataAccessLayer.Configuration;
 
     /// <summary>
@@ -22,6 +26,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Configuration
         {
             // Adding dal configuration
             services.ConfigureDataAccessLayerServices(configuration);
+
+            // Adding classes injections
+            services.AddTransient<IUsersManager, UsersManager>();
+
+            services.AddAutoMapper(typeof(BusinessLogicProfile));
         }
     }
 }
