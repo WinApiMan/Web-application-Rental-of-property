@@ -5,6 +5,7 @@
 namespace RentalOfProperty
 {
     using System.Globalization;
+    using AutoMapper;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ namespace RentalOfProperty
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Configuration;
+    using RentalOfProperty.WebUserInterface.Mapper;
 
     /// <summary>
     /// Class with start settings.
@@ -70,6 +72,8 @@ namespace RentalOfProperty
 
             // Adding logger
             services.AddLogging(loggingBuilder => loggingBuilder.AddFile("Logs/RentalOfProperty-{Date}.txt"));
+
+            services.AddAutoMapper(typeof(UserInterfaceProfile));
 
             // Adding bll configuration
             services.ConfigureBusinessLogicLayerServices(Configuration);

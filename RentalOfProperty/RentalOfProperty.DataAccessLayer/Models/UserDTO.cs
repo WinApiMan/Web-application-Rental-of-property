@@ -11,5 +11,14 @@ namespace RentalOfProperty.DataAccessLayer.Models
     /// </summary>
     public class UserDTO : IdentityUser
     {
+        /// <summary>
+        /// Gets or sets full user name.
+        /// </summary>
+        public string FullName { get; set; }
+
+        /// <summary>
+        /// Gets or sets user phone(mobile or home).
+        /// </summary>
+        public string Phone { get; set; }
     }
 }

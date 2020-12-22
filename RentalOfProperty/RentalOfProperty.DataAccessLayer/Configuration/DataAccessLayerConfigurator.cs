@@ -9,7 +9,9 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using RentalOfProperty.DataAccessLayer.Context;
+    using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Models;
+    using RentalOfProperty.DataAccessLayer.Repositories;
 
     /// <summary>
     /// Configuration for data access layer classes.
@@ -23,7 +25,7 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
         /// <param name="configuration">Main configuration.</param>
         public static void ConfigureDataAccessLayerServices(this IServiceCollection services, IConfiguration configuration)
         {
-            const int RequiredPasswordLength = 8;
+            const int RequiredPasswordLength = 8, UniqueChars = 1;
             const string ConnectionString = "RentalOfPropertyConnection";
 
             // Db connection settings
@@ -32,15 +34,19 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
                 .UseSqlServer(configuration.GetConnectionString(ConnectionString)), ServiceLifetime.Transient);
 
             // Identity settings
-            services.AddIdentity<UserDTO, IdentityRole>(opts =>
+            services.AddIdentity<UserDTO, IdentityRole>(options =>
             {
-                opts.Password.RequiredLength = RequiredPasswordLength;
-                opts.Password.RequireNonAlphanumeric = false;
-                opts.Password.RequireLowercase = false;
-                opts.Password.RequireUppercase = false;
-                opts.Password.RequireDigit = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = RequiredPasswordLength;
+                options.Password.RequiredUniqueChars = UniqueChars;
             })
             .AddEntityFrameworkStores<RentalOfPropertyContext>();
+
+            // Adding classes injections
+            services.AddTransient<IRepository<UserDTO>, UsersRepository>();
         }
     }
 }

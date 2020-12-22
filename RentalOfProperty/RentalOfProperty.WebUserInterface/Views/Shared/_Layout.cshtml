@@ -32,6 +32,7 @@
     <title>@ViewData["Title"] - @Localizer["RentalOfProperty"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" />
 </head>
 <body>
     <header>
@@ -62,9 +63,7 @@
                         </div>
                     </li>
                     <li class="nav-item mr-2">
-                        <form class="form-inline my-2 my-lg-0">
-                            <button class="btn btn-outline-success btn-light" type="submit">@Localizer["Registration"]</button>
-                        </form>
+                        <a asp-controller="Users" asp-action="Registration" class="btn btn-outline-success btn-light">@Localizer["Registration"]</a>
                     </li>
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
