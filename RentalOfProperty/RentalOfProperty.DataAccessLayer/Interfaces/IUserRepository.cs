@@ -1,10 +1,13 @@
-﻿namespace RentalOfProperty.DataAccessLayer.Interfaces
+﻿// <copyright file="IUserRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace RentalOfProperty.DataAccessLayer.Interfaces
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
-    using RentalOfProperty.DataAccessLayer.Models;
 
     /// <summary>
     /// Interface of user repository for data base.
@@ -20,7 +23,7 @@
         /// <param name="password">User password.</param>
         /// <param name="role">Role.</param>
         /// <returns>Is successed result.</returns>
-        Task<bool> Create(T item, string password, string role);
+        Task<IdentityResult> Create(T item, string password, string role);
 
         /// <summary>
         /// Method for find item in table.

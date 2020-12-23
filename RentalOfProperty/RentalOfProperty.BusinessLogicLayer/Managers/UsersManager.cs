@@ -40,14 +40,14 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <param name="item">New user.</param>
         /// <param name="role">His role.</param>
         /// <returns>Errors list.</returns>
-        public async Task Create(User item, string role)
+        public async Task<IdentityResult> Create(User item, string role)
         {
-            bool createResult = await _usersRepository.Create(_mapper.Map<UserDTO>(item), item.Password, role);
-
-            if (!createResult)
+            var createResult = await _usersRepository.Create(_mapper.Map<UserDTO>(item), item.Password, role);
+            return new IdentityResult()
             {
-                throw new ArgumentException();
-            }
+                IsSuccessed = createResult.Succeeded,
+                Errors = createResult.Errors.Select(item => item.Description),
+            };
         }
 
         public async Task<User> FindById(string id)

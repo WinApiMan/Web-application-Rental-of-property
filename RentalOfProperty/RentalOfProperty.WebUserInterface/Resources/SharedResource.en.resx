@@ -117,4 +117,84 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConcurencyFailureIdentityError" xml:space="preserve">
+    <value>Optimistic concurrency failure, object has been modified.</value>
+    <comment>Concurency failure identity error</comment>
+  </data>
+  <data name="DefaultIdentityError" xml:space="preserve">
+    <value>An unknown failure has occurred.</value>
+    <comment>Default identity error</comment>
+  </data>
+  <data name="DuplicateEmailIdentityError" xml:space="preserve">
+    <value>Email is already taken.</value>
+    <comment>Duplicate email identity error</comment>
+  </data>
+  <data name="DuplicateRoleNameIdentityError" xml:space="preserve">
+    <value>Role name is already taken.</value>
+    <comment>Duplicate role name identity error</comment>
+  </data>
+  <data name="DuplicateUserNameIdentityError" xml:space="preserve">
+    <value>User Name is already taken.</value>
+    <comment>Duplicate user name identity error</comment>
+  </data>
+  <data name="InvalidEmailIdentityError" xml:space="preserve">
+    <value>Email is invalid.</value>
+    <comment>Invalid email identity error</comment>
+  </data>
+  <data name="InvalidRoleNameIdentityError" xml:space="preserve">
+    <value>Role name is invalid.</value>
+    <comment>Invalid role name identity error</comment>
+  </data>
+  <data name="InvalidTokenIdentityError" xml:space="preserve">
+    <value>Invalid token.</value>
+    <comment>Invalid token identity error</comment>
+  </data>
+  <data name="InvalidUserNameIdentityError" xml:space="preserve">
+    <value>User name is invalid, can only contain letters or digits.</value>
+    <comment>Invalid user name identity error</comment>
+  </data>
+  <data name="LoginAlreadyAssociatedIdentityError" xml:space="preserve">
+    <value>A user with this login already exists.</value>
+    <comment>Login already associated identity error</comment>
+  </data>
+  <data name="PasswordMismatchIdentityError" xml:space="preserve">
+    <value>Incorrect password.</value>
+    <comment>Password mismatch identity error</comment>
+  </data>
+  <data name="PasswordRequiresDigitIdentityError" xml:space="preserve">
+    <value>Passwords must have at least one digit ('0'-'9').</value>
+    <comment>Password requires digit identity error</comment>
+  </data>
+  <data name="PasswordRequiresLowerIdentityError" xml:space="preserve">
+    <value>Passwords must have at least one lowercase ('a'-'z').</value>
+    <comment>Password requires lower identity error</comment>
+  </data>
+  <data name="PasswordRequiresNonAlphanumericIdentityError" xml:space="preserve">
+    <value>Passwords must have at least one non alphanumeric character.</value>
+    <comment>Password requires non alphanumeric identity error</comment>
+  </data>
+  <data name="PasswordRequiresUpperIdentityError" xml:space="preserve">
+    <value>Passwords must have at least one uppercase ('A'-'Z').</value>
+    <comment>Password requires upper identity error</comment>
+  </data>
+  <data name="PasswordTooShortIdentityError" xml:space="preserve">
+    <value>Passwords must be at least characters.</value>
+    <comment>Password too short identity error</comment>
+  </data>
+  <data name="UserAlreadyHasPasswordIdentityError" xml:space="preserve">
+    <value>User already has a password set.</value>
+    <comment>User already has password identity error</comment>
+  </data>
+  <data name="UserAlreadyInRoleIdentityError" xml:space="preserve">
+    <value>User already in role.</value>
+    <comment>User already in role identity error</comment>
+  </data>
+  <data name="UserLockoutNotEnabledIdentityError" xml:space="preserve">
+    <value>Lockout is not enabled for this user.</value>
+    <comment>User lockout not enabled identity error</comment>
+  </data>
+  <data name="UserNotInRoleIdentityError" xml:space="preserve">
+    <value>User is not in role.</value>
+    <comment>User not in role identity error</comment>
+  </data>
 </root>

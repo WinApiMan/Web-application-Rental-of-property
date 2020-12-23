@@ -117,4 +117,84 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConcurencyFailureIdentityError" xml:space="preserve">
+    <value>Ошибка оптимистичного параллелизма, объект был изменен.</value>
+    <comment>Concurency failure identity error</comment>
+  </data>
+  <data name="DefaultIdentityError" xml:space="preserve">
+    <value>Произошла неизвестная ошибка.</value>
+    <comment>Default identity error</comment>
+  </data>
+  <data name="DuplicateEmailIdentityError" xml:space="preserve">
+    <value>Почта уже используется.</value>
+    <comment>Duplicate email identity error</comment>
+  </data>
+  <data name="DuplicateRoleNameIdentityError" xml:space="preserve">
+    <value>Такая роль уже есть.</value>
+    <comment>Duplicate role name identity error</comment>
+  </data>
+  <data name="DuplicateUserNameIdentityError" xml:space="preserve">
+    <value>Имя пользователя уже используется.</value>
+    <comment>Duplicate user name identity error</comment>
+  </data>
+  <data name="InvalidEmailIdentityError" xml:space="preserve">
+    <value>Электронная почта недействительна.</value>
+    <comment>Invalid email identity error</comment>
+  </data>
+  <data name="InvalidRoleNameIdentityError" xml:space="preserve">
+    <value>Неверное название роли.</value>
+    <comment>Invalid role name identity error</comment>
+  </data>
+  <data name="InvalidTokenIdentityError" xml:space="preserve">
+    <value>Неверный токен.</value>
+    <comment>Invalid token identity error</comment>
+  </data>
+  <data name="InvalidUserNameIdentityError" xml:space="preserve">
+    <value>Имя пользователя недействительно, может содержать только буквы или цифры.</value>
+    <comment>Invalid user name identity error</comment>
+  </data>
+  <data name="LoginAlreadyAssociatedIdentityError" xml:space="preserve">
+    <value>Пользователь с таким логином уже существует.</value>
+    <comment>Login already associated identity error</comment>
+  </data>
+  <data name="PasswordMismatchIdentityError" xml:space="preserve">
+    <value>Неверный пароль.</value>
+    <comment>Password mismatch identity error</comment>
+  </data>
+  <data name="PasswordRequiresDigitIdentityError" xml:space="preserve">
+    <value>Пароли должны состоять как минимум из одной цифры ('0' - '9').</value>
+    <comment>Password requires digit identity error</comment>
+  </data>
+  <data name="PasswordRequiresLowerIdentityError" xml:space="preserve">
+    <value>Пароли должны содержать хотя бы одну строчную букву ('a' - 'z').</value>
+    <comment>Password requires lower identity error</comment>
+  </data>
+  <data name="PasswordRequiresNonAlphanumericIdentityError" xml:space="preserve">
+    <value>Пароли должны содержать хотя бы один не буквенно-цифровой символ.</value>
+    <comment>Password requires non alphanumeric identity error</comment>
+  </data>
+  <data name="PasswordRequiresUpperIdentityError" xml:space="preserve">
+    <value>Пароли должны содержать хотя бы одну заглавную букву ('A' - 'Z').</value>
+    <comment>Password requires upper identity error</comment>
+  </data>
+  <data name="PasswordTooShortIdentityError" xml:space="preserve">
+    <value>Пароли должны состоять минимум из символов.</value>
+    <comment>Password too short identity error</comment>
+  </data>
+  <data name="UserAlreadyHasPasswordIdentityError" xml:space="preserve">
+    <value>У пользователя уже установлен пароль.</value>
+    <comment>User already has password identity error</comment>
+  </data>
+  <data name="UserAlreadyInRoleIdentityError" xml:space="preserve">
+    <value>Пользователь уже в роли.</value>
+    <comment>User already in role identity error</comment>
+  </data>
+  <data name="UserLockoutNotEnabledIdentityError" xml:space="preserve">
+    <value>Блокировка не включена для этого пользователя.</value>
+    <comment>User lockout not enabled identity error</comment>
+  </data>
+  <data name="UserNotInRoleIdentityError" xml:space="preserve">
+    <value>Пользователь не в роли.</value>
+    <comment>User not in role identity error</comment>
+  </data>
 </root>

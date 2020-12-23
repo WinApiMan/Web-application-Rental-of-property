@@ -15,6 +15,7 @@ namespace RentalOfProperty
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Configuration;
+    using RentalOfProperty.WebUserInterface;
     using RentalOfProperty.WebUserInterface.Mapper;
 
     /// <summary>
@@ -46,8 +47,8 @@ namespace RentalOfProperty
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddControllersWithViews()
-                .AddDataAnnotationsLocalization()
-                .AddViewLocalization();
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
 
             services.Configure<RequestLocalizationOptions>(options =>
             {

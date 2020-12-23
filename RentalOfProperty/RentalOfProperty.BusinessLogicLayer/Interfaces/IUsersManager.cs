@@ -18,8 +18,9 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// Method for adding item in table.
         /// </summary>
         /// <param name="item">Adding item.</param>
+        /// <param name="role">User role.</param>
         /// <returns>Void return.</returns>
-        Task Create(User item, string role);
+        Task<IdentityResult> Create(User item, string role);
 
         /// <summary>
         /// Method for find item in table.

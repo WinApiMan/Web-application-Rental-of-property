@@ -28,18 +28,23 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
         private readonly IStringLocalizer<UsersController> _localizer;
 
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         /// <param name="logger">Error loger.</param>
         /// <param name="mapper">Models mapper.</param>
         /// <param name="usersManager">User manager object.</param>
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer)
+        /// <param name="localizer">User controller localizer.</param>
+        /// <param name="sharedLocalizer">Shared localizer.</param>
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer)
         {
             _logger = logger;
             _mapper = mapper;
             _usersManager = usersManager;
             _localizer = localizer;
+            _sharedLocalizer = sharedLocalizer;
         }
 
         /// <summary>
@@ -62,20 +67,26 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         {
             try
             {
+                const string UserRole = "User";
                 if (ModelState.IsValid)
                 {
                     var user = _mapper.Map<User>(registerModel);
 
-                    await _usersManager.Create(user, Roles.User);
+                    var createResult = await _usersManager.Create(user, UserRole);
 
-                    return RedirectToAction("Index", "Home");
+                    if (createResult.IsSuccessed)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in createResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, _sharedLocalizer[error]);
+                        }
+                    }
                 }
 
-                return View(registerModel);
-            }
-            catch (ArgumentException)
-            {
-                ModelState.AddModelError(string.Empty, _localizer["CreateUserError"]);
                 return View(registerModel);
             }
             catch (Exception exception)

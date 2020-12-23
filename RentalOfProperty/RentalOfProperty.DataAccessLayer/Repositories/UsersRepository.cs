@@ -35,7 +35,7 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         /// <param name="password">User password.</param>
         /// <param name="role">Role.</param>
         /// <returns>Is successed result.</returns>
-        public async Task<bool> Create(UserDTO user, string password, string role)
+        public async Task<IdentityResult> Create(UserDTO user, string password, string role)
         {
             user.UserName = user.Email;
 
@@ -43,12 +43,11 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
 
             if (createResult.Succeeded)
             {
-                var createRoleResult = await _userManager.AddToRoleAsync(user, role);
-                return createRoleResult.Succeeded;
+                return await _userManager.AddToRoleAsync(user, role);
             }
             else
             {
-                return createResult.Succeeded;
+                return createResult;
             }
         }
 

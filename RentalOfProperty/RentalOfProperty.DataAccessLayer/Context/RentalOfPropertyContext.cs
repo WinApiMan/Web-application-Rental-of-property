@@ -22,5 +22,17 @@ namespace RentalOfProperty.DataAccessLayer.Context
         {
             Database.EnsureCreated();
         }
+
+        /// <summary>
+        /// Method for setting parameters when creating a database.
+        /// </summary>
+        /// <param name="modelBuilder">Model builder object.</param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Initialize data base
+            DbInitializer.Initialize(modelBuilder);
+        }
     }
 }

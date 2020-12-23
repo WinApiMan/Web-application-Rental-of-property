@@ -43,6 +43,8 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
                 options.Password.RequiredLength = RequiredPasswordLength;
                 options.Password.RequiredUniqueChars = UniqueChars;
             })
+            .AddErrorDescriber<MultilanguageIdentityErrorDescriber>()
+            .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<RentalOfPropertyContext>();
 
             // Adding classes injections
