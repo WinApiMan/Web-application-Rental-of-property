@@ -48,7 +48,7 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
             .AddEntityFrameworkStores<RentalOfPropertyContext>();
 
             // Adding classes injections
-            services.AddTransient<IUserRepository<UserDTO>, UsersRepository>();
+            services.AddTransient<IUserRepository, UsersRepository>();
         }
     }
 }

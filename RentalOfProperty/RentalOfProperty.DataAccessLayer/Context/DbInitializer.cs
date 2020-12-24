@@ -35,11 +35,11 @@ namespace RentalOfProperty.DataAccessLayer.Context
                 {
                     Id = "4b6eaba4-6d87-46de-8f15-925440578cd9",
                     FullName = "Шпак Александр Cергеевич",
-                    Phone = "+375293182658",
-                    UserName = "leoncatton@mail.ru",
-                    Email = "leoncatton@mail.ru",
-                    NormalizedUserName = "LEONCATTON@MAIL.RU",
-                    NormalizedEmail = "LEONCATTON@MAIL.RU",
+                    UserName = "RentalOfProperty@yandex.by",
+                    PhoneNumber = "+375293182658",
+                    Email = "RentalOfProperty@yandex.by",
+                    NormalizedUserName = "RENTALOFPROPERTY@YANDEX.BY",
+                    NormalizedEmail = "RENTALOFPROPERTY@YANDEX.BY",
                     EmailConfirmed = true,
                     PasswordHash = "AQAAAAEAACcQAAAAEEpzp5D+Vl/3mdF1kjA7c8QjtJJfb14npeooCUJdfgkzSUH6s8uYYawwnleFCZY0Dg==",
                     SecurityStamp = Guid.NewGuid().ToString(),
@@ -48,6 +48,7 @@ namespace RentalOfProperty.DataAccessLayer.Context
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    AvatarImagePath = "~/Files/Images/DefaultAccount.png",
                 });
 
             // Create connection between account and role

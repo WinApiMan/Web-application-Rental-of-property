@@ -35,7 +35,7 @@ namespace RentalOfProperty.WebUserInterface.Models.User
         [Phone(ErrorMessage = "PhoneValidError")]
         [Display(Name = "Phone")]
         [StringLength(50, ErrorMessage = "PhoneLengthError", MinimumLength = 5)]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets user password.

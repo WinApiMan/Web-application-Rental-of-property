@@ -12,7 +12,6 @@ namespace RentalOfProperty.WebUserInterface.Controllers
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.BusinessLogicLayer.Models;
-    using RentalOfProperty.WebUserInterface.Models;
     using RentalOfProperty.WebUserInterface.Models.User;
 
     /// <summary>
@@ -30,6 +29,8 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
         private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
 
+        private readonly IMailService _emailService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
@@ -38,13 +39,15 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         /// <param name="usersManager">User manager object.</param>
         /// <param name="localizer">User controller localizer.</param>
         /// <param name="sharedLocalizer">Shared localizer.</param>
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer)
+        /// <param name="emailService">Email service.</param>
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer, IMailService emailService)
         {
             _logger = logger;
             _mapper = mapper;
             _usersManager = usersManager;
             _localizer = localizer;
             _sharedLocalizer = sharedLocalizer;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -67,16 +70,32 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         {
             try
             {
-                const string UserRole = "User";
+                const string UserRole = "User", DefaultAccountImagePath = "~/Files/Images/DefaultAccount.png";
                 if (ModelState.IsValid)
                 {
                     var user = _mapper.Map<User>(registerModel);
+                    user.AvatarImagePath = DefaultAccountImagePath;
+                    user.Id = Guid.NewGuid().ToString();
 
                     var createResult = await _usersManager.Create(user, UserRole);
 
                     if (createResult.IsSuccessed)
                     {
-                        return RedirectToAction("Index", "Home");
+                        user = _usersManager.FindByEmail(user.Email);
+                        string code = await _usersManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new
+                        {
+                            userId = user.Id,
+                            code,
+                        },
+                        protocol: HttpContext.Request.Scheme);
+
+                        await _emailService.SendEmailAsync(user.Email, "Confirm your account", $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>", "Администрация сайта");
+                        return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
                     }
                     else
                     {

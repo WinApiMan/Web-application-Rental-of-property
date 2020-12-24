@@ -10,6 +10,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Configuration
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.BusinessLogicLayer.Managers;
     using RentalOfProperty.BusinessLogicLayer.Mapper;
+    using RentalOfProperty.BusinessLogicLayer.Services.Mail;
     using RentalOfProperty.DataAccessLayer.Configuration;
 
     /// <summary>
@@ -29,6 +30,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Configuration
 
             // Adding classes injections
             services.AddTransient<IUsersManager, UsersManager>();
+            services.AddTransient<IMailService, EmailService>();
 
             services.AddAutoMapper(typeof(BusinessLogicProfile));
         }

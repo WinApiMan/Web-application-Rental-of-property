@@ -17,8 +17,8 @@ namespace RentalOfProperty.DataAccessLayer.Models
         public string FullName { get; set; }
 
         /// <summary>
-        /// Gets or sets user phone(mobile or home).
+        /// Gets or sets path to avatar image.
         /// </summary>
-        public string Phone { get; set; }
+        public string AvatarImagePath { get; set; }
     }
 }

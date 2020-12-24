@@ -15,7 +15,7 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
     /// <summary>
     /// Users main operations.
     /// </summary>
-    public class UsersRepository : IUserRepository<UserDTO>
+    public class UsersRepository : IUserRepository
     {
         private readonly UserManager<UserDTO> _userManager;
 
@@ -83,21 +83,32 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         /// <summary>
         /// Metohd for removing an user from table.
         /// </summary>
-        /// <param name="item">Removing user.</param>
+        /// <param name="user">Removing user.</param>
         /// <returns>Void return.</returns>
-        public async Task<IdentityResult> Remove(UserDTO item)
+        public async Task<IdentityResult> Remove(UserDTO user)
         {
-            return await _userManager.DeleteAsync(item);
+            return await _userManager.DeleteAsync(user);
         }
 
         /// <summary>
         /// Method for updating user.
         /// </summary>
-        /// <param name="item">User updating.</param>
+        /// <param name="user">User updating.</param>
         /// <returns>Void return.</returns>
-        public async Task<IdentityResult> Update(UserDTO item)
+        public async Task<IdentityResult> Update(UserDTO user)
         {
-            return await _userManager.UpdateAsync(item);
+            return await _userManager.UpdateAsync(user);
+        }
+
+        /// <summary>
+        /// Generate token.
+        /// </summary>
+        /// <param name="user">User.</param>
+        /// <returns>Token.</returns>
+        public async Task<string> GenerateEmailConfirmationTokenAsync(UserDTO user)
+        {
+            // Token generation for user
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
     }
 }

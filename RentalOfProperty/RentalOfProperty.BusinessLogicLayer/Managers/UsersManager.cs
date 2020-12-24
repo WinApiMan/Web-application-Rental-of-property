@@ -19,7 +19,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
     /// </summary>
     public class UsersManager : IUsersManager
     {
-        private readonly IUserRepository<UserDTO> _usersRepository;
+        private readonly IUserRepository _usersRepository;
 
         private readonly IMapper _mapper;
 
@@ -28,7 +28,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// </summary>
         /// <param name="usersRepository">User repository object.</param>
         /// <param name="mapper">Automapper object.</param>
-        public UsersManager(IUserRepository<UserDTO> usersRepository, IMapper mapper)
+        public UsersManager(IUserRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
             _mapper = mapper;
@@ -50,6 +50,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             };
         }
 
+        /// <summary>
+        /// Find user by id.
+        /// </summary>
+        /// <param name="id">Primary key.</param>
+        /// <returns>User object.</returns>
         public async Task<User> FindById(string id)
         {
             var user = await _usersRepository.FindById(id);
@@ -60,7 +65,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             }
             else
             {
-                return null;
+                return _mapper.Map<User>(user);
             }
         }
 
@@ -82,6 +87,49 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         public Task Update(User item)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Find user by email.
+        /// </summary>
+        /// <param name="email">Email.</param>
+        /// <returns>User object.</returns>
+        public User FindByEmail(string email)
+        {
+            if (!(email is null))
+            {
+                var users = _mapper.Map<IEnumerable<User>>(_usersRepository.Get(item => item.Email.Equals(email)));
+
+                if (!(users is null))
+                {
+                    return users.First();
+                }
+                else
+                {
+                    throw new NullReferenceException("User not found");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException("Email is null");
+            }
+        }
+
+        /// <summary>
+        /// Generate token.
+        /// </summary>
+        /// <param name="user">User.</param>
+        /// <returns>Token.</returns>
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            if (!(user is null))
+            {
+                return await _usersRepository.GenerateEmailConfirmationTokenAsync(_mapper.Map<UserDTO>(user));
+            }
+            else
+            {
+                throw new NullReferenceException("User is null");
+            }
         }
     }
 }

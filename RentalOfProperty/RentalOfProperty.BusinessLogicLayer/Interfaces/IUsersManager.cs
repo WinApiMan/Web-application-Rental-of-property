@@ -55,5 +55,19 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="item">Updating item.</param>
         /// <returns>Void return.</returns>
         Task Update(User item);
+
+        /// <summary>
+        /// Find user by email.
+        /// </summary>
+        /// <param name="email">Email.</param>
+        /// <returns>User object.</returns>
+        User FindByEmail(string email);
+
+        /// <summary>
+        /// Generate token.
+        /// </summary>
+        /// <param name="user">User.</param>
+        /// <returns>Token.</returns>
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
     }
 }
