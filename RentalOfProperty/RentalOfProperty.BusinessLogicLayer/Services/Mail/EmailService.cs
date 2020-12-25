@@ -9,6 +9,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Services.Mail
     using MailKit.Security;
     using MimeKit;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
+    using RentalOfProperty.BusinessLogicLayer.Models;
 
     /// <summary>
     /// Class for processing email messages.
@@ -18,28 +19,26 @@ namespace RentalOfProperty.BusinessLogicLayer.Services.Mail
         /// <summary>
         /// Send message on email.
         /// </summary>
-        /// <param name="email">Address of the recipient.</param>
-        /// <param name="subject">Message head.</param>
-        /// <param name="message">Email message.</param>
-        /// <param name="sender">Sender(who send message).</param>
-        /// <returns>Void return.</returns>
-        public async Task SendEmailAsync(string email, string subject, string message, string sender)
+        /// <param name="message">Email message object.</param>
+        /// <param name="sendEmailSetting">Email settings.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task SendEmailAsync(EmailMessage message, SendEmailSetting sendEmailSetting)
         {
             var emailMessage = new MimeMessage()
             {
-                Subject = subject,
+                Subject = message.Subject,
                 Body = new TextPart(MimeKit.Text.TextFormat.Html)
                 {
-                    Text = message,
+                    Text = message.Message,
                 },
             };
 
-            emailMessage.From.Add(new MailboxAddress(sender, "RentalOfProperty@yandex.by"));
-            emailMessage.To.Add(new MailboxAddress(string.Empty, email));
+            emailMessage.From.Add(new MailboxAddress(message.SenderName, sendEmailSetting.SenderAdress));
+            emailMessage.To.Add(new MailboxAddress(string.Empty, message.EmailAdress));
 
             using var client = new SmtpClient();
-            await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            await client.AuthenticateAsync("winapimen@gmail.com", "47Xromosom");
+            await client.ConnectAsync(sendEmailSetting.Host, sendEmailSetting.Port, (SecureSocketOptions)sendEmailSetting.SocketOptions);
+            await client.AuthenticateAsync(sendEmailSetting.SenderAdress, sendEmailSetting.SenderPassword);
             await client.SendAsync(emailMessage);
             await client.DisconnectAsync(true);
         }

@@ -117,4 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmRegistration" xml:space="preserve">
+    <value>Подтвердите регистрацию, перейдя по ссылке:</value>
+    <comment>Confirm registration</comment>
+  </data>
+  <data name="EmailSenderName" xml:space="preserve">
+    <value>Администрация сайта "Аренда недвижимости".</value>
+    <comment>Sender name</comment>
+  </data>
+  <data name="EmailSubject" xml:space="preserve">
+    <value>Подтвердите ваш аккаунт.</value>
+    <comment>Email head</comment>
+  </data>
+  <data name="RegistrationFinish" xml:space="preserve">
+    <value>Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме.</value>
+    <comment>Registration finish</comment>
+  </data>
 </root>

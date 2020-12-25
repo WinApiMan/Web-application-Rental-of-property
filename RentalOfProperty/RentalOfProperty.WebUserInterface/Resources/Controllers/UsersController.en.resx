@@ -117,4 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmRegistration" xml:space="preserve">
+    <value>Confirm registration by following the link:</value>
+    <comment>Confirm registration</comment>
+  </data>
+  <data name="EmailSenderName" xml:space="preserve">
+    <value>Administration of the site "Rental of property"</value>
+    <comment>Sender name</comment>
+  </data>
+  <data name="EmailSubject" xml:space="preserve">
+    <value>Confirm your account.</value>
+    <comment>Email head</comment>
+  </data>
+  <data name="RegistrationFinish" xml:space="preserve">
+    <value>To complete, check your email and the registration link in the letter.</value>
+    <comment>Registration finish</comment>
+  </data>
 </root>

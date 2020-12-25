@@ -8,6 +8,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Localization;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
@@ -31,6 +32,8 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
         private readonly IMailService _emailService;
 
+        private readonly IConfiguration _configuration;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
@@ -40,7 +43,8 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         /// <param name="localizer">User controller localizer.</param>
         /// <param name="sharedLocalizer">Shared localizer.</param>
         /// <param name="emailService">Email service.</param>
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer, IMailService emailService)
+        /// <param name="configuration">Application configuration.</param>
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer, IMailService emailService, IConfiguration configuration)
         {
             _logger = logger;
             _mapper = mapper;
@@ -48,6 +52,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
             _localizer = localizer;
             _sharedLocalizer = sharedLocalizer;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -86,7 +91,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
                         var callbackUrl = Url.Action(
                         "ConfirmEmail",
-                        "Account",
+                        "User",
                         new
                         {
                             userId = user.Id,
@@ -94,8 +99,28 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                         },
                         protocol: HttpContext.Request.Scheme);
 
-                        await _emailService.SendEmailAsync(user.Email, "Confirm your account", $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>", "Администрация сайта");
-                        return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+                        // Create email message
+                        var message = new EmailMessage()
+                        {
+                            EmailAdress = user.Email,
+                            Message = $"{_localizer["ConfirmRegistration"]} <a href='{callbackUrl}'>link</a>",
+                            Subject = _localizer["EmailSubject"],
+                            SenderName = _localizer["EmailSenderName"],
+                        };
+
+                        // Create email sender settings
+                        var sendEmailSetting = new SendEmailSetting()
+                        {
+                            SenderAdress = _configuration.GetValue<string>("MailSender:Email"),
+                            SenderPassword = _configuration.GetValue<string>("MailSender:Password"),
+                            Host = _configuration.GetValue<string>("MailSender:Host"),
+                            Port = _configuration.GetValue<int>("MailSender:Port"),
+                            SocketOptions = _configuration.GetValue<int>("MailSender:SocketOptions"),
+                        };
+
+                        await _emailService.SendEmailAsync(message, sendEmailSetting);
+
+                        return Content(_localizer["RegistrationFinish"]);
                     }
                     else
                     {
