@@ -42,6 +42,7 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = RequiredPasswordLength;
                 options.Password.RequiredUniqueChars = UniqueChars;
+                options.SignIn.RequireConfirmedAccount = true;
             })
             .AddErrorDescriber<MultilanguageIdentityErrorDescriber>()
             .AddDefaultTokenProviders()

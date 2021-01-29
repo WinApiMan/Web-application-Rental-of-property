@@ -62,8 +62,36 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         /// <summary>
         /// Generate token.
         /// </summary>
-        /// <param name="user">User.</param>
+        /// <param name="user">User object.</param>
         /// <returns>Token.</returns>
         Task<string> GenerateEmailConfirmationTokenAsync(UserDTO user);
+
+        /// <summary>
+        /// Confirm user email.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="code">Confirmation string.</param>
+        /// <returns>Identity result object.</returns>
+        Task<IdentityResult> ConfirmEmailAsync(UserDTO user, string code);
+
+        /// <summary>
+        /// Check email confirm.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <returns>Confirm result(true or false).</returns>
+        Task<bool> IsEmailConfirmedAsync(UserDTO user);
+
+        /// <summary>
+        /// Sign in account.
+        /// </summary>
+        /// <param name="user">User sign in object.</param>
+        /// <returns>Sign in result object.</returns>
+        Task<SignInResult> PasswordSignInAsync(SignInUserDTO user);
+
+        /// <summary>
+        /// Account log off.
+        /// </summary>
+        /// <returns>Task result.</returns>
+        Task SignOutAsync();
     }
 }

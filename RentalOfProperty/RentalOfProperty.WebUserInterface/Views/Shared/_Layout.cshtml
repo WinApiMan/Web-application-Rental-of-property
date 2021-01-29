@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using System.Text.Json
 @using System.Globalization;
-@using System.Linq; 
+@using System.Linq;
 
 @inject IOptions<RequestLocalizationOptions> LocOptions
 
@@ -62,14 +62,35 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="language-menu">
                         </div>
                     </li>
-                    <li class="nav-item mr-2">
-                        <a asp-controller="Users" asp-action="Registration" class="btn btn-outline-success btn-light">@Localizer["Registration"]</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0">
-                            <button class="btn btn-outline-success btn-light" type="submit">@Localizer["SignIn"]</button>
-                        </form>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name</button>
+                                <div class="dropdown-menu">
+                                    <button type="submit" class="dropdown-item">@Localizer["MyAds"] </button>
+                                    <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
+                                    <button type="submit" class="dropdown-item">@Localizer["UpdatePersonalData"]</button>
+                                    <button type="submit" class="dropdown-item">@Localizer["UpdatePassword"]</button>
+                                    <button type="submit" class="dropdown-item">@Localizer["UpdatePhoto"]</button>
+                                    <form asp-controller="Users" asp-action="LogOff">
+                                        <button type="submit" class="dropdown-item">@Localizer["LogOff"]</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item mr-2">
+                            <a asp-controller="Users" asp-action="Registration" class="btn btn-outline-success btn-light">@Localizer["Registration"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <form class="form-inline my-2 my-lg-0">
+                                <a asp-controller="Users" asp-action="Authorization" class="btn btn-outline-success btn-light">@Localizer["SignIn"]</a>
+                            </form>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>

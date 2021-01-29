@@ -19,13 +19,17 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
     {
         private readonly UserManager<UserDTO> _userManager;
 
+        private readonly SignInManager<UserDTO> _signInManager;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersRepository"/> class.
         /// </summary>
         /// <param name="userManager">Users manager.</param>
-        public UsersRepository(UserManager<UserDTO> userManager)
+        /// <param name="signInManager">Sign in manager.</param>
+        public UsersRepository(UserManager<UserDTO> userManager, SignInManager<UserDTO> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -103,12 +107,52 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         /// <summary>
         /// Generate token.
         /// </summary>
-        /// <param name="user">User.</param>
+        /// <param name="user">User object.</param>
         /// <returns>Token.</returns>
         public async Task<string> GenerateEmailConfirmationTokenAsync(UserDTO user)
         {
             // Token generation for user
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        /// <summary>
+        /// Confirm user email.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="code">Confirmation string.</param>
+        /// <returns>Identity result object.</returns>
+        public async Task<IdentityResult> ConfirmEmailAsync(UserDTO user, string code)
+        {
+            return await _userManager.ConfirmEmailAsync(user, code);
+        }
+
+        /// <summary>
+        /// Check email confirm.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <returns>Confirm result(true or false).</returns>
+        public async Task<bool> IsEmailConfirmedAsync(UserDTO user)
+        {
+            return await _userManager.IsEmailConfirmedAsync(user);
+        }
+
+        /// <summary>
+        /// Sign in account.
+        /// </summary>
+        /// <param name="user">User sign in object.</param>
+        /// <returns>Sign in result object.</returns>
+        public async Task<SignInResult> PasswordSignInAsync(SignInUserDTO user)
+        {
+            return await _signInManager.PasswordSignInAsync(user.Login, user.Password, user.IsRememberMe, user.IsLockoutOnFailure);
+        }
+
+        /// <summary>
+        /// Account log off.
+        /// </summary>
+        /// <returns>Task result.</returns>
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

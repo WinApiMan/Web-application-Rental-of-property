@@ -5,9 +5,13 @@
 namespace RentalOfProperty.WebUserInterface.Controllers
 {
     using System;
+    using System.Text;
     using System.Threading.Tasks;
+    using System.Web;
     using AutoMapper;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Localization;
     using Microsoft.Extensions.Logging;
@@ -65,6 +69,15 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         }
 
         /// <summary>
+        /// Authorization get request.
+        /// </summary>
+        /// <returns>Action result object.</returns>
+        public IActionResult Authorization()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Registration post request.
         /// </summary>
         /// <param name="registerModel">Register view model.</param>
@@ -84,43 +97,51 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
                     var createResult = await _usersManager.Create(user, UserRole);
 
-                    if (createResult.IsSuccessed)
+                    if (createResult.Succeeded)
                     {
                         user = _usersManager.FindByEmail(user.Email);
-                        string code = await _usersManager.GenerateEmailConfirmationTokenAsync(user);
-
-                        var callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "User",
-                        new
+                        if (user is null)
                         {
-                            userId = user.Id,
-                            code,
-                        },
-                        protocol: HttpContext.Request.Scheme);
-
-                        // Create email message
-                        var message = new EmailMessage()
+                            return RedirectToAction("Error", "Home");
+                        }
+                        else
                         {
-                            EmailAdress = user.Email,
-                            Message = $"{_localizer["ConfirmRegistration"]} <a href='{callbackUrl}'>link</a>",
-                            Subject = _localizer["EmailSubject"],
-                            SenderName = _localizer["EmailSenderName"],
-                        };
+                            string code = await _usersManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                        // Create email sender settings
-                        var sendEmailSetting = new SendEmailSetting()
-                        {
-                            SenderAdress = _configuration.GetValue<string>("MailSender:Email"),
-                            SenderPassword = _configuration.GetValue<string>("MailSender:Password"),
-                            Host = _configuration.GetValue<string>("MailSender:Host"),
-                            Port = _configuration.GetValue<int>("MailSender:Port"),
-                            SocketOptions = _configuration.GetValue<int>("MailSender:SocketOptions"),
-                        };
+                            var callbackUrl = Url.Action(
+                            "ConfirmEmail",
+                            "Users",
+                            new
+                            {
+                                userId = user.Id,
+                                code,
+                            },
+                            protocol: HttpContext.Request.Scheme);
 
-                        await _emailService.SendEmailAsync(message, sendEmailSetting);
+                            // Create email message
+                            var message = new EmailMessage()
+                            {
+                                EmailAdress = user.Email,
+                                Message = $"{_localizer["ConfirmRegistration"]} <a href='{callbackUrl}'>link</a>",
+                                Subject = _localizer["EmailSubject"],
+                                SenderName = _localizer["EmailSenderName"],
+                            };
 
-                        return Content(_localizer["RegistrationFinish"]);
+                            // Create email sender settings
+                            var sendEmailSetting = new SendEmailSetting()
+                            {
+                                SenderAdress = _configuration.GetValue<string>("MailSender:Email"),
+                                SenderPassword = _configuration.GetValue<string>("MailSender:Password"),
+                                Host = _configuration.GetValue<string>("MailSender:Host"),
+                                Port = _configuration.GetValue<int>("MailSender:Port"),
+                                SocketOptions = _configuration.GetValue<int>("MailSender:SocketOptions"),
+                            };
+
+                            await _emailService.SendEmailAsync(message, sendEmailSetting);
+
+                            return Content(_localizer["RegistrationFinish"]);
+                        }
                     }
                     else
                     {
@@ -138,6 +159,107 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                 _logger.LogError($"Error : {exception.Message}");
                 return View();
             }
+        }
+
+        /// <summary>
+        /// Confirm email address.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <param name="code">Confirmation string.</param>
+        /// <returns>Action result object.</returns>
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            try
+            {
+                if (userId is null || code is null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+                else
+                {
+                    var user = await _usersManager.FindById(userId);
+                    code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                    var result = await _usersManager.ConfirmEmailAsync(userId, code);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(Authorization));
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        /// <summary>
+        /// User authorization.
+        /// </summary>
+        /// <param name="authorizeModel">Authorization data.</param>
+        /// <returns>Action result object.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Authorization(AuthorizeView authorizeModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Check email confirm
+                    if (await _usersManager.IsEmailConfirmedAsync(authorizeModel.Login))
+                    {
+                        var signInUser = _mapper.Map<SignInUser>(authorizeModel);
+                        signInUser.IsLockoutOnFailure = false;
+
+                        var signInResult = await _usersManager.PasswordSignInAsync(signInUser);
+
+                        if (signInResult.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, _localizer["IncorrectLoginOrPassword"]);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, _localizer["EmailIsNotConfirmed"]);
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["UserIsNotExist"]);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return View();
+            }
+
+            return View(authorizeModel);
+        }
+
+        /// <summary>
+        /// Account log off.
+        /// </summary>
+        /// <returns>Action resul object.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            // удаляем аутентификационные куки
+            await _usersManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

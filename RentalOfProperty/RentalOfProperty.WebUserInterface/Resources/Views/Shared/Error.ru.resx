@@ -117,32 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmRegistration" xml:space="preserve">
-    <value>Confirm registration by following the link:</value>
-    <comment>Confirm registration</comment>
+  <data name="AnErrorOccured" xml:space="preserve">
+    <value>Во время обработки вашего запроса произошла ошибка.</value>
+    <comment>An error occured</comment>
   </data>
-  <data name="EmailIsNotConfirmed" xml:space="preserve">
-    <value>Email is not confirmed</value>
-    <comment>Email is not confirmed</comment>
+  <data name="AspNetCoreEnviroment" xml:space="preserve">
+    <value>ASPNETCORE_ENVIRONMENT</value>
+    <comment>Asp Net Core enviroment</comment>
   </data>
-  <data name="EmailSenderName" xml:space="preserve">
-    <value>Administration of the site "Rental of property"</value>
-    <comment>Sender name</comment>
+  <data name="DeployedApplications" xml:space="preserve">
+    <value>Это может привести к отображению конфиденциальной информации из исключений для конечных пользователей. Для локальной отладки включите</value>
+    <comment>Deployed applications</comment>
   </data>
-  <data name="EmailSubject" xml:space="preserve">
-    <value>Confirm your account.</value>
-    <comment>Email head</comment>
+  <data name="Development" xml:space="preserve">
+    <value>Разработка</value>
+    <comment>Development</comment>
   </data>
-  <data name="IncorrectLoginOrPassword" xml:space="preserve">
-    <value>Incorrect login or password</value>
-    <comment>Incorrect login or password</comment>
+  <data name="DevelopmentMode" xml:space="preserve">
+    <value>Режим разработки</value>
+    <comment>Development mode</comment>
   </data>
-  <data name="RegistrationFinish" xml:space="preserve">
-    <value>To complete, check your email and the registration link in the letter.</value>
-    <comment>Registration finish</comment>
+  <data name="EnvironmentBySettingThe" xml:space="preserve">
+    <value>среды, установив</value>
+    <comment>Environment by setting the</comment>
   </data>
-  <data name="UserIsNotExist" xml:space="preserve">
-    <value>User is not exist</value>
-    <comment>User is not exist</comment>
+  <data name="EnvironmentVariableTo" xml:space="preserve">
+    <value>переменную окружения</value>
+    <comment>Environment variable to</comment>
+  </data>
+  <data name="EnvironmentWillDisplayMoreDetailedInformationAboutTheErrorThatOccurred." xml:space="preserve">
+    <value>среда отобразит более подробную информацию о произошедшей ошибке.</value>
+    <comment>Environment will display more detailed information about the error that occurred</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка.</value>
+    <comment>Error</comment>
+  </data>
+  <data name="RequestId" xml:space="preserve">
+    <value>Id запроса :</value>
+    <comment>Request id</comment>
+  </data>
+  <data name="RestartApplication" xml:space="preserve">
+    <value>и перезапустите приложение.</value>
+    <comment>Restart application</comment>
+  </data>
+  <data name="SwappingTo" xml:space="preserve">
+    <value>Замена на</value>
+    <comment>Swapping to</comment>
+  </data>
+  <data name="TheDevelopmentEnvironment" xml:space="preserve">
+    <value>Среда разработки не должна быть включена для развернутых приложений.</value>
+    <comment>The Development environment shouldn't be enabled for deployed applications.</comment>
   </data>
 </root>

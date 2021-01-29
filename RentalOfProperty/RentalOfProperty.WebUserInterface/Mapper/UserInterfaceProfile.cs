@@ -19,6 +19,7 @@ namespace RentalOfProperty.WebUserInterface.Mapper
         public UserInterfaceProfile()
         {
             CreateMap<RegisterView, User>().ReverseMap();
+            CreateMap<AuthorizeView, SignInUser>().ReverseMap();
         }
     }
 }

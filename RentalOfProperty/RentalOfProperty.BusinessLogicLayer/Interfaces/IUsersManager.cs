@@ -66,8 +66,36 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <summary>
         /// Generate token.
         /// </summary>
-        /// <param name="user">User.</param>
+        /// <param name="userId">User id.</param>
         /// <returns>Token.</returns>
-        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+        Task<string> GenerateEmailConfirmationTokenAsync(string userId);
+
+        /// <summary>
+        /// Confirm user email.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <param name="code">Confirmation string.</param>
+        /// <returns>Identity result object.</returns>
+        Task<IdentityResult> ConfirmEmailAsync(string userId, string code);
+
+        /// <summary>
+        /// Check email confirm.
+        /// </summary>
+        /// <param name="login">User login.</param>
+        /// <returns>Confirm result(true or false).</returns>
+        Task<bool> IsEmailConfirmedAsync(string login);
+
+        /// <summary>
+        /// Sign in account.
+        /// </summary>
+        /// <param name="user">Sign in user object.</param>
+        /// <returns>Password signInResult(true or false).</returns>
+        Task<SignInResult> PasswordSignInAsync(SignInUser user);
+
+        /// <summary>
+        /// Account log off.
+        /// </summary>
+        /// <returns>Task result.</returns>
+        Task SignOutAsync();
     }
 }

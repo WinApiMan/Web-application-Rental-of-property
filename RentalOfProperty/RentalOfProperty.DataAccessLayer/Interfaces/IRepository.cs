@@ -7,7 +7,6 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// Interface of generic repository for data base.

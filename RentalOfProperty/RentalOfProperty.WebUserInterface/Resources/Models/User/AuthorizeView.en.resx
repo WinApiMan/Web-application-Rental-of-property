@@ -117,32 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmRegistration" xml:space="preserve">
-    <value>Confirm registration by following the link:</value>
-    <comment>Confirm registration</comment>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+    <comment>User login</comment>
   </data>
-  <data name="EmailIsNotConfirmed" xml:space="preserve">
-    <value>Email is not confirmed</value>
-    <comment>Email is not confirmed</comment>
+  <data name="LoginLengthError" xml:space="preserve">
+    <value>Login must be between {2} and {1}</value>
+    <comment>Login length error message</comment>
   </data>
-  <data name="EmailSenderName" xml:space="preserve">
-    <value>Administration of the site "Rental of property"</value>
-    <comment>Sender name</comment>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>Login is required</value>
+    <comment>Email required error message</comment>
   </data>
-  <data name="EmailSubject" xml:space="preserve">
-    <value>Confirm your account.</value>
-    <comment>Email head</comment>
+  <data name="LoginValidError" xml:space="preserve">
+    <value>Login adress is not valid</value>
+    <comment>Login adress error</comment>
   </data>
-  <data name="IncorrectLoginOrPassword" xml:space="preserve">
-    <value>Incorrect login or password</value>
-    <comment>Incorrect login or password</comment>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>User password</comment>
   </data>
-  <data name="RegistrationFinish" xml:space="preserve">
-    <value>To complete, check your email and the registration link in the letter.</value>
-    <comment>Registration finish</comment>
+  <data name="PasswordLengthError" xml:space="preserve">
+    <value>Password must be between {2} and {1}</value>
+    <comment>Password length error message</comment>
   </data>
-  <data name="UserIsNotExist" xml:space="preserve">
-    <value>User is not exist</value>
-    <comment>User is not exist</comment>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Password is required</value>
+    <comment>Password required error message</comment>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me?</value>
+    <comment>Remember in memory or no</comment>
   </data>
 </root>

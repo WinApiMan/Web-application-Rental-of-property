@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LogOff" xml:space="preserve">
+    <value>Выход</value>
+    <comment>Log off</comment>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Сообщения</value>
+    <comment>Messages</comment>
+  </data>
+  <data name="MyAds" xml:space="preserve">
+    <value>Мои объявления</value>
+    <comment>My ads</comment>
+  </data>
   <data name="Registration" xml:space="preserve">
     <value>Регистрация</value>
     <comment>Registration button</comment>
@@ -128,5 +140,17 @@
   <data name="SignIn" xml:space="preserve">
     <value>Вход</value>
     <comment>Sign in button</comment>
+  </data>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Обновить пароль</value>
+    <comment>Update password</comment>
+  </data>
+  <data name="UpdatePersonalData" xml:space="preserve">
+    <value>Обновить данные</value>
+    <comment>Update personal data</comment>
+  </data>
+  <data name="UpdatePhoto" xml:space="preserve">
+    <value>Обновить фото</value>
+    <comment>Update photo</comment>
   </data>
 </root>

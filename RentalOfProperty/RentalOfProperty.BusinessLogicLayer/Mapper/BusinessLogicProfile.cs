@@ -7,6 +7,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Mapper
     using AutoMapper;
     using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.DataAccessLayer.Models;
+    using DALIdentityResult = Microsoft.AspNetCore.Identity.IdentityResult;
+    using DALSignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
     /// <summary>
     /// Class for mapping settings.
@@ -19,6 +21,9 @@ namespace RentalOfProperty.BusinessLogicLayer.Mapper
         public BusinessLogicProfile()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<SignInUser, SignInUserDTO>().ReverseMap();
+            CreateMap<IdentityResult, DALIdentityResult>().ReverseMap();
+            CreateMap<SignInResult, DALSignInResult>().ReverseMap();
         }
     }
 }

@@ -117,32 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmRegistration" xml:space="preserve">
-    <value>Confirm registration by following the link:</value>
-    <comment>Confirm registration</comment>
+  <data name="Authorization" xml:space="preserve">
+    <value>Авторизация</value>
+    <comment>Authorization</comment>
   </data>
-  <data name="EmailIsNotConfirmed" xml:space="preserve">
-    <value>Email is not confirmed</value>
-    <comment>Email is not confirmed</comment>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Забыли пароль?</value>
+    <comment>Forgot password</comment>
   </data>
-  <data name="EmailSenderName" xml:space="preserve">
-    <value>Administration of the site "Rental of property"</value>
-    <comment>Sender name</comment>
-  </data>
-  <data name="EmailSubject" xml:space="preserve">
-    <value>Confirm your account.</value>
-    <comment>Email head</comment>
-  </data>
-  <data name="IncorrectLoginOrPassword" xml:space="preserve">
-    <value>Incorrect login or password</value>
-    <comment>Incorrect login or password</comment>
-  </data>
-  <data name="RegistrationFinish" xml:space="preserve">
-    <value>To complete, check your email and the registration link in the letter.</value>
-    <comment>Registration finish</comment>
-  </data>
-  <data name="UserIsNotExist" xml:space="preserve">
-    <value>User is not exist</value>
-    <comment>User is not exist</comment>
+  <data name="LoginExample" xml:space="preserve">
+    <value>Имя@.Имя сервера.com(ru)</value>
+    <comment>Email example</comment>
   </data>
 </root>

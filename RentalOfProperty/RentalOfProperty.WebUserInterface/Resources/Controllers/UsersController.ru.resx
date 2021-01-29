@@ -121,6 +121,10 @@
     <value>Подтвердите регистрацию, перейдя по ссылке:</value>
     <comment>Confirm registration</comment>
   </data>
+  <data name="EmailIsNotConfirmed" xml:space="preserve">
+    <value>Почта не подтверждена</value>
+    <comment>Email is not confirmed</comment>
+  </data>
   <data name="EmailSenderName" xml:space="preserve">
     <value>Администрация сайта "Аренда недвижимости".</value>
     <comment>Sender name</comment>
@@ -129,8 +133,16 @@
     <value>Подтвердите ваш аккаунт.</value>
     <comment>Email head</comment>
   </data>
+  <data name="IncorrectLoginOrPassword" xml:space="preserve">
+    <value>Неверный логин или пароль</value>
+    <comment>Incorrect login or password</comment>
+  </data>
   <data name="RegistrationFinish" xml:space="preserve">
     <value>Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме.</value>
     <comment>Registration finish</comment>
+  </data>
+  <data name="UserIsNotExist" xml:space="preserve">
+    <value>Пользователь не существует</value>
+    <comment>User is not exist</comment>
   </data>
 </root>

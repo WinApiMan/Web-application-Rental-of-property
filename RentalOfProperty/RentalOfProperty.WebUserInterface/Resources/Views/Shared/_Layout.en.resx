@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LogOff" xml:space="preserve">
+    <value>Log off</value>
+    <comment>Log off</comment>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Messages</value>
+    <comment>Messages</comment>
+  </data>
+  <data name="MyAds" xml:space="preserve">
+    <value>My ads</value>
+    <comment>My ads</comment>
+  </data>
   <data name="Registration" xml:space="preserve">
     <value>Registration</value>
     <comment>Registration button</comment>
@@ -128,5 +140,17 @@
   <data name="SignIn" xml:space="preserve">
     <value>Sign in</value>
     <comment>Sign in button</comment>
+  </data>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Update password</value>
+    <comment>Update password</comment>
+  </data>
+  <data name="UpdatePersonalData" xml:space="preserve">
+    <value>Update personal data</value>
+    <comment>Update personal data</comment>
+  </data>
+  <data name="UpdatePhoto" xml:space="preserve">
+    <value>Update photo</value>
+    <comment>Update photo</comment>
   </data>
 </root>

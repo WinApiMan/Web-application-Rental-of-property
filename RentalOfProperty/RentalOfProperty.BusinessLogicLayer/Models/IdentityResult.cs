@@ -19,6 +19,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         /// <summary>
         /// Gets or sets a value indicating whether is operation successed.
         /// </summary>
-        public bool IsSuccessed { get; set; }
+        public bool Succeeded { get; set; }
     }
 }

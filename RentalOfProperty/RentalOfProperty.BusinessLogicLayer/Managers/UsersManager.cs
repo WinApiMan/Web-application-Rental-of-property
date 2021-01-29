@@ -37,17 +37,12 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <summary>
         /// Add user.
         /// </summary>
-        /// <param name="item">New user.</param>
+        /// <param name="user">New user.</param>
         /// <param name="role">His role.</param>
         /// <returns>Errors list.</returns>
-        public async Task<IdentityResult> Create(User item, string role)
+        public async Task<IdentityResult> Create(User user, string role)
         {
-            var createResult = await _usersRepository.Create(_mapper.Map<UserDTO>(item), item.Password, role);
-            return new IdentityResult()
-            {
-                IsSuccessed = createResult.Succeeded,
-                Errors = createResult.Errors.Select(item => item.Description),
-            };
+            return _mapper.Map<IdentityResult>(await _usersRepository.Create(_mapper.Map<UserDTO>(user), user.Password, role));
         }
 
         /// <summary>
@@ -106,7 +101,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 }
                 else
                 {
-                    throw new NullReferenceException("User not found");
+                    throw new NullReferenceException("User id is null");
                 }
             }
             else
@@ -118,18 +113,111 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <summary>
         /// Generate token.
         /// </summary>
-        /// <param name="user">User.</param>
+        /// <param name="userId">User id.</param>
         /// <returns>Token.</returns>
-        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        public async Task<string> GenerateEmailConfirmationTokenAsync(string userId)
         {
-            if (!(user is null))
+            if (!(userId is null))
             {
-                return await _usersRepository.GenerateEmailConfirmationTokenAsync(_mapper.Map<UserDTO>(user));
+                var user = await _usersRepository.FindById(userId);
+
+                if (user is null)
+                {
+                    throw new NullReferenceException("User is null");
+                }
+                else
+                {
+                    return await _usersRepository.GenerateEmailConfirmationTokenAsync(user);
+                }
             }
             else
             {
-                throw new NullReferenceException("User is null");
+                throw new ArgumentNullException("User is null");
             }
+        }
+
+        /// <summary>
+        /// Confirm user email.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <param name="code">Confirmation string.</param>
+        /// <returns>Identity result object.</returns>
+        public async Task<IdentityResult> ConfirmEmailAsync(string userId, string code)
+        {
+            if (userId is null)
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else if (code is null)
+            {
+                throw new ArgumentNullException("Code is null");
+            }
+            else
+            {
+                var user = await _usersRepository.FindById(userId);
+                if (user is null)
+                {
+                    throw new NullReferenceException("User is null");
+                }
+                else
+                {
+                    return _mapper.Map<IdentityResult>(await _usersRepository.ConfirmEmailAsync(user, code));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check email confirm.
+        /// </summary>
+        /// <param name="login">User login.</param>
+        /// <returns>Confirm result(true or false).</returns>
+        public async Task<bool> IsEmailConfirmedAsync(string login)
+        {
+            const int IncorrectUsersCount = 0;
+
+            if (login is null)
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else
+            {
+                var users = _usersRepository.Get(item => item.Email.Equals(login));
+
+                if (users.Count() == IncorrectUsersCount)
+                {
+                    throw new NullReferenceException("User is null");
+                }
+                else
+                {
+                    return users.Count() == IncorrectUsersCount ? false : await _usersRepository.IsEmailConfirmedAsync(users.First());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sign in account.
+        /// </summary>
+        /// <param name="user">Sign in user object.</param>
+        /// <returns>Password signInResult(true or false).</returns>
+        public async Task<SignInResult> PasswordSignInAsync(SignInUser user)
+        {
+            if (user is null)
+            {
+                throw new ArgumentNullException("Sign in user is null");
+            }
+            else
+            {
+                return _mapper.Map<SignInResult>(await _usersRepository.PasswordSignInAsync(_mapper.Map<SignInUserDTO>(user)));
+            }
+        }
+
+        /// <summary>
+        /// Account log off.
+        /// </summary>
+        /// <returns>Task result.</returns>
+        public async Task SignOutAsync()
+        {
+            await _usersRepository.SignOutAsync();
         }
     }
 }
