@@ -33,3 +33,22 @@ function setLanguage(culture, actionUrl, returnUrl) {
         }
     });
 }
+
+function downloadImage(imageId) {
+    const fileIndex = 0;
+    let image = document.getElementById(imageId);
+
+    image.addEventListener('change', (event) => {
+        let file = event.target.files[fileIndex];
+
+        let fileReader = new FileReader();
+
+        fileReader.addEventListener('load', (event) => {
+            let array = new Uint8Array(event.target.result);
+        });
+
+        fileReader.readAsArrayBuffer(file);
+    });
+
+    image.click();
+}

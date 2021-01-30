@@ -72,7 +72,8 @@
                                     <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
                                     <button type="submit" class="dropdown-item">@Localizer["UpdatePersonalData"]</button>
                                     <button type="submit" class="dropdown-item">@Localizer["UpdatePassword"]</button>
-                                    <button type="submit" class="dropdown-item">@Localizer["UpdatePhoto"]</button>
+                                    <input type='file' class="d-none" id="avatarImage" accept=".jpg, .jpeg, .png">
+                                    <button class="dropdown-item" onclick="downloadImage('avatarImage')">@Localizer["UpdatePhoto"]</button>
                                     <form asp-controller="Users" asp-action="LogOff">
                                         <button type="submit" class="dropdown-item">@Localizer["LogOff"]</button>
                                     </form>

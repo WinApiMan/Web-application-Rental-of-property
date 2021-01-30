@@ -88,11 +88,10 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         {
             try
             {
-                const string UserRole = "User", DefaultAccountImagePath = "~/Files/Images/DefaultAccount.png";
+                const string UserRole = "User";
                 if (ModelState.IsValid)
                 {
                     var user = _mapper.Map<User>(registerModel);
-                    user.AvatarImagePath = DefaultAccountImagePath;
                     user.Id = Guid.NewGuid().ToString();
 
                     var createResult = await _usersManager.Create(user, UserRole);
