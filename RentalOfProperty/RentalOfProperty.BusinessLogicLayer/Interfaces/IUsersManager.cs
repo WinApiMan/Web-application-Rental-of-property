@@ -54,7 +54,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// </summary>
         /// <param name="item">Updating item.</param>
         /// <returns>Void return.</returns>
-        Task Update(User item);
+        Task<IdentityResult> Update(User item);
 
         /// <summary>
         /// Find user by email.

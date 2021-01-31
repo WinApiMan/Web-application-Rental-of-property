@@ -17,8 +17,8 @@ namespace RentalOfProperty.DataAccessLayer.Models
         public string FullName { get; set; }
 
         /// <summary>
-        /// Gets or sets avatar image.
+        /// Gets or sets avatar image path.
         /// </summary>
-        public byte[] AvatarImage { get; set; }
+        public string AvatarImagePath { get; set; }
     }
 }

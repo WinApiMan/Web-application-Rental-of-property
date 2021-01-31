@@ -35,8 +35,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         public string Password { get; set; }
 
         /// <summary>
-        /// Gets or sets avatar image.
+        /// Gets or sets avatar image path.
         /// </summary>
-        public byte[] AvatarImage { get; set; }
+        public string AvatarImagePath { get; set; }
     }
 }

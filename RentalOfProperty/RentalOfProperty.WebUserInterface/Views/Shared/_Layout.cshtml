@@ -22,6 +22,9 @@
 
     //Get url to query
     var jsonUrl = JsonSerializer.Serialize(Url.Action("SetLanguage", "Settings"));
+
+    //Get load image url
+    var loadImageUrl = JsonSerializer.Serialize(Url.Action("GetAvatarPath", "Users"));
 }
 
 <!DOCTYPE html>
@@ -72,13 +75,20 @@
                                     <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
                                     <button type="submit" class="dropdown-item">@Localizer["UpdatePersonalData"]</button>
                                     <button type="submit" class="dropdown-item">@Localizer["UpdatePassword"]</button>
-                                    <input type='file' class="d-none" id="avatarImage" accept=".jpg, .jpeg, .png">
-                                    <button class="dropdown-item" onclick="downloadImage('avatarImage')">@Localizer["UpdatePhoto"]</button>
+                                    <form asp-controller="Users" asp-action="LoadAvatarImage" enctype="multipart/form-data">
+                                        <input type='file' name="file" class="d-none" id="avatarImage" accept=".jpg, .jpeg, .png">
+                                        <button type="button" class="dropdown-item" onclick="downloadImage('avatarImage', 'loadAvatarImage','@Localizer["IncorrectImageFormat"]')">@Localizer["UpdatePhoto"]</button>
+                                        <button type='submit' class="d-none" id="loadAvatarImage"></button>
+                                    </form>
+                                    
                                     <form asp-controller="Users" asp-action="LogOff">
                                         <button type="submit" class="dropdown-item">@Localizer["LogOff"]</button>
                                     </form>
                                 </div>
                             </div>
+                        </li>
+                        <li class="nav-item dropdown mr-2" id="avatar">
+                            
                         </li>
                     }
                     else
@@ -112,10 +122,13 @@
     <script src="~/js/_Layout.js" asp-append-version="true"></script>
     <script>
         let languages = JSON.parse(JSON.stringify(@Html.Raw(jsonLanguages)));
-        let url = JSON.parse(JSON.stringify(@Html.Raw(jsonUrl)));;
-        let cultures = JSON.parse(JSON.stringify(@Html.Raw(jsonCultures)))
+        let url = JSON.parse(JSON.stringify(@Html.Raw(jsonUrl)));
+        let cultures = JSON.parse(JSON.stringify(@Html.Raw(jsonCultures)));
+        let loadUrl = JSON.parse(JSON.stringify(@Html.Raw(loadImageUrl)));
+        callAvatarQuey(loadUrl);
         createLanguagesList(languages, cultures, url);
     </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

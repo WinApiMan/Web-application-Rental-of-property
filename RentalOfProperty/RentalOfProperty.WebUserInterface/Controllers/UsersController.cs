@@ -5,11 +5,13 @@
 namespace RentalOfProperty.WebUserInterface.Controllers
 {
     using System;
+    using System.IO;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web;
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Configuration;
@@ -18,6 +20,8 @@ namespace RentalOfProperty.WebUserInterface.Controllers
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.WebUserInterface.Models.User;
+
+    using IOFIle = System.IO.File;
 
     /// <summary>
     /// User controller.
@@ -38,6 +42,10 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
         private readonly IConfiguration _configuration;
 
+        private readonly IWebHostEnvironment _applicationEnvironment;
+
+        private const string DefaultAvatarImagePath = @"\Files\Images\DefaultAccount.png";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
@@ -48,7 +56,8 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         /// <param name="sharedLocalizer">Shared localizer.</param>
         /// <param name="emailService">Email service.</param>
         /// <param name="configuration">Application configuration.</param>
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer, IMailService emailService, IConfiguration configuration)
+        /// <param name="applicationEnvironment">Application enviroment.</param>
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUsersManager usersManager, IStringLocalizer<UsersController> localizer, IStringLocalizer<SharedResource> sharedLocalizer, IMailService emailService, IConfiguration configuration, IWebHostEnvironment applicationEnvironment)
         {
             _logger = logger;
             _mapper = mapper;
@@ -57,6 +66,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
             _sharedLocalizer = sharedLocalizer;
             _emailService = emailService;
             _configuration = configuration;
+            _applicationEnvironment = applicationEnvironment;
         }
 
         /// <summary>
@@ -93,6 +103,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                 {
                     var user = _mapper.Map<User>(registerModel);
                     user.Id = Guid.NewGuid().ToString();
+                    user.AvatarImagePath = DefaultAvatarImagePath;
 
                     var createResult = await _usersManager.Create(user, UserRole);
 
@@ -259,6 +270,81 @@ namespace RentalOfProperty.WebUserInterface.Controllers
             // удаляем аутентификационные куки
             await _usersManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Load avatar in site.
+        /// </summary>
+        /// <param name="file">Image.</param>
+        /// <returns>Action result object.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoadAvatarImage(IFormFile file)
+        {
+            try
+            {
+                const string ImagePath = @"\Files\Images\";
+                const int IncorrectIndex = -1;
+
+                if (!(file is null))
+                {
+                    // Path to file
+                    string filePath = string.Concat(ImagePath, file.FileName);
+                    string currentFilePath = string.Concat(_applicationEnvironment.WebRootPath, filePath);
+
+                    if (Array.IndexOf(Directory.GetFiles(string.Concat(_applicationEnvironment.WebRootPath, ImagePath)), currentFilePath) == IncorrectIndex)
+                    {
+                        var user = _usersManager.FindByEmail(User.Identity.Name);
+
+                        // Save file to /Files/Images in wwwroot
+                        using (var fileStream = new FileStream(currentFilePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+
+                            // Check default image
+                            if (!user.AvatarImagePath.Equals(DefaultAvatarImagePath))
+                            {
+                                IOFIle.Delete(string.Concat(_applicationEnvironment.WebRootPath, user.AvatarImagePath));
+                            }
+                        }
+
+                        user.AvatarImagePath = filePath;
+                        await _usersManager.Update(user);
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        /// <summary>
+        /// Get path to user avatar.
+        /// </summary>
+        /// <returns>Avatar path.</returns>
+        [Authorize]
+        [HttpPost]
+        public IActionResult GetAvatarPath()
+        {
+            try
+            {
+                var user = _usersManager.FindByEmail(User.Identity.Name);
+                return Ok(user.AvatarImagePath);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return BadRequest("Load image error.");
+            }
         }
     }
 }

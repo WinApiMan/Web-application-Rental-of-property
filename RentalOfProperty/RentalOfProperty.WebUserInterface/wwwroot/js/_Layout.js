@@ -1,5 +1,9 @@
 ﻿"use strict"
 
+const postQueryType = 'POST';
+const IncorrectValue = -1;
+const FirstIndex = 0;
+
 function createLanguagesList(languages, cultures, actionUrl) {
     const languageMenuId = "language-menu", languageClassName = "dropdown-item", buttonTag = "input";
     const buttonType = "button", itemType = "type";
@@ -19,8 +23,6 @@ function createLanguagesList(languages, cultures, actionUrl) {
 }
 
 function setLanguage(culture, actionUrl, returnUrl) {
-    const postQueryType = 'POST';
-
     $.ajax({
         type: postQueryType,
         url: actionUrl,
@@ -34,20 +36,34 @@ function setLanguage(culture, actionUrl, returnUrl) {
     });
 }
 
-function downloadImage(imageId) {
-    const fileIndex = 0;
+function callAvatarQuey(url) {
+    $.ajax({
+        type: postQueryType,
+        url: url,
+        success: function (result) {
+            let liItem = document.getElementById("avatar");
+            let img = document.createElement("img");
+            img.src = result;
+            img.width = "40";
+            img.height = "40";
+            liItem.appendChild(img);
+        }
+    });
+}
+
+function downloadImage(imageId, loadImage, incorrectImageFormat) {
     let image = document.getElementById(imageId);
 
     image.addEventListener('change', (event) => {
-        let file = event.target.files[fileIndex];
+        let file = event.target.files[FirstIndex];
 
-        let fileReader = new FileReader();
-
-        fileReader.addEventListener('load', (event) => {
-            let array = new Uint8Array(event.target.result);
-        });
-
-        fileReader.readAsArrayBuffer(file);
+        if (file.type && file.type.indexOf('image') === IncorrectValue) {
+            alert(incorrectImageFormat)
+            return;
+        }
+        else {
+            document.getElementById(loadImage).click();
+        }  
     });
 
     image.click();

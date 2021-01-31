@@ -23,6 +23,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
         private readonly IMapper _mapper;
 
+        const int IncorrectUsersCount = 0;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersManager"/> class.
         /// </summary>
@@ -79,9 +81,35 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             throw new NotImplementedException();
         }
 
-        public Task Update(User item)
+        /// <summary>
+        /// Method for updating item.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <returns>Void return.</returns>
+        public async Task<IdentityResult> Update(User user)
         {
-            throw new NotImplementedException();
+            if (user is null)
+            {
+                throw new ArgumentNullException("User is null");
+            }
+            else
+            {
+                var users = _usersRepository.Get(item => item.Email.Equals(user.Email));
+
+                if (users.Count() == IncorrectUsersCount)
+                {
+                    throw new NullReferenceException("Users is null");
+                }
+                else
+                {
+                    var userDTO = users.First();
+                    userDTO.AvatarImagePath = user.AvatarImagePath;
+                    userDTO.Email = user.Email;
+                    userDTO.FullName = user.FullName;
+                    userDTO.PhoneNumber = user.PhoneNumber;
+                    return _mapper.Map<IdentityResult>(await _usersRepository.Update(userDTO));
+                }
+            }
         }
 
         /// <summary>
@@ -95,13 +123,13 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             {
                 var users = _mapper.Map<IEnumerable<User>>(_usersRepository.Get(item => item.Email.Equals(email)));
 
-                if (!(users is null))
+                if (users.Count() == IncorrectUsersCount)
                 {
-                    return users.First();
+                    throw new NullReferenceException("Users is null");
                 }
                 else
                 {
-                    throw new NullReferenceException("User id is null");
+                    return users.First();
                 }
             }
             else
@@ -173,8 +201,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Confirm result(true or false).</returns>
         public async Task<bool> IsEmailConfirmedAsync(string login)
         {
-            const int IncorrectUsersCount = 0;
-
             if (login is null)
             {
                 throw new ArgumentNullException("User id is null");

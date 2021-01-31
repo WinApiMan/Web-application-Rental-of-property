@@ -48,6 +48,7 @@ namespace RentalOfProperty.DataAccessLayer.Context
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    AvatarImagePath = @"\Files\Images\DefaultAccount.png",
                 });
 
             // Create connection between account and role
