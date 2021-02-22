@@ -97,13 +97,40 @@ namespace RentalOfProperty.WebUserInterface.Controllers
             try
             {
                 var user = _mapper.Map<EditView>(_usersManager.FindByEmail(User.Identity.Name));
-                return View(user);
+
+                if (!(user is null))
+                {
+                    return View(user);
+                }
             }
             catch (Exception exception)
             {
                 _logger.LogError($"Error : {exception.Message}");
-                return RedirectToAction("Error", "Home");
             }
+
+            return RedirectToAction("Error", "Home");
+        }
+
+        /// <summary>
+        /// Change user password get request.
+        /// </summary>
+        /// <returns>Action result object.</returns>
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            try
+            {
+                if (!(_usersManager.FindByEmail(User.Identity.Name) is null))
+                {
+                    return View();
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+            }
+
+            return RedirectToAction("Error", "Home");
         }
 
         /// <summary>
@@ -395,7 +422,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                     {
                         foreach (var error in identityResult.Errors)
                         {
-                            ModelState.AddModelError(string.Empty, error);
+                            ModelState.AddModelError(string.Empty, _sharedLocalizer[error]);
                         }
                     }
                 }
@@ -410,6 +437,53 @@ namespace RentalOfProperty.WebUserInterface.Controllers
             }
 
             return View(editView);
+        }
+
+        /// <summary>
+        /// Change user password.
+        /// </summary>
+        /// <param name="changePasswordView">Change password view model.</param>
+        /// <returns>Action result object.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordView changePasswordView)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = _usersManager.FindByEmail(User.Identity.Name);
+                    var changeResult = await _usersManager.ChangePasswordAsync(user, changePasswordView.OldPassword, changePasswordView.NewPassword);
+
+                    if (changeResult.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in changeResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, _sharedLocalizer[error]);
+                        }
+                    }
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["UserIsNotExist"]);
+            }
+            catch (NullReferenceException)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["UserIsNotExist"]);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(changePasswordView);
         }
     }
 }

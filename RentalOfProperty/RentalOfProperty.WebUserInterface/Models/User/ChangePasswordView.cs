@@ -17,7 +17,7 @@ namespace RentalOfProperty.WebUserInterface.Models.User
         [Required(ErrorMessage = "OldPasswordRequired")]
         [DataType(DataType.Password)]
         [Display(Name = "OldPassword")]
-        [StringLength(50, ErrorMessage = "OldPasswordLengthError", MinimumLength = 10)]
+        [StringLength(50, ErrorMessage = "PasswordLengthError", MinimumLength = 10)]
         public string OldPassword { get; set; }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace RentalOfProperty.WebUserInterface.Models.User
         [Required(ErrorMessage = "NewPasswordRequired")]
         [DataType(DataType.Password)]
         [Display(Name = "NewPassword")]
-        [StringLength(50, ErrorMessage = "NewPasswordLengthError", MinimumLength = 10)]
+        [StringLength(50, ErrorMessage = "PasswordLengthError", MinimumLength = 10)]
         public string NewPassword { get; set; }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace RentalOfProperty.WebUserInterface.Models.User
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "PasswordsComparingError")]
         [Display(Name = "NewPasswordConfirm")]
-        [StringLength(50, ErrorMessage = "NewPasswordConfirmLengthError", MinimumLength = 10)]
+        [StringLength(50, ErrorMessage = "PasswordConfirmLengthError", MinimumLength = 10)]
         public string NewPasswordConfirm { get; set; }
     }
 }

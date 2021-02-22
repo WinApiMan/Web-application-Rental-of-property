@@ -74,7 +74,7 @@
                                     <button type="submit" class="dropdown-item">@Localizer["MyAds"] </button>
                                     <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
                                     <a asp-controller="Users" asp-action="EditUserData" class="dropdown-item">@Localizer["UpdatePersonalData"]</a>
-                                    <button type="submit" class="dropdown-item">@Localizer["UpdatePassword"]</button>
+                                    <a asp-controller="Users" asp-action="ChangePassword" class="dropdown-item">@Localizer["UpdatePassword"]</a>
                                     <form asp-controller="Users" asp-action="LoadAvatarImage" enctype="multipart/form-data">
                                         <input type='file' name="file" class="d-none" id="avatarImage" accept=".jpg, .jpeg, .png">
                                         <button type="button" class="dropdown-item" onclick="downloadImage('avatarImage', 'loadAvatarImage','@Localizer["IncorrectImageFormat"]')">@Localizer["UpdatePhoto"]</button>

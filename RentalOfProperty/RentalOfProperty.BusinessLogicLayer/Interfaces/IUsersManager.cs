@@ -97,5 +97,14 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// </summary>
         /// <returns>Task result.</returns>
         Task SignOutAsync();
+
+        /// <summary>
+        /// Change user password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="oldPassword">Old user password.</param>
+        /// <param name="newPassword">New user password.</param>
+        /// <returns>Identity result object.</returns>
+        Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
     }
 }

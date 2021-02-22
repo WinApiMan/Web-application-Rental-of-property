@@ -154,5 +154,17 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         {
             await _signInManager.SignOutAsync();
         }
+
+        /// <summary>
+        /// Change user password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="oldPassword">Old user password.</param>
+        /// <param name="newPassword">New user password.</param>
+        /// <returns>Identity result object.</returns>
+        public async Task<IdentityResult> ChangePasswordAsync(UserDTO user, string oldPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
     }
 }

@@ -253,6 +253,44 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Change user password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="oldPassword">Old user password.</param>
+        /// <param name="newPassword">New user password.</param>
+        /// <returns>Identity result object.</returns>
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
+        {
+
+            if (user is null)
+            {
+                throw new ArgumentNullException("User is null");
+            }
+            else if (string.IsNullOrEmpty(oldPassword))
+            {
+                throw new ArgumentNullException("Old password is null or empty");
+            }
+            else if (string.IsNullOrEmpty(newPassword))
+            {
+                throw new ArgumentNullException("New password is null or empty");
+            }
+            else
+            {
+                var users = _usersRepository.Get(item => item.Email.Equals(user.Email));
+
+                if (users.Count() == IncorrectUsersCount)
+                {
+                    throw new NullReferenceException("Users is null");
+                }
+                else
+                {
+                    var changeResult = await _usersRepository.ChangePasswordAsync(users.First(), oldPassword, newPassword);
+                    return CreateIdentityResult(changeResult);
+                }
+            }
+        }
+
+        /// <summary>
         /// Create business logic identity result.
         /// </summary>
         /// <param name="identityResult">Data access layer identity result.</param>
