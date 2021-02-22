@@ -117,44 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IncorrectImageFormat" xml:space="preserve">
-    <value>Incorrect image format</value>
-    <comment>Incorrect image format</comment>
+  <data name="FullName" xml:space="preserve">
+    <value>Полное имя</value>
+    <comment>Full user name</comment>
   </data>
-  <data name="LogOff" xml:space="preserve">
-    <value>Log off</value>
-    <comment>Log off</comment>
+  <data name="FullNameLengthError" xml:space="preserve">
+    <value>Полное имя должно быть от {2} до {1}</value>
+    <comment>Full name length error message</comment>
   </data>
-  <data name="Messages" xml:space="preserve">
-    <value>Messages</value>
-    <comment>Messages</comment>
+  <data name="FullNameRequired" xml:space="preserve">
+    <value>Необходимо указать полное имя</value>
+    <comment>Full name required error message</comment>
   </data>
-  <data name="MyAds" xml:space="preserve">
-    <value>My ads</value>
-    <comment>My ads</comment>
+  <data name="Phone" xml:space="preserve">
+    <value>Номер телефона</value>
+    <comment>User phone (mobile or home)</comment>
   </data>
-  <data name="Registration" xml:space="preserve">
-    <value>Registration</value>
-    <comment>Registration button</comment>
+  <data name="PhoneLengthError" xml:space="preserve">
+    <value>Номер телефона должен быть от {2} до {1}</value>
+    <comment>Phone length error message</comment>
   </data>
-  <data name="RentalOfProperty" xml:space="preserve">
-    <value>The rental of property</value>
-    <comment>Site name</comment>
+  <data name="PhoneRequired" xml:space="preserve">
+    <value>Необходимо указать номер телефона</value>
+    <comment>Phone required error message</comment>
   </data>
-  <data name="SignIn" xml:space="preserve">
-    <value>Sign in</value>
-    <comment>Sign in button</comment>
-  </data>
-  <data name="UpdatePassword" xml:space="preserve">
-    <value>Update password</value>
-    <comment>Update password</comment>
-  </data>
-  <data name="UpdatePersonalData" xml:space="preserve">
-    <value>Update personal data</value>
-    <comment>Update personal data</comment>
-  </data>
-  <data name="UpdatePhoto" xml:space="preserve">
-    <value>Update photo</value>
-    <comment>Update photo</comment>
+  <data name="PhoneValidError" xml:space="preserve">
+    <value>Некорректный номер телефона</value>
+    <comment>Phone number error</comment>
   </data>
 </root>

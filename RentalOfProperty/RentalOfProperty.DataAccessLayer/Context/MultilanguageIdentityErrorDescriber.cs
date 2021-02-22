@@ -5,7 +5,6 @@
 namespace RentalOfProperty.DataAccessLayer.Context
 {
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.Localization;
 
     /// <summary>
     /// Class for identity errors localization.

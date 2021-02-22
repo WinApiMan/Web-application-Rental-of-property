@@ -88,6 +88,25 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         }
 
         /// <summary>
+        /// Edit user get request.
+        /// </summary>
+        /// <returns>Action result object.</returns>
+        [Authorize]
+        public IActionResult EditUserData()
+        {
+            try
+            {
+                var user = _mapper.Map<EditView>(_usersManager.FindByEmail(User.Identity.Name));
+                return View(user);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        /// <summary>
         /// Registration post request.
         /// </summary>
         /// <param name="registerModel">Register view model.</param>
@@ -314,7 +333,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                     }
                     else
                     {
-                        
+                        _logger.LogError("Error : file is null");
                     }
                 }
 
@@ -345,6 +364,52 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                 _logger.LogError($"Error : {exception.Message}");
                 return BadRequest("Load image error.");
             }
+        }
+
+        /// <summary>
+        /// Edit user data.
+        /// </summary>
+        /// <param name="editView">Edit view model.</param>
+        /// <returns>Action result object.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserData(EditView editView)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = _usersManager.FindByEmail(User.Identity.Name);
+
+                    user.FullName = editView.FullName;
+                    user.PhoneNumber = editView.PhoneNumber;
+
+                    var identityResult = await _usersManager.Update(user);
+
+                    if (identityResult.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in identityResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error);
+                        }
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["UserIsNotExist"]);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+            }
+
+            return View(editView);
         }
     }
 }

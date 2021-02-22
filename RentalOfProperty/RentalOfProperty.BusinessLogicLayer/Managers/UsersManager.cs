@@ -13,17 +13,18 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
     using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Models;
+    using DALIdentityResult = Microsoft.AspNetCore.Identity.IdentityResult;
 
     /// <summary>
     /// User manager.
     /// </summary>
     public class UsersManager : IUsersManager
     {
+        private const int IncorrectUsersCount = 0;
+
         private readonly IUserRepository _usersRepository;
 
         private readonly IMapper _mapper;
-
-        const int IncorrectUsersCount = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersManager"/> class.
@@ -44,7 +45,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Errors list.</returns>
         public async Task<IdentityResult> Create(User user, string role)
         {
-            return _mapper.Map<IdentityResult>(await _usersRepository.Create(_mapper.Map<UserDTO>(user), user.Password, role));
+            var identityResult = await _usersRepository.Create(_mapper.Map<UserDTO>(user), user.Password, role);
+            return CreateIdentityResult(identityResult);
         }
 
         /// <summary>
@@ -107,7 +109,10 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                     userDTO.Email = user.Email;
                     userDTO.FullName = user.FullName;
                     userDTO.PhoneNumber = user.PhoneNumber;
-                    return _mapper.Map<IdentityResult>(await _usersRepository.Update(userDTO));
+
+                    var identityResult = await _usersRepository.Update(userDTO);
+
+                    return CreateIdentityResult(identityResult);
                 }
             }
         }
@@ -189,7 +194,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 }
                 else
                 {
-                    return _mapper.Map<IdentityResult>(await _usersRepository.ConfirmEmailAsync(user, code));
+                    var identityResult = await _usersRepository.ConfirmEmailAsync(user, code);
+                    return CreateIdentityResult(identityResult);
                 }
             }
         }
@@ -244,6 +250,27 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         public async Task SignOutAsync()
         {
             await _usersRepository.SignOutAsync();
+        }
+
+        /// <summary>
+        /// Create business logic identity result.
+        /// </summary>
+        /// <param name="identityResult">Data access layer identity result.</param>
+        /// <returns>Bll identity result.</returns>
+        public IdentityResult CreateIdentityResult(DALIdentityResult identityResult)
+        {
+            var errors = new List<string>();
+
+            foreach (var error in identityResult.Errors)
+            {
+                errors.Add(error.Description);
+            }
+
+            return new IdentityResult
+            {
+                Succeeded = identityResult.Succeeded,
+                Errors = errors,
+            };
         }
     }
 }

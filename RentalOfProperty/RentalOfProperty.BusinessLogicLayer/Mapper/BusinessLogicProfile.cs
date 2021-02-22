@@ -22,7 +22,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Mapper
         {
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<SignInUser, SignInUserDTO>().ReverseMap();
-            CreateMap<IdentityResult, DALIdentityResult>().ReverseMap();
             CreateMap<SignInResult, DALSignInResult>().ReverseMap();
         }
     }

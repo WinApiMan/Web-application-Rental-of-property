@@ -40,7 +40,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand">@Localizer["RentalOfProperty"]</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -73,14 +73,13 @@
                                 <div class="dropdown-menu">
                                     <button type="submit" class="dropdown-item">@Localizer["MyAds"] </button>
                                     <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
-                                    <button type="submit" class="dropdown-item">@Localizer["UpdatePersonalData"]</button>
+                                    <a asp-controller="Users" asp-action="EditUserData" class="dropdown-item">@Localizer["UpdatePersonalData"]</a>
                                     <button type="submit" class="dropdown-item">@Localizer["UpdatePassword"]</button>
                                     <form asp-controller="Users" asp-action="LoadAvatarImage" enctype="multipart/form-data">
                                         <input type='file' name="file" class="d-none" id="avatarImage" accept=".jpg, .jpeg, .png">
                                         <button type="button" class="dropdown-item" onclick="downloadImage('avatarImage', 'loadAvatarImage','@Localizer["IncorrectImageFormat"]')">@Localizer["UpdatePhoto"]</button>
                                         <button type='submit' class="d-none" id="loadAvatarImage"></button>
                                     </form>
-                                    
                                     <form asp-controller="Users" asp-action="LogOff">
                                         <button type="submit" class="dropdown-item">@Localizer["LogOff"]</button>
                                     </form>
@@ -88,7 +87,7 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown mr-2" id="avatar">
-                            
+
                         </li>
                     }
                     else
