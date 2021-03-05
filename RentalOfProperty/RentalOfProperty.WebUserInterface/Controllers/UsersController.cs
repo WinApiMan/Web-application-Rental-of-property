@@ -134,6 +134,34 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         }
 
         /// <summary>
+        /// Forgot password get request.
+        /// </summary>
+        /// <returns>Action result object.</returns>
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Reset password get request.
+        /// </summary>
+        /// <param name="code">Generated code.</param>
+        /// <returns>Action result object.</returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            if (code is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        /// <summary>
         /// Registration post request.
         /// </summary>
         /// <param name="registerModel">Register view model.</param>
@@ -184,17 +212,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
                                 SenderName = _localizer["EmailSenderName"],
                             };
 
-                            // Create email sender settings
-                            var sendEmailSetting = new SendEmailSetting()
-                            {
-                                SenderAdress = _configuration.GetValue<string>("MailSender:Email"),
-                                SenderPassword = _configuration.GetValue<string>("MailSender:Password"),
-                                Host = _configuration.GetValue<string>("MailSender:Host"),
-                                Port = _configuration.GetValue<int>("MailSender:Port"),
-                                SocketOptions = _configuration.GetValue<int>("MailSender:SocketOptions"),
-                            };
-
-                            await _emailService.SendEmailAsync(message, sendEmailSetting);
+                            await _emailService.SendEmailAsync(message, GetBasicSendEmailSetting());
 
                             return Content(_localizer["RegistrationFinish"]);
                         }
@@ -484,6 +502,120 @@ namespace RentalOfProperty.WebUserInterface.Controllers
             }
 
             return View(changePasswordView);
+        }
+
+        /// <summary>
+        /// Restore user password with usung email.
+        /// </summary>
+        /// <param name="forgotPasswordView">Forgot password view model.</param>
+        /// <returns>Action result object.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordView forgotPasswordView)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = _usersManager.FindByEmail(forgotPasswordView.Email);
+
+                    if (await _usersManager.IsEmailConfirmedAsync(forgotPasswordView.Email))
+                    {
+                        string code = await _usersManager.GeneratePasswordResetTokenAsync(user.Id);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                        var callbackUrl = Url.Action(
+                           "ResetPassword",
+                           "Users",
+                           new
+                           {
+                               userId = user.Id,
+                               code,
+                           },
+                           protocol: HttpContext.Request.Scheme);
+
+                        // Create email message
+                        var message = new EmailMessage()
+                        {
+                            EmailAdress = user.Email,
+                            Message = $"{_localizer["ConfirmResetPassword"]} <a href='{callbackUrl}'>link</a>",
+                            Subject = _localizer["EmailResetPasswordSubject"],
+                            SenderName = _localizer["EmailSenderName"],
+                        };
+
+                        await _emailService.SendEmailAsync(message, GetBasicSendEmailSetting());
+                    }
+
+                    return Content(_localizer["RestoreFinish"]);
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return Content(_localizer["RestoreFinish"]);
+            }
+
+            return View(forgotPasswordView);
+        }
+
+        /// <summary>
+        /// Resert password. Change old data to new data.
+        /// </summary>
+        /// <param name="resetPasswordView">Reset password view model.</param>
+        /// <returns>Action result object.</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordView resetPasswordView)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = _usersManager.FindByEmail(resetPasswordView.Email);
+                    resetPasswordView.Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetPasswordView.Code));
+                    var resetResult = await _usersManager.ResetPasswordAsync(user.Id, resetPasswordView.Code, resetPasswordView.Password);
+
+                    if (resetResult.Succeeded)
+                    {
+                        return RedirectToAction(nameof(Authorization));
+                    }
+                    else
+                    {
+                        foreach (var error in resetResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, _sharedLocalizer[error]);
+                        }
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["UserIsNotExist"]);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return View();
+            }
+
+            return View(resetPasswordView);
+        }
+
+        /// <summary>
+        /// Get basic send email setting.
+        /// </summary>
+        /// <returns>Email setting.</returns>
+        public SendEmailSetting GetBasicSendEmailSetting()
+        {
+            return new SendEmailSetting()
+            {
+                SenderAdress = _configuration.GetValue<string>("MailSender:Email"),
+                SenderPassword = _configuration.GetValue<string>("MailSender:Password"),
+                Host = _configuration.GetValue<string>("MailSender:Host"),
+                Port = _configuration.GetValue<int>("MailSender:Port"),
+                SocketOptions = _configuration.GetValue<int>("MailSender:SocketOptions"),
+            };
         }
     }
 }

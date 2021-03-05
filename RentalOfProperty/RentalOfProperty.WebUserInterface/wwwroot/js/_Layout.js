@@ -16,7 +16,7 @@ function createLanguagesList(languages, cultures, actionUrl) {
         language.className = languageClassName;
         language.value = languages[index];
         language.onclick = function () {
-            setLanguage(cultures[index], actionUrl, location.pathname);
+            setLanguage(cultures[index], actionUrl, location.pathname + location.search);
         }
         languageMenu.appendChild(language);
     }

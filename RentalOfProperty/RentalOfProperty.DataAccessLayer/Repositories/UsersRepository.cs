@@ -166,5 +166,27 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         {
             return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
         }
+
+        /// <summary>
+        /// Generate code to reset password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <returns>Generated code.</returns>
+        public async Task<string> GeneratePasswordResetTokenAsync(UserDTO user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        /// <summary>
+        /// Reset user password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="code">Generated code.</param>
+        /// <param name="password">New user password.</param>
+        /// <returns>Reset result object.</returns>
+        public async Task<IdentityResult> ResetPasswordAsync(UserDTO user, string code, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, code, password);
+        }
     }
 }

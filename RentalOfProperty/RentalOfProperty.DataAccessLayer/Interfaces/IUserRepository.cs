@@ -102,5 +102,21 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         /// <param name="newPassword">New user password.</param>
         /// <returns>Identity result object.</returns>
         Task<IdentityResult> ChangePasswordAsync(UserDTO user, string oldPassword, string newPassword);
+
+        /// <summary>
+        /// Generate code to reset password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <returns>Generated code.</returns>
+        Task<string> GeneratePasswordResetTokenAsync(UserDTO user);
+
+        /// <summary>
+        /// Reset user password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <param name="code">Generated code.</param>
+        /// <param name="password">New user password.</param>
+        /// <returns>Reset result object.</returns>
+        Task<IdentityResult> ResetPasswordAsync(UserDTO user, string code, string password);
     }
 }

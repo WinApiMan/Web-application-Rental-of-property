@@ -121,9 +121,17 @@
     <value>Confirm registration by following the link:</value>
     <comment>Confirm registration</comment>
   </data>
+  <data name="ConfirmResetPassword" xml:space="preserve">
+    <value>To reset your password follow the link:</value>
+    <comment>Confirm reset password</comment>
+  </data>
   <data name="EmailIsNotConfirmed" xml:space="preserve">
     <value>Email is not confirmed</value>
     <comment>Email is not confirmed</comment>
+  </data>
+  <data name="EmailResetPasswordSubject" xml:space="preserve">
+    <value>Confirm reset password</value>
+    <comment>Reset password message</comment>
   </data>
   <data name="EmailSenderName" xml:space="preserve">
     <value>Administration of the site "Rental of property"</value>
@@ -140,6 +148,10 @@
   <data name="RegistrationFinish" xml:space="preserve">
     <value>To complete, check your email and the registration link in the letter.</value>
     <comment>Registration finish</comment>
+  </data>
+  <data name="RestoreFinish" xml:space="preserve">
+    <value>To reset your password, follow the link in the letter sent to your email.</value>
+    <comment>Restore finish</comment>
   </data>
   <data name="UserIsNotExist" xml:space="preserve">
     <value>User is not exist</value>

@@ -165,7 +165,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             }
             else
             {
-                throw new ArgumentNullException("User is null");
+                throw new ArgumentNullException("User id is null");
             }
         }
 
@@ -261,7 +261,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Identity result object.</returns>
         public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
         {
-
             if (user is null)
             {
                 throw new ArgumentNullException("User is null");
@@ -309,6 +308,64 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 Succeeded = identityResult.Succeeded,
                 Errors = errors,
             };
+        }
+
+        /// <summary>
+        /// Generate code to reset password.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <returns>Generated code.</returns>
+        public async Task<string> GeneratePasswordResetTokenAsync(string userId)
+        {
+            if (!(userId is null))
+            {
+                var user = await _usersRepository.FindById(userId);
+
+                if (user is null)
+                {
+                    throw new NullReferenceException("User is null");
+                }
+                else
+                {
+                    return await _usersRepository.GeneratePasswordResetTokenAsync(user);
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+        }
+
+        /// <summary>
+        /// Reset user password.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <param name="code">Generated code.</param>
+        /// <param name="password">New user password.</param>
+        /// <returns>Reset result object.</returns>
+        public async Task<IdentityResult> ResetPasswordAsync(string userId, string code, string password)
+        {
+            if (userId is null)
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else if (code is null)
+            {
+                throw new ArgumentNullException("Code is null");
+            }
+            else
+            {
+                var user = await _usersRepository.FindById(userId);
+                if (user is null)
+                {
+                    throw new NullReferenceException("User is null");
+                }
+                else
+                {
+                    var identityResult = await _usersRepository.ResetPasswordAsync(user, code, password);
+                    return CreateIdentityResult(identityResult);
+                }
+            }
         }
     }
 }

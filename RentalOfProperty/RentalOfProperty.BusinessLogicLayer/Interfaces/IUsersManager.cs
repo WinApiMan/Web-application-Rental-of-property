@@ -106,5 +106,21 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="newPassword">New user password.</param>
         /// <returns>Identity result object.</returns>
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
+
+        /// <summary>
+        /// Generate code to reset password.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <returns>Generated code.</returns>
+        Task<string> GeneratePasswordResetTokenAsync(string userId);
+
+        /// <summary>
+        /// Reset user password.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <param name="code">Generated code.</param>
+        /// <param name="password">New user password.</param>
+        /// <returns>Reset result object.</returns>
+        Task<IdentityResult> ResetPasswordAsync(string userId, string code, string password);
     }
 }
