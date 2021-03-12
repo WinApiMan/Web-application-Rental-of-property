@@ -1,6 +1,6 @@
 ﻿namespace LoadData
 {
-    public class LongTermRentalAd
+    public class LongTermRentalAdDTO : RentalAdDTO
     {
         public double BYNPrice { get; set; }
 

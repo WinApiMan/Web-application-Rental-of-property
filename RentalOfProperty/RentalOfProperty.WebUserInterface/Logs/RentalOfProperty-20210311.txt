@@ -1,0 +1,587 @@
+2021-03-11T20:35:03.8267226+03:00  [INF] User profile is available. Using '"C:\Users\WinApiMan\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest. (7ac5e29c)
+2021-03-11T20:35:09.2794281+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2021-03-11T20:35:09.3446959+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2021-03-11T20:35:09.4669198+03:00  [INF] Content root path: "C:\Vusial studio\Git\Web-application-Rental-of-property\RentalOfProperty\RentalOfProperty.WebUserInterface" (b5d60022)
+2021-03-11T20:35:09.5117378+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/   (ca22a1cb)
+2021-03-11T20:35:13.8781584+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:35:25.2153972+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("75"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:35:25.3901493+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("154"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:35:25.4135111+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:35:25.4216103+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("7"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:35:25.4245894+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:35:26.3712518+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("85"ms) [Parameters=["@__p_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[AvatarImagePath], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[Id] = @__p_0" (0723d8ff)
+2021-03-11T20:35:26.7064672+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=["@__user_Id_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0" (0723d8ff)
+2021-03-11T20:35:26.7776895+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("7"ms) [Parameters=["@__userId_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0" (0723d8ff)
+2021-03-11T20:35:26.8187246+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("10"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0" (0723d8ff)
+2021-03-11T20:35:26.8555226+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=["@__role_Id_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0" (0723d8ff)
+2021-03-11T20:35:26.8770654+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:35:26.9329601+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Route matched with "{action = \"Index\", controller = \"Home\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Index()" on controller "RentalOfProperty.Controllers.HomeController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:35:27.0313337+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Index". (c83d0e25)
+2021-03-11T20:35:27.4103452+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed ViewResult - view "Index" executed in 441.751ms. (f66409e9)
+2021-03-11T20:35:27.4118083+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)" in 477.8787ms (afa2e885)
+2021-03-11T20:35:27.4144273+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:35:27.4457396+03:00 80000002-0001-ff00-b63f-84710c7967bb [INF] Request finished in 17943.049ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:35:27.5303701+03:00 80000002-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/lib/bootstrap/css/bootstrap.css   (ca22a1cb)
+2021-03-11T20:35:27.5316642+03:00 80000004-0001-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/css/site.css   (ca22a1cb)
+2021-03-11T20:35:27.5434846+03:00 80000002-0000-fe00-b63f-84710c7967bb [INF] The file "/lib/bootstrap/css/bootstrap.css" was not modified (f1f8d725)
+2021-03-11T20:35:27.5436145+03:00 80000004-0001-ff00-b63f-84710c7967bb [INF] The file "/css/site.css" was not modified (f1f8d725)
+2021-03-11T20:35:27.5481324+03:00 80000004-0001-ff00-b63f-84710c7967bb [INF] Request finished in 16.455ms 304 text/css (791a596a)
+2021-03-11T20:35:27.5482772+03:00 80000002-0000-fe00-b63f-84710c7967bb [INF] Request finished in 18.1963ms 304 text/css (791a596a)
+2021-03-11T20:35:27.7829843+03:00 80000003-0002-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/css/Users/Users.css   (ca22a1cb)
+2021-03-11T20:35:27.7835536+03:00 80000002-0002-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/lib/jquery/jquery.js   (ca22a1cb)
+2021-03-11T20:35:27.7857381+03:00 80000003-0002-fe00-b63f-84710c7967bb [INF] The file "/css/Users/Users.css" was not modified (f1f8d725)
+2021-03-11T20:35:27.7858566+03:00 80000002-0002-fd00-b63f-84710c7967bb [INF] The file "/lib/jquery/jquery.js" was not modified (f1f8d725)
+2021-03-11T20:35:27.7868021+03:00 80000003-0002-fe00-b63f-84710c7967bb [INF] Request finished in 4.6602ms 304 text/css (791a596a)
+2021-03-11T20:35:27.7868021+03:00 80000002-0002-fd00-b63f-84710c7967bb [INF] Request finished in 3.758ms 304 application/javascript (791a596a)
+2021-03-11T20:35:27.8744958+03:00 80000004-0002-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/lib/bootstrap/js/bootstrap.js   (ca22a1cb)
+2021-03-11T20:35:27.8770664+03:00 80000004-0002-fd00-b63f-84710c7967bb [INF] The file "/lib/bootstrap/js/bootstrap.js" was not modified (f1f8d725)
+2021-03-11T20:35:27.8777909+03:00 80000004-0002-fd00-b63f-84710c7967bb [INF] Request finished in 4.0348ms 304 application/javascript (791a596a)
+2021-03-11T20:35:27.9015107+03:00 80000004-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/js/_Layout.js?v=GuEeIa108hMV74sn1FlwTCNNKYQtfAhpSycxn_Kcgvs   (ca22a1cb)
+2021-03-11T20:35:27.9042491+03:00 80000004-0000-fe00-b63f-84710c7967bb [INF] The file "/js/_Layout.js" was not modified (f1f8d725)
+2021-03-11T20:35:27.9044690+03:00 80000004-0000-fe00-b63f-84710c7967bb [INF] Request finished in 3.1703ms 304 application/javascript (791a596a)
+2021-03-11T20:35:28.1912049+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:35:28.2766516+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:35:28.2965220+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:35:28.3002883+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:35:28.3015253+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:35:28.3024706+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:35:28.3100116+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed DbCommand ("6"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:35:28.3447345+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Authorization was successful. (0d575a54)
+2021-03-11T20:35:28.3450526+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.GetAvatarPath (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:35:28.3492701+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Route matched with "{action = \"GetAvatarPath\", controller = \"Users\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetAvatarPath()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:35:28.8262154+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed DbCommand ("5"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[Id], [a].[AccessFailedCount], [a].[AvatarImagePath], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]" (0723d8ff)
+2021-03-11T20:35:28.8856549+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2021-03-11T20:35:28.8933855+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.GetAvatarPath (RentalOfProperty.WebUserInterface)" in 543.9545ms (afa2e885)
+2021-03-11T20:35:28.8934924+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.GetAvatarPath (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:35:28.8960061+03:00 80000006-0000-fe00-b63f-84710c7967bb [INF] Request finished in 708.8355ms 200 text/plain; charset=utf-8 (791a596a)
+2021-03-11T20:35:28.9612901+03:00 80000008-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/Files/Images/DefaultAccount.png   (ca22a1cb)
+2021-03-11T20:35:29.0004494+03:00 80000008-0000-fe00-b63f-84710c7967bb [INF] Sending file. Request path: '"/Files/Images/DefaultAccount.png"'. Physical path: '"C:\Vusial studio\Git\Web-application-Rental-of-property\RentalOfProperty\RentalOfProperty.WebUserInterface\wwwroot\Files\Images\DefaultAccount.png"' (27b0a520)
+2021-03-11T20:35:29.0006572+03:00 80000008-0000-fe00-b63f-84710c7967bb [INF] Request finished in 39.4051ms 200 image/png (791a596a)
+2021-03-11T20:36:26.1895874+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/LogOff application/x-www-form-urlencoded 225 (ca22a1cb)
+2021-03-11T20:36:26.2208683+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:26.2228696+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:26.2463937+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("23"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:26.2576388+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:26.2606207+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:26.2630203+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:26.2663717+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Authorization was successful. (0d575a54)
+2021-03-11T20:36:26.2665116+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.LogOff (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:26.2795056+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Route matched with "{action = \"LogOff\", controller = \"Users\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] LogOff()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:26.3122098+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" signed out. (d3f50c8d)
+2021-03-11T20:36:26.3137202+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.External" signed out. (d3f50c8d)
+2021-03-11T20:36:26.3141405+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.TwoFactorUserId" signed out. (d3f50c8d)
+2021-03-11T20:36:26.3211287+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executing RedirectResult, redirecting to "/". (d98d540e)
+2021-03-11T20:36:26.3215587+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.LogOff (RentalOfProperty.WebUserInterface)" in 41.8987ms (afa2e885)
+2021-03-11T20:36:26.3216383+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.LogOff (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:26.3228605+03:00 80000006-0001-ff00-b63f-84710c7967bb [INF] Request finished in 136.1ms 302  (791a596a)
+2021-03-11T20:36:26.3376636+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/   (ca22a1cb)
+2021-03-11T20:36:26.3387003+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:26.3392820+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"Index\", controller = \"Home\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Index()" on controller "RentalOfProperty.Controllers.HomeController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:26.3425365+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Index". (c83d0e25)
+2021-03-11T20:36:26.3544028+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Executed ViewResult - view "Index" executed in 13.7626ms. (f66409e9)
+2021-03-11T20:36:26.3546345+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)" in 15.2742ms (afa2e885)
+2021-03-11T20:36:26.3546938+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:26.3549189+03:00 80000006-0002-fd00-b63f-84710c7967bb [INF] Request finished in 17.322ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:36:26.5347414+03:00 80000008-0001-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:36:26.5385998+03:00 80000008-0001-ff00-b63f-84710c7967bb [INF] Authorization failed. (b15dd539)
+2021-03-11T20:36:26.5470008+03:00 80000008-0001-ff00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" was challenged. (d45f1f38)
+2021-03-11T20:36:26.5487543+03:00 80000008-0001-ff00-b63f-84710c7967bb [INF] Request finished in 14.0574ms 401  (791a596a)
+2021-03-11T20:36:28.4483171+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/Users/Registration   (ca22a1cb)
+2021-03-11T20:36:28.4501507+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:28.4639627+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"Registration\", controller = \"Users\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Registration()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:28.4691376+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:28.4736091+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:28.4788248+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("4"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:28.4809581+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:28.4828060+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:28.4865270+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:28.5141594+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Registration". (c83d0e25)
+2021-03-11T20:36:28.6506480+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed ViewResult - view "Registration" executed in 161.6903ms. (f66409e9)
+2021-03-11T20:36:28.6508043+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)" in 186.3258ms (afa2e885)
+2021-03-11T20:36:28.6508846+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:28.6512763+03:00 80000002-0003-fd00-b63f-84710c7967bb [INF] Request finished in 203.1131ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:36:28.7114554+03:00 8000000a-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/lib/jquery-validation/jquery.validate.js   (ca22a1cb)
+2021-03-11T20:36:28.7114552+03:00 80000003-0000-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js   (ca22a1cb)
+2021-03-11T20:36:28.7126733+03:00 80000003-0000-ff00-b63f-84710c7967bb [INF] The file "/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" was not modified (f1f8d725)
+2021-03-11T20:36:28.7129731+03:00 80000003-0000-ff00-b63f-84710c7967bb [INF] Request finished in 1.6205ms 304 application/javascript (791a596a)
+2021-03-11T20:36:28.7130966+03:00 8000000a-0000-fe00-b63f-84710c7967bb [INF] The file "/lib/jquery-validation/jquery.validate.js" was not modified (f1f8d725)
+2021-03-11T20:36:28.7132306+03:00 8000000a-0000-fe00-b63f-84710c7967bb [INF] Request finished in 1.8892ms 304 application/javascript (791a596a)
+2021-03-11T20:36:28.8693167+03:00 8000000c-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:36:28.8705731+03:00 8000000c-0000-fe00-b63f-84710c7967bb [INF] Authorization failed. (b15dd539)
+2021-03-11T20:36:28.8715544+03:00 8000000c-0000-fe00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" was challenged. (d45f1f38)
+2021-03-11T20:36:28.8776771+03:00 8000000c-0000-fe00-b63f-84710c7967bb [INF] Request finished in 4.1496ms 401  (791a596a)
+2021-03-11T20:36:55.1331125+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Settings/SetLanguage application/x-www-form-urlencoded; charset=UTF-8 44 (ca22a1cb)
+2021-03-11T20:36:55.1345842+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.Controllers.Settings.SettingsController.SetLanguage (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:55.1556054+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Route matched with "{action = \"SetLanguage\", controller = \"Settings\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult SetLanguage(System.String, System.String)" on controller "RentalOfProperty.Controllers.Settings.SettingsController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:55.1917315+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2021-03-11T20:36:55.1930850+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.Controllers.Settings.SettingsController.SetLanguage (RentalOfProperty.WebUserInterface)" in 37.3296ms (afa2e885)
+2021-03-11T20:36:55.1931615+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.Controllers.Settings.SettingsController.SetLanguage (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:55.1935320+03:00 8000000e-0000-fe00-b63f-84710c7967bb [INF] Request finished in 60.6355ms 200 text/plain; charset=utf-8 (791a596a)
+2021-03-11T20:36:55.2243731+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/Users/Registration   (ca22a1cb)
+2021-03-11T20:36:55.2344046+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:55.2345776+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Route matched with "{action = \"Registration\", controller = \"Users\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Registration()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:55.2359411+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:55.2378047+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:55.2403764+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:55.2409718+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:55.2418289+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:55.2457801+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("4"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:55.2464326+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Registration". (c83d0e25)
+2021-03-11T20:36:55.2573415+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed ViewResult - view "Registration" executed in 11.0666ms. (f66409e9)
+2021-03-11T20:36:55.2574715+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)" in 22.8499ms (afa2e885)
+2021-03-11T20:36:55.2575187+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:55.2581690+03:00 8000000a-0001-ff00-b63f-84710c7967bb [INF] Request finished in 33.7808ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:36:55.4308445+03:00 80000004-0003-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:36:55.4318564+03:00 80000004-0003-fd00-b63f-84710c7967bb [INF] Authorization failed. (b15dd539)
+2021-03-11T20:36:55.4322775+03:00 80000004-0003-fd00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" was challenged. (d45f1f38)
+2021-03-11T20:36:55.4336137+03:00 80000004-0003-fd00-b63f-84710c7967bb [INF] Request finished in 2.4768ms 401  (791a596a)
+2021-03-11T20:36:56.4762528+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Settings/SetLanguage application/x-www-form-urlencoded; charset=UTF-8 44 (ca22a1cb)
+2021-03-11T20:36:56.4775839+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.Controllers.Settings.SettingsController.SetLanguage (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:56.4779007+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"SetLanguage\", controller = \"Settings\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult SetLanguage(System.String, System.String)" on controller "RentalOfProperty.Controllers.Settings.SettingsController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:56.4810636+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2021-03-11T20:36:56.4824452+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.Controllers.Settings.SettingsController.SetLanguage (RentalOfProperty.WebUserInterface)" in 4.3676ms (afa2e885)
+2021-03-11T20:36:56.4825881+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.Controllers.Settings.SettingsController.SetLanguage (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:56.4829509+03:00 80000006-0003-fd00-b63f-84710c7967bb [INF] Request finished in 6.9112ms 200 text/plain; charset=utf-8 (791a596a)
+2021-03-11T20:36:56.4960686+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/Users/Registration   (ca22a1cb)
+2021-03-11T20:36:56.4991651+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:36:56.4995305+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Route matched with "{action = \"Registration\", controller = \"Users\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Registration()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:36:56.5011124+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:56.5026853+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:56.5058383+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:56.5071561+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:36:56.5086406+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:36:56.5119809+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:36:56.5177035+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Registration". (c83d0e25)
+2021-03-11T20:36:56.5748745+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed ViewResult - view "Registration" executed in 61.8971ms. (f66409e9)
+2021-03-11T20:36:56.5753103+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)" in 75.673ms (afa2e885)
+2021-03-11T20:36:56.5754552+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Registration (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:36:56.5764339+03:00 8000000c-0001-ff00-b63f-84710c7967bb [INF] Request finished in 80.0595ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:36:56.8060322+03:00 80000010-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:36:56.8119502+03:00 80000010-0000-fe00-b63f-84710c7967bb [INF] Authorization failed. (b15dd539)
+2021-03-11T20:36:56.8123443+03:00 80000010-0000-fe00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" was challenged. (d45f1f38)
+2021-03-11T20:36:56.8176433+03:00 80000010-0000-fe00-b63f-84710c7967bb [INF] Request finished in 11.6007ms 401  (791a596a)
+2021-03-11T20:37:57.5656127+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/Users/Authorization   (ca22a1cb)
+2021-03-11T20:37:57.5671714+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Authorization (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:37:57.5818463+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"Authorization\", controller = \"Users\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Authorization()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:37:57.5840259+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:57.5860949+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:57.6096998+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("23"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:57.6121184+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:57.6135353+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:57.6166788+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:57.6362131+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Authorization". (c83d0e25)
+2021-03-11T20:37:57.6943826+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed ViewResult - view "Authorization" executed in 76.7091ms. (f66409e9)
+2021-03-11T20:37:57.6945309+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.Authorization (RentalOfProperty.WebUserInterface)" in 112.6167ms (afa2e885)
+2021-03-11T20:37:57.6945939+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Authorization (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:37:57.6950961+03:00 80000008-0002-fd00-b63f-84710c7967bb [INF] Request finished in 130.4226ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:37:57.8709716+03:00 80000012-0000-fe00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:37:57.8737891+03:00 80000012-0000-fe00-b63f-84710c7967bb [INF] Authorization failed. (b15dd539)
+2021-03-11T20:37:57.8748760+03:00 80000012-0000-fe00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" was challenged. (d45f1f38)
+2021-03-11T20:37:57.8756632+03:00 80000012-0000-fe00-b63f-84710c7967bb [INF] Request finished in 4.7012ms 401  (791a596a)
+2021-03-11T20:37:59.2472728+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/Authorization application/x-www-form-urlencoded 248 (ca22a1cb)
+2021-03-11T20:37:59.2482057+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Authorization (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:37:59.2612434+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"Authorization\", controller = \"Users\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Authorization(RentalOfProperty.WebUserInterface.Models.User.AuthorizeView)" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:37:59.2644627+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:59.2659932+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:59.2684363+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:59.2689131+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:59.2695158+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:59.2718682+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:59.3075642+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[Id], [a].[AccessFailedCount], [a].[AvatarImagePath], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]" (0723d8ff)
+2021-03-11T20:37:59.3620364+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("9"ms) [Parameters=["@__normalizedUserName_0='?' (Size = 256)"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[AvatarImagePath], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0" (0723d8ff)
+2021-03-11T20:37:59.4853433+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=["@__user_Id_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0" (0723d8ff)
+2021-03-11T20:37:59.4925340+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("4"ms) [Parameters=["@__userId_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0" (0723d8ff)
+2021-03-11T20:37:59.4966148+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0" (0723d8ff)
+2021-03-11T20:37:59.4998849+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=["@__role_Id_0='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0" (0723d8ff)
+2021-03-11T20:37:59.5046025+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] AuthenticationScheme: "Identity.Application" signed in. (c66dd7e7)
+2021-03-11T20:37:59.5167950+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executing RedirectResult, redirecting to "/". (d98d540e)
+2021-03-11T20:37:59.5188962+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.Authorization (RentalOfProperty.WebUserInterface)" in 257.5239ms (afa2e885)
+2021-03-11T20:37:59.5198462+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.Authorization (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:37:59.5219580+03:00 8000000a-0002-fd00-b63f-84710c7967bb [INF] Request finished in 274.6437ms 302  (791a596a)
+2021-03-11T20:37:59.5296517+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 GET https://localhost:44322/   (ca22a1cb)
+2021-03-11T20:37:59.5309005+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:59.5314800+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:59.5333427+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:59.5337827+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:59.5342773+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:59.5364927+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:59.5367475+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:37:59.5368784+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"Index\", controller = \"Home\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult Index()" on controller "RentalOfProperty.Controllers.HomeController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:37:59.5384602+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executing ViewResult, running view "Index". (c83d0e25)
+2021-03-11T20:37:59.5441417+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed ViewResult - view "Index" executed in 6.975ms. (f66409e9)
+2021-03-11T20:37:59.5442245+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)" in 7.2947ms (afa2e885)
+2021-03-11T20:37:59.5442638+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.Controllers.HomeController.Index (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:37:59.5446929+03:00 80000008-0003-fd00-b63f-84710c7967bb [INF] Request finished in 15.0644ms 200 text/html; charset=utf-8 (791a596a)
+2021-03-11T20:37:59.7060257+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Request starting HTTP/2.0 POST https://localhost:44322/Users/GetAvatarPath  0 (ca22a1cb)
+2021-03-11T20:37:59.7094539+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:59.7110657+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:59.7142981+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:59.7154998+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Entity Framework Core "5.0.1" initialized '"RentalOfPropertyContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None" (9958f5bb)
+2021-03-11T20:37:59.7168436+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1" (0723d8ff)
+2021-03-11T20:37:59.7200437+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0" (0723d8ff)
+2021-03-11T20:37:59.7206676+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Authorization was successful. (0d575a54)
+2021-03-11T20:37:59.7207601+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executing endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.GetAvatarPath (RentalOfProperty.WebUserInterface)"' (500cc934)
+2021-03-11T20:37:59.7210547+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Route matched with "{action = \"GetAvatarPath\", controller = \"Users\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.IActionResult GetAvatarPath()" on controller "RentalOfProperty.WebUserInterface.Controllers.UsersController" ("RentalOfProperty.WebUserInterface"). (122b2fdf)
+2021-03-11T20:37:59.7236185+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [a].[Id], [a].[AccessFailedCount], [a].[AvatarImagePath], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]" (0723d8ff)
+2021-03-11T20:37:59.7268219+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2021-03-11T20:37:59.7278929+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed action "RentalOfProperty.WebUserInterface.Controllers.UsersController.GetAvatarPath (RentalOfProperty.WebUserInterface)" in 6.7536ms (afa2e885)
+2021-03-11T20:37:59.7279660+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Executed endpoint '"RentalOfProperty.WebUserInterface.Controllers.UsersController.GetAvatarPath (RentalOfProperty.WebUserInterface)"' (99874f2b)
+2021-03-11T20:37:59.7283013+03:00 8000000c-0002-fd00-b63f-84710c7967bb [INF] Request finished in 22.7901ms 200 text/plain; charset=utf-8 (791a596a)
