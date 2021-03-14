@@ -10,6 +10,8 @@ namespace LoadData
 
         public string SourceLink { get; set; }
 
+        public int RentalAdNumber { get; set; }
+
         public DateTime UpdateDate { get; set; }
 
         public string Region { get; set; }
@@ -18,11 +20,11 @@ namespace LoadData
 
         public string Locality { get; set; }
 
-        public string LocalityDistrict { get; set; }
-
         public string Address { get; set; }
 
-        public int CountOfRooms { get; set; }
+        public int TotalCountOfRooms { get; set; }
+
+        public int RentCountOfRooms { get; set; }
 
         public double TotalArea { get; set; }
 
