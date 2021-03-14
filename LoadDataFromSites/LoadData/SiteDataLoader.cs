@@ -19,7 +19,7 @@ namespace LoadData
             _htmlWeb = htmlWeb;
         }
 
-        public void LoadData()
+        public IEnumerable<AdDTO> LoadData()
         {
             bool isPagesAreNotOver = true;
             int index = 0;
@@ -54,6 +54,8 @@ namespace LoadData
 
                 index += NextPageCoefficient;
             }
+
+            return ads;
         }
 
         public ContactPersonDTO GetContactPerson(HtmlDocument htmlDocument)
@@ -77,16 +79,20 @@ namespace LoadData
         {
             var photos = new List<HousingPhotoDTO>();
 
-            var photoLinkCollection = htmlDocument.DocumentNode
-                .SelectNodes("//div[@class='w-advertisement-images']//a[@data-fancybox='ad_view']");
-
-            foreach (var photoLink in photoLinkCollection)
+            try
             {
-                photos.Add(new HousingPhotoDTO
+                var photoLinkCollection = htmlDocument.DocumentNode
+                    .SelectNodes("//div[@class='w-advertisement-images']//a[@data-fancybox='ad_view']");
+
+                foreach (var photoLink in photoLinkCollection)
                 {
-                    PathToPhoto = $"{SiteHead}{photoLink.Attributes["href"].Value}"
-                });
+                    photos.Add(new HousingPhotoDTO
+                    {
+                        PathToPhoto = $"{SiteHead}{photoLink.Attributes["href"].Value}"
+                    });
+                }
             }
+            catch (Exception) { }
 
             return photos;
         }
@@ -148,9 +154,32 @@ namespace LoadData
             }
 
             var floorsArray = Regex.Split(htmlDocument.DocumentNode
-                .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[3]/li[4]/div[2]").InnerText, @"\D+")
+                .SelectSingleNode("//div[contains(text(),'Этаж')]/../div[2]").InnerText, @"\D+")
                 .Where(tempString => !string.IsNullOrEmpty(tempString))
                 .ToArray();
+
+            double kitchenArea = 0;
+
+            try
+            {
+                kitchenArea = Convert.ToDouble(htmlDocument.DocumentNode
+                    .SelectSingleNode("//div[contains(text(),'Площадь кухни')]/../div[2]").InnerText
+                    .Split(new char[] { ' ' })[NameIndex].Replace('.', ','));
+            }
+            catch (Exception) { }
+
+            string facilities = string.Empty;
+
+            try
+            {
+                var facilitiesNodeCollection = htmlDocument.DocumentNode.SelectNodes("//div[@class='left']/div[contains(@class,'w-features')]/div/div[@class='text']");
+
+                foreach (var facilitie in facilitiesNodeCollection)
+                {
+                    facilities = string.Concat(facilities, $"{facilitie.InnerText}, ");
+                }
+            }
+            catch (Exception) { }
 
             return new LongTermRentalAdDTO
             {
@@ -183,9 +212,7 @@ namespace LoadData
                     .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[3]/li[2]/div[2]").InnerText
                     .Split(new char[] { ' ' })[NameIndex].Replace('.', ',')),
 
-                KitchenArea = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[3]/li[3]/div[2]").InnerText
-                    .Split(new char[] { ' ' })[NameIndex].Replace('.', ',')),
+                KitchenArea = kitchenArea,
 
                 TotalFloors = Convert.ToInt32(floorsArray[AdditionalNameIndex]),
 
@@ -196,6 +223,20 @@ namespace LoadData
 
                 YMapCoordinate = Convert.ToDouble(htmlDocument.DocumentNode
                     .SelectSingleNode("//input[@id='map_longitude']").Attributes["value"].Value.Replace('.', ',')),
+
+                Bathroom = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[4]/li[1]/div[2]").InnerText,
+
+                Description = htmlDocument.DocumentNode.SelectSingleNode("//article/p").InnerText,
+
+                Facilities = facilities,
+
+                USDPrice = Convert.ToDouble(Regex.Split(htmlDocument.DocumentNode
+                    .SelectSingleNode("//div[@class='price']").InnerText, @"\D+")
+                    .Where(tempString => !string.IsNullOrEmpty(tempString))
+                    .ToArray()[NameIndex].Replace('.', ',')),
+
+                BYNPrice = Convert.ToDouble(htmlDocument.DocumentNode
+                    .SelectSingleNode("//div[@class='price big']/span").InnerText.Replace('.', ',')),
             };
         }
     }
