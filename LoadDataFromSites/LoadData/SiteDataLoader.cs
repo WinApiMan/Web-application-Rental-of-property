@@ -3,37 +3,65 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace LoadData
 {
     public class SiteDataLoader
     {
-        private const string SiteHead = "https://gohome.by", SitePage = "https://gohome.by/rent/index/";
+        public const string SiteHead = "https://gohome.by", SitePage = "https://gohome.by/rent/index/";
 
-        private const int NextPageCoefficient = 30;
+        public const int PageIndex = 30, ThreadCount = 15, DefaultValue = 0;
+
+        public const int NameIndex = 0, AdditionalNameIndex = 1, RentAllHouse = 1;
 
         private readonly HtmlWeb _htmlWeb;
+
+        private readonly object _locker;
+
+        public List<AdDTO> Ads { get; set; } = new List<AdDTO>();
 
         public SiteDataLoader(HtmlWeb htmlWeb)
         {
             _htmlWeb = htmlWeb;
+            _locker = new object();
         }
 
-        public IEnumerable<AdDTO> LoadData()
+        public void LoadDataInAds()
         {
+            var threads = new List<Thread>();
+
+            for (int index = 0; index < ThreadCount; index++)
+            {
+                var thread = new Thread(LoadDataFromPage);
+                thread.Start(index * PageIndex);
+                threads.Add(thread);
+            }
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+        }
+
+        public void LoadDataFromPage(object startIndex)
+        {
+            int index = (int)startIndex;
+
+            int nextPageCoefficient = PageIndex * ThreadCount;
+
             bool isPagesAreNotOver = true;
-            int index = 0;
 
             var ads = new List<AdDTO>();
 
             while (isPagesAreNotOver)
             {
-                try
+                var pageHtmlDocument = _htmlWeb.Load($"{SitePage}{index}");
+
+                var adLinkCollection = pageHtmlDocument.DocumentNode.SelectNodes("//a[@class='name__link']");
+
+                if (!(adLinkCollection is null))
                 {
-                    var pageHtmlDocument = _htmlWeb.Load($"{SitePage}{index}");
-
-                    var adLinkCollection = pageHtmlDocument.DocumentNode.SelectNodes("//a[@class='name__link']");
-
                     foreach (var adLink in adLinkCollection)
                     {
                         try
@@ -48,17 +76,21 @@ namespace LoadData
                                 RentalAd = GetLongTermRentalAd(adHtmlDocument, link)
                             });
                         }
-                        catch(Exception) { }
+                        catch (Exception) { }
                     }
 
-                    index += NextPageCoefficient;
+                    index += nextPageCoefficient;
                 }
-                catch (Exception)
+                else
                 {
                     isPagesAreNotOver = false;
                 }
             }
-            return ads;
+
+            lock (_locker)
+            {
+                Ads.AddRange(ads);
+            }
         }
 
         /// <summary>
@@ -162,169 +194,372 @@ namespace LoadData
         /// <returns>Long term rental ad model.</returns>
         public LongTermRentalAdDTO GetLongTermRentalAd(HtmlDocument htmlDocument, string sourceLink)
         {
-            const int NameIndex = 0, AdditionalNameIndex = 1, RentAllHouse = 1;
+            (int totalCountOfRooms, int rentCountOfRooms) = GetTotalAndRentCountOfRooms(htmlDocument.DocumentNode);
 
-            //Region words in array
-            var regionArray = htmlDocument.DocumentNode
-                .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[2]/li[1]/div[2]").InnerText
-                .Replace("\r\n", string.Empty)
-                .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            (int floor, int totalFloor) = GetTotalAndCurrentFloors(htmlDocument.DocumentNode);
 
-            //District word in array
-            var districtArray = htmlDocument.DocumentNode
-                .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[2]/li[2]/div[2]").InnerText
-                .Replace("\r\n", string.Empty)
-                .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            (double uSDPrice, double bYNPrice) = GetPrices(htmlDocument.DocumentNode);
 
-            string address;
-
-            //Get address
-            try
-            {
-                address = htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(text(),'Улица')]/../div[2]/a").InnerText
-                    .Replace("\r\n", string.Empty).Trim();
-            }
-            catch (Exception)
-            {
-                address = htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(text(),'Улица')]/../div[2]").InnerText
-                    .Replace("\r\n", string.Empty).Trim();
-            }
-
-            string locality;
-            //Get locality
-
-            try
-            {
-                locality = htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[2]/li[3]/div[2]/a").InnerText;
-            }
-            catch (Exception)
-            {
-                locality = htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(text(),'Район:')]/../div[2]").InnerText
-                    .Replace("\r\n", string.Empty).Trim();
-            }
-
-            //Get all rooms and rent rooms
-            string countRoomString;
-
-            try
-            {
-                countRoomString = htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(text(),'Комнат')]/../div[2]/a").InnerText;
-            }
-            catch (Exception)
-            {
-                countRoomString = htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(text(),'Комнат')]/../div[2]").InnerText;
-            }
-
-            var countRoomArray = Regex.Split(countRoomString, @"\D+").Where(tempString => !string.IsNullOrEmpty(tempString)).ToArray();
-
-            int totalCountOfRooms, rentCountOfRooms;
-
-            if (countRoomArray.Length == RentAllHouse)
-            {
-                totalCountOfRooms = rentCountOfRooms = Convert.ToInt32(countRoomArray[NameIndex]);
-            }
-            else
-            {
-                totalCountOfRooms = Convert.ToInt32(countRoomArray[RentAllHouse]);
-                rentCountOfRooms = Convert.ToInt32(countRoomArray[NameIndex]);
-            }
-
-            ///////
-
-            //Get all floors and current floor
-            var floorsArray = Regex.Split(htmlDocument.DocumentNode
-                .SelectSingleNode("//div[contains(text(),'Этаж')]/../div[2]").InnerText, @"\D+")
-                .Where(tempString => !string.IsNullOrEmpty(tempString))
-                .ToArray();
-
-            //Get kitchen area square
-            double kitchenArea = 0;
-
-            try
-            {
-                kitchenArea = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(text(),'Площадь кухни')]/../div[2]").InnerText
-                    .Split(new char[] { ' ' })[NameIndex].Replace('.', ','));
-            }
-            catch (Exception) { }
-
-            //Get facilities
-            string facilities = string.Empty;
-
-            try
-            {
-                var facilitiesNodeCollection = htmlDocument.DocumentNode.SelectNodes("//div[@class='left']/div[contains(@class,'w-features')]/div/div[@class='text']");
-
-                foreach (var facilitie in facilitiesNodeCollection)
-                {
-                    facilities = string.Concat(facilities, $"{facilitie.InnerText}, ");
-                }
-            }
-            catch (Exception) { }
-
-            //Get any parametrs and return ad model
+            //Get parametrs and return ad model
             return new LongTermRentalAdDTO
             {
                 SourceLink = sourceLink,
 
-                RentalAdNumber = Convert.ToInt32(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[1]/li[1]/div[2]").InnerText),
+                RentalAdNumber = GetRentalAdNumber(htmlDocument.DocumentNode),
 
-                UpdateDate = Convert.ToDateTime(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[1]/li[2]/div[2]").InnerText),
+                UpdateDate = GetUpdateDate(htmlDocument.DocumentNode),
 
-                Region = $"{regionArray[NameIndex]} {regionArray[AdditionalNameIndex]}",
+                Region = GetRegion(htmlDocument.DocumentNode),
 
-                District = $"{districtArray[NameIndex]} {districtArray[AdditionalNameIndex]}",
+                District = GetDistrict(htmlDocument.DocumentNode),
 
-                Locality = locality,
+                Locality = GetLocality(htmlDocument.DocumentNode),
 
-                Address = address,
+                Address = GetAddress(htmlDocument.DocumentNode),
 
                 TotalCountOfRooms = totalCountOfRooms,
 
                 RentCountOfRooms = rentCountOfRooms,
 
-                TotalArea = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[3]/li[1]/div[2]").InnerText
-                    .Split(new char[] { ' ' })[NameIndex].Replace('.', ',')),
+                TotalArea = GetArea(htmlDocument.DocumentNode, "//div[contains(@class,'w-fetures')]/ul[3]/li[1]/div[2]"),
 
-                LivingArea = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[3]/li[2]/div[2]").InnerText
-                    .Split(new char[] { ' ' })[NameIndex].Replace('.', ',')),
+                LivingArea = GetArea(htmlDocument.DocumentNode, "//div[contains(@class,'w-fetures')]/ul[3]/li[2]/div[2]"),
 
-                KitchenArea = kitchenArea,
+                KitchenArea = GetArea(htmlDocument.DocumentNode, "//div[contains(text(),'Площадь кухни')]/../div[2]"),
 
-                TotalFloors = Convert.ToInt32(floorsArray[AdditionalNameIndex]),
+                TotalFloors = totalFloor,
 
-                Floor = Convert.ToInt32(floorsArray[NameIndex]),
+                Floor = floor,
 
-                XMapCoordinate = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//input[@id='map_latitude']").Attributes["value"].Value.Replace('.', ',')),
+                XMapCoordinate = GetMapCoordinate(htmlDocument.DocumentNode, "//input[@id='map_latitude']"),
 
-                YMapCoordinate = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//input[@id='map_longitude']").Attributes["value"].Value.Replace('.', ',')),
+                YMapCoordinate = GetMapCoordinate(htmlDocument.DocumentNode, "//input[@id='map_longitude']"),
 
-                Bathroom = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class,'w-fetures')]/ul[4]/li[1]/div[2]").InnerText,
+                Bathroom = GetSingleNodeInnerText(htmlDocument.DocumentNode, "//div[contains(@class,'w-fetures')]/ul[4]/li[1]/div[2]"),
 
-                Description = htmlDocument.DocumentNode.SelectSingleNode("//article/p").InnerText,
+                Description = GetSingleNodeInnerText(htmlDocument.DocumentNode, "//article/p"),
 
-                Facilities = facilities,
+                Facilities = GetFacilities(htmlDocument.DocumentNode),
 
-                USDPrice = Convert.ToDouble(Regex.Split(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[@class='price']").InnerText, @"\D+")
-                    .Where(tempString => !string.IsNullOrEmpty(tempString))
-                    .ToArray()[NameIndex].Replace('.', ',')),
+                USDPrice = uSDPrice,
 
-                BYNPrice = Convert.ToDouble(htmlDocument.DocumentNode
-                    .SelectSingleNode("//div[@class='price big']/span").InnerText.Replace('.', ',')),
+                BYNPrice = bYNPrice,
             };
+        }
+
+        public double GetMapCoordinate(HtmlNode htmlNode, string xPath)
+        {
+            try
+            {
+                var coordinates = htmlNode.SelectNodes("//input[@id='map_latitude']");
+
+                if (!(coordinates is null))
+                {
+                    return Convert.ToDouble(coordinates.First().Attributes["value"].Value.Replace('.', ','));
+                }
+                else
+                {
+                    return DefaultValue;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Map coordinate not found");
+            }
+        }
+
+        public string GetRegion(HtmlNode htmlNode)
+        {
+            var regions = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[2]/li[1]/div[2]");
+
+            if (!(regions is null))
+            {
+                var regionArray = regions.First().InnerText
+                    .Replace("\r\n", string.Empty)
+                    .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                string region = string.Empty;
+
+                foreach (string item in regionArray)
+                {
+                    region = string.Concat(region, $"{item} ");
+                }
+
+                return region;
+            }
+            else
+            {
+                regions = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[2]/li[1]/div[2]/a");
+
+                if (!(regions is null))
+                {
+                    return regions.First().InnerText;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+        public string GetDistrict(HtmlNode htmlNode)
+        {
+            var districts = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[2]/li[2]/div[2]");
+
+            if (!(districts is null))
+            {
+                var districtArray = districts.First().InnerText
+                    .Replace("\r\n", string.Empty)
+                    .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                string district = string.Empty;
+
+                foreach (string item in districtArray)
+                {
+                    district = string.Concat(district, $"{item} ");
+                }
+
+                return district;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public string GetAddress(HtmlNode htmlNode)
+        {
+            var addresses = htmlNode.SelectNodes("//div[contains(text(),'Улица')]/../div[2]/a");
+
+            if (!(addresses is null))
+            {
+                return addresses.First().InnerText
+                    .Replace("\r\n", string.Empty).Trim();
+            }
+            else
+            {
+                addresses = htmlNode.SelectNodes("//div[contains(text(),'Улица')]/../div[2]");
+
+                if (!(addresses is null))
+                {
+                    return addresses.First().InnerText
+                        .Replace("\r\n", string.Empty).Trim();
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+        public string GetLocality(HtmlNode htmlNode)
+        {
+            var localityNodes = htmlNode
+                .SelectNodes("//div[contains(@class,'w-fetures')]/ul[2]/li[3]/div[2]/a");
+
+            if (!(localityNodes is null))
+            {
+                return localityNodes.First().InnerText;
+            }
+            else
+            {
+                localityNodes = htmlNode
+                    .SelectNodes("//div[contains(text(),'Район:')]/../div[2]");
+
+                if (!(localityNodes is null))
+                {
+                    return localityNodes.First().InnerText
+                        .Replace("\r\n", string.Empty).Trim();
+                }
+                else
+                {
+                    localityNodes = htmlNode
+                        .SelectNodes("//div[contains(text(),'Район')]/../div[2]");
+
+                    if (!(localityNodes is null))
+                    {
+                        return localityNodes.First().InnerText
+                            .Replace("\r\n", string.Empty).Trim();
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+        }
+
+        public (int, int) GetTotalAndRentCountOfRooms(HtmlNode htmlNode)
+        {
+            const int RentalPart = 2;
+
+            var countRoomStrings = htmlNode.SelectNodes("//div[contains(text(),'Комнат')]/../div[2]/a");
+
+            string countRoomString;
+
+            if (!(countRoomStrings is null))
+            {
+                countRoomString = countRoomStrings.First().InnerText;
+            }
+            else
+            {
+                countRoomStrings = htmlNode.SelectNodes("//div[contains(text(),'Комнат')]/../div[2]");
+
+                if (!(countRoomStrings is null))
+                {
+                    countRoomString = countRoomStrings.First().InnerText;
+                }
+                else
+                {
+                    return (DefaultValue, DefaultValue);
+                }
+            }
+
+            var countRoomArray = Regex.Split(countRoomString, @"\D+").Where(tempString => !string.IsNullOrEmpty(tempString)).ToArray();
+
+            if (countRoomArray.Length == RentAllHouse)
+            {
+                int countOfRooms = Convert.ToInt32(countRoomArray[NameIndex]);
+                return (countOfRooms, countOfRooms);
+            }
+            else if (countRoomArray.Length == RentalPart)
+            {
+                return (Convert.ToInt32(countRoomArray[RentAllHouse]), Convert.ToInt32(countRoomArray[NameIndex]));
+            }
+            else
+            {
+                return (DefaultValue, DefaultValue);
+            }
+        }
+
+        public (int, int) GetTotalAndCurrentFloors(HtmlNode htmlNode)
+        {
+            const int CorrectFloorItems = 2, OneFloorItem = 1;
+            var floorsStrings = htmlNode.SelectNodes("//div[contains(text(),'Этаж')]/../div[2]");
+
+            if (!(floorsStrings is null))
+            {
+                var floorsArray = Regex.Split(floorsStrings.First().InnerText, @"\D+")
+                    .Where(tempString => !string.IsNullOrEmpty(tempString))
+                    .ToArray();
+
+                if (floorsArray.Length == CorrectFloorItems)
+                {
+                    return (Convert.ToInt32(floorsArray[NameIndex]), Convert.ToInt32(floorsArray[AdditionalNameIndex]));
+                }
+                else if (floorsArray.Length == OneFloorItem)
+                {
+                    int floor = Convert.ToInt32(floorsArray[NameIndex]);
+                    return (floor, floor);
+                }
+            }
+
+            return (DefaultValue, DefaultValue);
+        }
+
+        public double GetArea(HtmlNode htmlNode, string xPath)
+        {
+            var kitchenAreas = htmlNode.SelectNodes(xPath);
+
+            if (!(kitchenAreas is null))
+            {
+                var itemArray = kitchenAreas.First().InnerText
+                    .Split(new char[] { ' ' });
+
+                if (!(itemArray is null))
+                {
+                    return Convert.ToDouble(itemArray[NameIndex].Replace('.', ','));
+                }
+
+            }
+
+            return DefaultValue;
+        }
+
+        public string GetFacilities(HtmlNode htmlNode)
+        {
+
+            var facilitiesNodeCollection = htmlNode.SelectNodes("//div[@class='left']/div[contains(@class,'w-features')]/div/div[@class='text']");
+
+            if (!(facilitiesNodeCollection is null))
+            {
+                string facilities = string.Empty;
+
+                foreach (var facilitie in facilitiesNodeCollection)
+                {
+                    facilities = string.Concat(facilities, $"{facilitie.InnerText}, ");
+                }
+
+                return facilities;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public (double, double) GetPrices(HtmlNode htmlNode)
+        {
+            var uSDPrices = htmlNode.SelectNodes("//div[@class='price']");
+            var bYNPrices = htmlNode.SelectNodes("//div[@class='price big']/span");
+
+            double uSDPrice = DefaultValue, bYNPrice = DefaultValue;
+
+            if (!(uSDPrices is null))
+            {
+                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText, @"\D+")
+                    .Where(tempString => !string.IsNullOrEmpty(tempString))
+                    .ToArray()[NameIndex].Replace('.', ','));
+            }
+
+            if (!(bYNPrices is null))
+            {
+                bYNPrice = Convert.ToDouble(bYNPrices.First().InnerText.Replace('.', ','));
+            }
+
+            return (uSDPrice, bYNPrice);
+        }
+
+        public int GetRentalAdNumber(HtmlNode htmlNode)
+        {
+            var rentalAdNumbers = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[1]/li[1]/div[2]");
+
+            if (!(rentalAdNumbers is null))
+            {
+                return Convert.ToInt32(rentalAdNumbers.First().InnerText);
+            }
+            else
+            {
+                return DefaultValue;
+            }
+        }
+
+        public DateTime GetUpdateDate(HtmlNode htmlNode)
+        {
+            var updateDates = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[1]/li[2]/div[2]");
+
+            if (!(updateDates is null))
+            {
+                return Convert.ToDateTime(updateDates.First().InnerText);
+            }
+            else
+            {
+                return new DateTime();
+            }
+        }
+
+        public string GetSingleNodeInnerText(HtmlNode htmlNode, string xPath)
+        {
+            var htmlItems = htmlNode.SelectNodes(xPath);
+
+            if (!(htmlItems is null))
+            {
+                return htmlItems.First().InnerText;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }

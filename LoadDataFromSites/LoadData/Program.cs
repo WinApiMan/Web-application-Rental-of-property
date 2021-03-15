@@ -8,7 +8,8 @@ namespace LoadData
         static void Main(string[] args)
         {
             var a = new SiteDataLoader(new HtmlWeb());
-            var ads = a.LoadData();
+
+            a.LoadDataInAds();
             Console.ReadKey();
         }
     }
