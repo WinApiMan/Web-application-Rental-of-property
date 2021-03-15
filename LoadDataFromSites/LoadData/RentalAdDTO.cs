@@ -6,8 +6,6 @@ namespace LoadData
     {
         public int Id { get; set; }
 
-        public int ContactPersonId { get; set; }
-
         public string SourceLink { get; set; }
 
         public int RentalAdNumber { get; set; }

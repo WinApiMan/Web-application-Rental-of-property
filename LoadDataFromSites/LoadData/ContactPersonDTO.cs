@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public int RentalAdId { get; set; }
+
         public string Name { get; set; }
 
         public string PhoneNumber { get; set; }

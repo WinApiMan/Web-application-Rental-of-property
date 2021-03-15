@@ -8,9 +8,13 @@ using System.Threading;
 
 namespace LoadData
 {
-    public class SiteDataLoader
+    public class GoHomeByDataLoader
     {
         public const string SiteHead = "https://gohome.by", SiteLongTermPage = "https://gohome.by/rent/index/", SiteDailyPage = "https://gohome.by/rent/flat/one-day/";
+
+        public const string DigitsPattern = @"\D+", NewLinePattern = "\r\n";
+
+        public const char Point = '.', Comma = ',', EmptyEntrie = ' ';
 
         public const int PageIndex = 30, ThreadCount = 15, DefaultValue = 0;
 
@@ -24,7 +28,7 @@ namespace LoadData
 
         public List<AdDTO> Ads { get; set; } = new List<AdDTO>();
 
-        public SiteDataLoader(HtmlWeb htmlWeb, IMapper mapper)
+        public GoHomeByDataLoader(HtmlWeb htmlWeb, IMapper mapper)
         {
             _htmlWeb = htmlWeb;
             _mapper = mapper;
@@ -67,8 +71,8 @@ namespace LoadData
                 {
                     foreach (var adLink in adLinkCollection)
                     {
-                        try
-                        {
+                        //try
+                        //{
                             string link = $"{SiteHead}{adLink.Attributes["href"].Value}";
                             var adHtmlDocument = _htmlWeb.Load(link);
 
@@ -88,8 +92,8 @@ namespace LoadData
                             }
 
                             ads.Add(ad);
-                        }
-                        catch (Exception) { }
+                        //}
+                        //catch (Exception) { }
                     }
 
                     index += nextPageCoefficient;
@@ -117,27 +121,35 @@ namespace LoadData
             const int MainPhoneNumber = 0, AdditionalPhoneNumber = 1;
 
             //Get person names
-            var nameArray = htmlDocument.DocumentNode
-                .SelectSingleNode("//div[@class='username']").InnerText
-                .Replace("\r\n", string.Empty)
-                .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
             var name = string.Empty;
 
-            foreach (var item in nameArray)
+            var names = htmlDocument.DocumentNode
+                .SelectNodes("//div[@class='username']");
+
+            if (!(names is null))
             {
-                name = string.Concat(name, $"{item} ");
+                var nameArray = names.First().InnerText
+                    .Replace(NewLinePattern, string.Empty)
+                    .Split(EmptyEntrie, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var item in nameArray)
+                {
+                    name = string.Concat(name, $"{item} ");
+                }
             }
 
-            var phones = htmlDocument.DocumentNode.SelectNodes("//a[@class='phone__link']").ToArray();
+            var phones = htmlDocument.DocumentNode
+                .SelectNodes("//a[@class='phone__link']").ToArray();
 
             string email = string.Empty;
 
-            try
+            var emails = htmlDocument.DocumentNode
+                .SelectNodes("//a[@class='phone__link email']");
+
+            if (!(emails is null))
             {
-                email = htmlDocument.DocumentNode.SelectSingleNode("//a[@class='phone__link email']").InnerText;
+                email = emails.First().InnerText;
             }
-            catch (Exception) { }
 
             //Get any person parametrs and return person model
 
@@ -179,12 +191,12 @@ namespace LoadData
         {
             var photos = new List<HousingPhotoDTO>();
 
-            try
-            {
-                //Get photo nodes
-                var photoLinkCollection = htmlDocument.DocumentNode
-                    .SelectNodes("//div[@class='w-advertisement-images']//a[@data-fancybox='ad_view']");
+            //Get photo nodes
+            var photoLinkCollection = htmlDocument.DocumentNode
+                .SelectNodes("//div[@class='w-advertisement-images']//a[@data-fancybox='ad_view']");
 
+            if (!(photoLinkCollection is null))
+            {
                 //Get photos links
                 foreach (var photoLink in photoLinkCollection)
                 {
@@ -194,7 +206,6 @@ namespace LoadData
                     });
                 }
             }
-            catch (Exception) { }
 
             return photos;
         }
@@ -288,22 +299,16 @@ namespace LoadData
 
         public double GetMapCoordinate(HtmlNode htmlNode, string xPath)
         {
-            try
-            {
-                var coordinates = htmlNode.SelectNodes("//input[@id='map_latitude']");
+            var coordinates = htmlNode.SelectNodes(xPath);
 
-                if (!(coordinates is null))
-                {
-                    return Convert.ToDouble(coordinates.First().Attributes["value"].Value.Replace('.', ','));
-                }
-                else
-                {
-                    return DefaultValue;
-                }
-            }
-            catch (NullReferenceException)
+            if (!(coordinates is null))
             {
-                throw new NullReferenceException("Map coordinate not found");
+                return Convert.ToDouble(coordinates.First()
+                    .Attributes["value"].Value.Replace(Point, Comma));
+            }
+            else
+            {
+                return DefaultValue;
             }
         }
 
@@ -314,8 +319,8 @@ namespace LoadData
             if (!(regions is null))
             {
                 var regionArray = regions.First().InnerText
-                    .Replace("\r\n", string.Empty)
-                    .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    .Replace(NewLinePattern, string.Empty)
+                    .Split(EmptyEntrie, StringSplitOptions.RemoveEmptyEntries);
 
                 string region = string.Empty;
 
@@ -348,8 +353,8 @@ namespace LoadData
             if (!(districts is null))
             {
                 var districtArray = districts.First().InnerText
-                    .Replace("\r\n", string.Empty)
-                    .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    .Replace(NewLinePattern, string.Empty)
+                    .Split(EmptyEntrie, StringSplitOptions.RemoveEmptyEntries);
 
                 string district = string.Empty;
 
@@ -373,7 +378,7 @@ namespace LoadData
             if (!(addresses is null))
             {
                 return addresses.First().InnerText
-                    .Replace("\r\n", string.Empty).Trim();
+                    .Replace(NewLinePattern, string.Empty).Trim();
             }
             else
             {
@@ -382,7 +387,7 @@ namespace LoadData
                 if (!(addresses is null))
                 {
                     return addresses.First().InnerText
-                        .Replace("\r\n", string.Empty).Trim();
+                        .Replace(NewLinePattern, string.Empty).Trim();
                 }
                 else
                 {
@@ -408,7 +413,7 @@ namespace LoadData
                 if (!(localityNodes is null))
                 {
                     return localityNodes.First().InnerText
-                        .Replace("\r\n", string.Empty).Trim();
+                        .Replace(NewLinePattern, string.Empty).Trim();
                 }
                 else
                 {
@@ -418,7 +423,7 @@ namespace LoadData
                     if (!(localityNodes is null))
                     {
                         return localityNodes.First().InnerText
-                            .Replace("\r\n", string.Empty).Trim();
+                            .Replace(NewLinePattern, string.Empty).Trim();
                     }
                     else
                     {
@@ -454,7 +459,8 @@ namespace LoadData
                 }
             }
 
-            var countRoomArray = Regex.Split(countRoomString, @"\D+").Where(tempString => !string.IsNullOrEmpty(tempString)).ToArray();
+            var countRoomArray = Regex.Split(countRoomString, DigitsPattern)
+                .Where(tempString => !string.IsNullOrEmpty(tempString)).ToArray();
 
             if (countRoomArray.Length == RentAllHouse)
             {
@@ -478,7 +484,7 @@ namespace LoadData
 
             if (!(floorsStrings is null))
             {
-                var floorsArray = Regex.Split(floorsStrings.First().InnerText, @"\D+")
+                var floorsArray = Regex.Split(floorsStrings.First().InnerText, DigitsPattern)
                     .Where(tempString => !string.IsNullOrEmpty(tempString))
                     .ToArray();
 
@@ -503,11 +509,11 @@ namespace LoadData
             if (!(kitchenAreas is null))
             {
                 var itemArray = kitchenAreas.First().InnerText
-                    .Split(new char[] { ' ' });
+                    .Split(EmptyEntrie);
 
                 if (!(itemArray is null))
                 {
-                    return Convert.ToDouble(itemArray[NameIndex].Replace('.', ','));
+                    return Convert.ToDouble(itemArray[NameIndex].Replace(Point, Comma));
                 }
 
             }
@@ -546,14 +552,14 @@ namespace LoadData
 
             if (!(uSDPrices is null))
             {
-                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText, @"\D+")
+                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText, DigitsPattern)
                     .Where(tempString => !string.IsNullOrEmpty(tempString))
-                    .ToArray()[NameIndex].Replace('.', ','));
+                    .ToArray()[NameIndex].Replace(Point, Comma));
             }
 
             if (!(bYNPrices is null))
             {
-                bYNPrice = Convert.ToDouble(bYNPrices.First().InnerText.Replace('.', ','));
+                bYNPrice = Convert.ToDouble(bYNPrices.First().InnerText.Replace(Point, Comma));
             }
 
             return (uSDPrice, bYNPrice);

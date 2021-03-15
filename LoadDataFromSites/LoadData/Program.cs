@@ -12,9 +12,9 @@ namespace LoadData
             {
                 cfg.AddProfile(new DataAccessProfile());
             }).CreateMapper();
-            var a = new SiteDataLoader(new HtmlWeb(), config);
+            var a = new GoHomeByDataLoader(new HtmlWeb(), config);
 
-            a.LoadDataInAds(RentalAdMenu.GoHomeByDailyRentalAd);
+            a.LoadDataInAds(RentalAdMenu.GoHomeByLongTermRentalAd);
             Console.ReadKey();
         }
     }
