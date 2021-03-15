@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using AutoMapper;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace LoadData
 {
     public class SiteDataLoader
     {
-        public const string SiteHead = "https://gohome.by", SitePage = "https://gohome.by/rent/index/";
+        public const string SiteHead = "https://gohome.by", SiteLongTermPage = "https://gohome.by/rent/index/", SiteDailyPage = "https://gohome.by/rent/flat/one-day/";
 
         public const int PageIndex = 30, ThreadCount = 15, DefaultValue = 0;
 
@@ -17,24 +18,27 @@ namespace LoadData
 
         private readonly HtmlWeb _htmlWeb;
 
+        private readonly IMapper _mapper;
+
         private readonly object _locker;
 
         public List<AdDTO> Ads { get; set; } = new List<AdDTO>();
 
-        public SiteDataLoader(HtmlWeb htmlWeb)
+        public SiteDataLoader(HtmlWeb htmlWeb, IMapper mapper)
         {
             _htmlWeb = htmlWeb;
+            _mapper = mapper;
             _locker = new object();
         }
 
-        public void LoadDataInAds()
+        public void LoadDataInAds(RentalAdMenu rentalAdMenu)
         {
             var threads = new List<Thread>();
 
             for (int index = 0; index < ThreadCount; index++)
             {
-                var thread = new Thread(LoadDataFromPage);
-                thread.Start(index * PageIndex);
+                var thread = new Thread(() => LoadDataFromPage(index * PageIndex, rentalAdMenu));
+                thread.Start();
                 threads.Add(thread);
             }
 
@@ -44,10 +48,8 @@ namespace LoadData
             }
         }
 
-        public void LoadDataFromPage(object startIndex)
+        public void LoadDataFromPage(int index, RentalAdMenu rentalAdMenu)
         {
-            int index = (int)startIndex;
-
             int nextPageCoefficient = PageIndex * ThreadCount;
 
             bool isPagesAreNotOver = true;
@@ -56,7 +58,8 @@ namespace LoadData
 
             while (isPagesAreNotOver)
             {
-                var pageHtmlDocument = _htmlWeb.Load($"{SitePage}{index}");
+                var pageHtmlDocument = rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd ?
+                    _htmlWeb.Load($"{SiteLongTermPage}{index}") : _htmlWeb.Load($"{SiteDailyPage}{index}");
 
                 var adLinkCollection = pageHtmlDocument.DocumentNode.SelectNodes("//a[@class='name__link']");
 
@@ -69,12 +72,22 @@ namespace LoadData
                             string link = $"{SiteHead}{adLink.Attributes["href"].Value}";
                             var adHtmlDocument = _htmlWeb.Load(link);
 
-                            ads.Add(new AdDTO
+                            var ad = new AdDTO
                             {
                                 ContactPerson = GetContactPerson(adHtmlDocument),
                                 HousingPhotos = GetHousingPhotos(adHtmlDocument),
-                                RentalAd = GetLongTermRentalAd(adHtmlDocument, link)
-                            });
+                            };
+
+                            if (rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd)
+                            {
+                                ad.RentalAd = GetLongTermRentalAd(adHtmlDocument, link);
+                            }
+                            else
+                            {
+                                ad.RentalAd = GetDailyRentalAd(adHtmlDocument, link);
+                            }
+
+                            ads.Add(ad);
                         }
                         catch (Exception) { }
                     }
@@ -187,18 +200,16 @@ namespace LoadData
         }
 
         /// <summary>
-        /// Get long term rental ad model.
+        /// Get rental ad model.
         /// </summary>
         /// <param name="htmlDocument">Source html document.</param>
         /// <param name="sourceLink">Soruce html link.</param>
-        /// <returns>Long term rental ad model.</returns>
-        public LongTermRentalAdDTO GetLongTermRentalAd(HtmlDocument htmlDocument, string sourceLink)
+        /// <returns>Rental ad model.</returns>
+        public RentalAdDTO GetRentalAd(HtmlDocument htmlDocument, string sourceLink)
         {
             (int totalCountOfRooms, int rentCountOfRooms) = GetTotalAndRentCountOfRooms(htmlDocument.DocumentNode);
 
             (int floor, int totalFloor) = GetTotalAndCurrentFloors(htmlDocument.DocumentNode);
-
-            (double uSDPrice, double bYNPrice) = GetPrices(htmlDocument.DocumentNode);
 
             //Get parametrs and return ad model
             return new LongTermRentalAdDTO
@@ -240,11 +251,39 @@ namespace LoadData
                 Description = GetSingleNodeInnerText(htmlDocument.DocumentNode, "//article/p"),
 
                 Facilities = GetFacilities(htmlDocument.DocumentNode),
-
-                USDPrice = uSDPrice,
-
-                BYNPrice = bYNPrice,
             };
+        }
+
+        /// <summary>
+        /// Get long term rental ad model.
+        /// </summary>
+        /// <param name="htmlDocument">Source html document.</param>
+        /// <param name="sourceLink">Soruce html link.</param>
+        /// <returns>Long term rental ad model.</returns>
+        public LongTermRentalAdDTO GetLongTermRentalAd(HtmlDocument htmlDocument, string sourceLink)
+        {
+            var rentalAd = _mapper.Map<LongTermRentalAdDTO>(GetRentalAd(htmlDocument, sourceLink));
+
+            (double uSDPrice, double bYNPrice) = GetPrices(htmlDocument.DocumentNode);
+
+            rentalAd.USDPrice = uSDPrice;
+
+            rentalAd.BYNPrice = bYNPrice;
+
+            return rentalAd;
+        }
+
+        /// <summary>
+        /// Get daily rental ad model.
+        /// </summary>
+        /// <param name="htmlDocument">Source html document.</param>
+        /// <param name="sourceLink">Soruce html link.</param>
+        /// <returns>Daily rental ad model.</returns>
+        public DailyRentalAdDTO GetDailyRentalAd(HtmlDocument htmlDocument, string sourceLink)
+        {
+            var rentalAd = _mapper.Map<DailyRentalAdDTO>(GetRentalAd(htmlDocument, sourceLink));
+
+            return rentalAd;
         }
 
         public double GetMapCoordinate(HtmlNode htmlNode, string xPath)

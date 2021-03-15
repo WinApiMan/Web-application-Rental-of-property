@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using AutoMapper;
+using HtmlAgilityPack;
 using System;
 
 namespace LoadData
@@ -7,9 +8,13 @@ namespace LoadData
     {
         static void Main(string[] args)
         {
-            var a = new SiteDataLoader(new HtmlWeb());
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new DataAccessProfile());
+            }).CreateMapper();
+            var a = new SiteDataLoader(new HtmlWeb(), config);
 
-            a.LoadDataInAds();
+            a.LoadDataInAds(RentalAdMenu.GoHomeByDailyRentalAd);
             Console.ReadKey();
         }
     }
