@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LoadData
 {
@@ -20,11 +21,13 @@ namespace LoadData
 
         public const int NameIndex = 0, AdditionalNameIndex = 1, RentAllHouse = 1;
 
+        private RentalAdMenu _rentalAdMenu;
+
+        private readonly object _locker;
+
         private readonly HtmlWeb _htmlWeb;
 
         private readonly IMapper _mapper;
-
-        private readonly object _locker;
 
         public List<AdDTO> Ads { get; set; } = new List<AdDTO>();
 
@@ -37,22 +40,19 @@ namespace LoadData
 
         public void LoadDataInAds(RentalAdMenu rentalAdMenu)
         {
-            var threads = new List<Thread>();
+            _rentalAdMenu = rentalAdMenu;
+
+            var indexList = new List<int>();
 
             for (int index = 0; index < ThreadCount; index++)
             {
-                var thread = new Thread(() => LoadDataFromPage(index * PageIndex, rentalAdMenu));
-                thread.Start();
-                threads.Add(thread);
+                indexList.Add(index * PageIndex);
             }
 
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
+            indexList.AsParallel().ForAll(LoadDataFromPage);
         }
 
-        public void LoadDataFromPage(int index, RentalAdMenu rentalAdMenu)
+        public void LoadDataFromPage(int index)
         {
             int nextPageCoefficient = PageIndex * ThreadCount;
 
@@ -62,7 +62,7 @@ namespace LoadData
 
             while (isPagesAreNotOver)
             {
-                var pageHtmlDocument = rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd ?
+                var pageHtmlDocument = _rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd ?
                     _htmlWeb.Load($"{SiteLongTermPage}{index}") : _htmlWeb.Load($"{SiteDailyPage}{index}");
 
                 var adLinkCollection = pageHtmlDocument.DocumentNode.SelectNodes("//a[@class='name__link']");
@@ -71,29 +71,25 @@ namespace LoadData
                 {
                     foreach (var adLink in adLinkCollection)
                     {
-                        //try
-                        //{
-                            string link = $"{SiteHead}{adLink.Attributes["href"].Value}";
-                            var adHtmlDocument = _htmlWeb.Load(link);
+                        string link = $"{SiteHead}{adLink.Attributes["href"].Value}";
+                        var adHtmlDocument = _htmlWeb.Load(link);
 
-                            var ad = new AdDTO
-                            {
-                                ContactPerson = GetContactPerson(adHtmlDocument),
-                                HousingPhotos = GetHousingPhotos(adHtmlDocument),
-                            };
+                        var ad = new AdDTO
+                        {
+                            ContactPerson = GetContactPerson(adHtmlDocument),
+                            HousingPhotos = GetHousingPhotos(adHtmlDocument),
+                        };
 
-                            if (rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd)
-                            {
-                                ad.RentalAd = GetLongTermRentalAd(adHtmlDocument, link);
-                            }
-                            else
-                            {
-                                ad.RentalAd = GetDailyRentalAd(adHtmlDocument, link);
-                            }
+                        if (_rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd)
+                        {
+                            ad.RentalAd = GetLongTermRentalAd(adHtmlDocument, link);
+                        }
+                        else
+                        {
+                            ad.RentalAd = GetDailyRentalAd(adHtmlDocument, link);
+                        }
 
-                            ads.Add(ad);
-                        //}
-                        //catch (Exception) { }
+                        ads.Add(ad);
                     }
 
                     index += nextPageCoefficient;
