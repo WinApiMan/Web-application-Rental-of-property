@@ -76,17 +76,17 @@ namespace LoadData
 
                         var ad = new AdDTO
                         {
-                            ContactPerson = GetContactPerson(adHtmlDocument),
-                            HousingPhotos = GetHousingPhotos(adHtmlDocument),
+                            ContactPerson = GetContactPerson(adHtmlDocument.DocumentNode),
+                            HousingPhotos = GetHousingPhotos(adHtmlDocument.DocumentNode),
                         };
 
                         if (_rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd)
                         {
-                            ad.RentalAd = GetLongTermRentalAd(adHtmlDocument, link);
+                            ad.RentalAd = GetLongTermRentalAd(adHtmlDocument.DocumentNode, link);
                         }
                         else
                         {
-                            ad.RentalAd = GetDailyRentalAd(adHtmlDocument, link);
+                            ad.RentalAd = GetDailyRentalAd(adHtmlDocument.DocumentNode, link);
                         }
 
                         ads.Add(ad);
@@ -111,41 +111,12 @@ namespace LoadData
         /// </summary>
         /// <param name="htmlDocument">Current html document.</param>
         /// <returns>Contact person model.</returns>
-        public ContactPersonDTO GetContactPerson(HtmlDocument htmlDocument)
+        public ContactPersonDTO GetContactPerson(HtmlNode htmlNode)
         {
             const int NameIndex = 0, PositionIndex = 1;
             const int MainPhoneNumber = 0, AdditionalPhoneNumber = 1;
 
-            //Get person names
-            var name = string.Empty;
-
-            var names = htmlDocument.DocumentNode
-                .SelectNodes("//div[@class='username']");
-
-            if (!(names is null))
-            {
-                var nameArray = names.First().InnerText
-                    .Replace(NewLinePattern, string.Empty)
-                    .Split(EmptyEntrie, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var item in nameArray)
-                {
-                    name = string.Concat(name, $"{item} ");
-                }
-            }
-
-            var phones = htmlDocument.DocumentNode
-                .SelectNodes("//a[@class='phone__link']").ToArray();
-
-            string email = string.Empty;
-
-            var emails = htmlDocument.DocumentNode
-                .SelectNodes("//a[@class='phone__link email']");
-
-            if (!(emails is null))
-            {
-                email = emails.First().InnerText;
-            }
+            var phones = GetPhoneNodes(htmlNode);
 
             //Get any person parametrs and return person model
 
@@ -153,16 +124,16 @@ namespace LoadData
             {
                 return new ContactPersonDTO
                 {
-                    Name = name,
-                    Email = email,
+                    Name = GetContactName(htmlNode),
+                    Email = GetContactEmail(htmlNode),
                 };
             }
             else if (phones.Length == PositionIndex)
             {
                 return new ContactPersonDTO
                 {
-                    Name = name,
-                    Email = email,
+                    Name = GetContactName(htmlNode),
+                    Email = GetContactEmail(htmlNode),
                     PhoneNumber = phones[NameIndex].InnerText,
                 };
             }
@@ -170,8 +141,8 @@ namespace LoadData
             {
                 return new ContactPersonDTO
                 {
-                    Name = name,
-                    Email = email,
+                    Name = GetContactName(htmlNode),
+                    Email = GetContactEmail(htmlNode),
                     PhoneNumber = phones[MainPhoneNumber].InnerText,
                     AdditionalPhoneNumber = phones[AdditionalPhoneNumber].InnerText
                 };
@@ -183,12 +154,12 @@ namespace LoadData
         /// </summary>
         /// <param name="htmlDocument">Current html document.</param>
         /// <returns>Ad photos.</returns>
-        public IEnumerable<HousingPhotoDTO> GetHousingPhotos(HtmlDocument htmlDocument)
+        public IEnumerable<HousingPhotoDTO> GetHousingPhotos(HtmlNode htmlNode)
         {
             var photos = new List<HousingPhotoDTO>();
 
             //Get photo nodes
-            var photoLinkCollection = htmlDocument.DocumentNode
+            var photoLinkCollection = htmlNode
                 .SelectNodes("//div[@class='w-advertisement-images']//a[@data-fancybox='ad_view']");
 
             if (!(photoLinkCollection is null))
@@ -212,52 +183,52 @@ namespace LoadData
         /// <param name="htmlDocument">Source html document.</param>
         /// <param name="sourceLink">Soruce html link.</param>
         /// <returns>Rental ad model.</returns>
-        public RentalAdDTO GetRentalAd(HtmlDocument htmlDocument, string sourceLink)
+        public RentalAdDTO GetRentalAd(HtmlNode htmlNode, string sourceLink)
         {
-            (int totalCountOfRooms, int rentCountOfRooms) = GetTotalAndRentCountOfRooms(htmlDocument.DocumentNode);
+            (int totalCountOfRooms, int rentCountOfRooms) = GetTotalAndRentCountOfRooms(htmlNode);
 
-            (int floor, int totalFloor) = GetTotalAndCurrentFloors(htmlDocument.DocumentNode);
+            (int floor, int totalFloor) = GetTotalAndCurrentFloors(htmlNode);
 
             //Get parametrs and return ad model
             return new LongTermRentalAdDTO
             {
                 SourceLink = sourceLink,
 
-                RentalAdNumber = GetRentalAdNumber(htmlDocument.DocumentNode),
+                RentalAdNumber = GetRentalAdNumber(htmlNode),
 
-                UpdateDate = GetUpdateDate(htmlDocument.DocumentNode),
+                UpdateDate = GetUpdateDate(htmlNode),
 
-                Region = GetRegion(htmlDocument.DocumentNode),
+                Region = GetRegion(htmlNode),
 
-                District = GetDistrict(htmlDocument.DocumentNode),
+                District = GetDistrict(htmlNode),
 
-                Locality = GetLocality(htmlDocument.DocumentNode),
+                Locality = GetLocality(htmlNode),
 
-                Address = GetAddress(htmlDocument.DocumentNode),
+                Address = GetAddress(htmlNode),
 
                 TotalCountOfRooms = totalCountOfRooms,
 
                 RentCountOfRooms = rentCountOfRooms,
 
-                TotalArea = GetArea(htmlDocument.DocumentNode, "//div[contains(@class,'w-fetures')]/ul[3]/li[1]/div[2]"),
+                TotalArea = GetArea(htmlNode, "//div[contains(@class,'w-fetures')]/ul[3]/li[1]/div[2]"),
 
-                LivingArea = GetArea(htmlDocument.DocumentNode, "//div[contains(@class,'w-fetures')]/ul[3]/li[2]/div[2]"),
+                LivingArea = GetArea(htmlNode, "//div[contains(@class,'w-fetures')]/ul[3]/li[2]/div[2]"),
 
-                KitchenArea = GetArea(htmlDocument.DocumentNode, "//div[contains(text(),'Площадь кухни')]/../div[2]"),
+                KitchenArea = GetArea(htmlNode, "//div[contains(text(),'Площадь кухни')]/../div[2]"),
 
                 TotalFloors = totalFloor,
 
                 Floor = floor,
 
-                XMapCoordinate = GetMapCoordinate(htmlDocument.DocumentNode, "//input[@id='map_latitude']"),
+                XMapCoordinate = GetMapCoordinate(htmlNode, "//input[@id='map_latitude']"),
 
-                YMapCoordinate = GetMapCoordinate(htmlDocument.DocumentNode, "//input[@id='map_longitude']"),
+                YMapCoordinate = GetMapCoordinate(htmlNode, "//input[@id='map_longitude']"),
 
-                Bathroom = GetSingleNodeInnerText(htmlDocument.DocumentNode, "//div[contains(@class,'w-fetures')]/ul[4]/li[1]/div[2]"),
+                Bathroom = GetSingleNodeInnerText(htmlNode, "//div[contains(@class,'w-fetures')]/ul[4]/li[1]/div[2]"),
 
-                Description = GetSingleNodeInnerText(htmlDocument.DocumentNode, "//article/p"),
+                Description = GetSingleNodeInnerText(htmlNode, "//article/p"),
 
-                Facilities = GetFacilities(htmlDocument.DocumentNode),
+                Facilities = GetFacilities(htmlNode),
             };
         }
 
@@ -267,11 +238,11 @@ namespace LoadData
         /// <param name="htmlDocument">Source html document.</param>
         /// <param name="sourceLink">Soruce html link.</param>
         /// <returns>Long term rental ad model.</returns>
-        public LongTermRentalAdDTO GetLongTermRentalAd(HtmlDocument htmlDocument, string sourceLink)
+        public LongTermRentalAdDTO GetLongTermRentalAd(HtmlNode htmlNode, string sourceLink)
         {
-            var rentalAd = _mapper.Map<LongTermRentalAdDTO>(GetRentalAd(htmlDocument, sourceLink));
+            var rentalAd = _mapper.Map<LongTermRentalAdDTO>(GetRentalAd(htmlNode, sourceLink));
 
-            (double uSDPrice, double bYNPrice) = GetPrices(htmlDocument.DocumentNode);
+            (double uSDPrice, double bYNPrice) = GetPrices(htmlNode);
 
             rentalAd.USDPrice = uSDPrice;
 
@@ -286,11 +257,58 @@ namespace LoadData
         /// <param name="htmlDocument">Source html document.</param>
         /// <param name="sourceLink">Soruce html link.</param>
         /// <returns>Daily rental ad model.</returns>
-        public DailyRentalAdDTO GetDailyRentalAd(HtmlDocument htmlDocument, string sourceLink)
+        public DailyRentalAdDTO GetDailyRentalAd(HtmlNode htmlNode, string sourceLink)
         {
-            var rentalAd = _mapper.Map<DailyRentalAdDTO>(GetRentalAd(htmlDocument, sourceLink));
+            var rentalAd = _mapper.Map<DailyRentalAdDTO>(GetRentalAd(htmlNode, sourceLink));
 
             return rentalAd;
+        }
+
+        /// <summary>
+        /// Get contact name.
+        /// </summary>
+        /// <param name="htmlNode">Html node.</param>
+        /// <returns>Name string.</returns>
+        public string GetContactName(HtmlNode htmlNode)
+        {
+            var name = string.Empty;
+
+            var names = htmlNode
+                .SelectNodes("//div[@class='username']");
+
+            if (!(names is null))
+            {
+                var nameArray = names.First().InnerText
+                    .Replace(NewLinePattern, string.Empty)
+                    .Split(EmptyEntrie, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var item in nameArray)
+                {
+                    name = string.Concat(name, $"{item} ");
+                }
+            }
+
+            return name;
+        }
+
+        /// <summary>
+        /// Get phone nodes.
+        /// </summary>
+        /// <param name="htmlNode">Html node.</param>
+        /// <returns>Phone nodes array</returns>
+        public HtmlNode[] GetPhoneNodes(HtmlNode htmlNode)
+        {
+            var phones = htmlNode
+                .SelectNodes("//a[@class='phone__link']");
+
+            if (!(phones is null))
+            {
+                return phones.ToArray();
+            }
+            else
+            {
+                return new HtmlNode[DefaultValue];
+            }
         }
 
         public double GetMapCoordinate(HtmlNode htmlNode, string xPath)
@@ -306,6 +324,26 @@ namespace LoadData
             {
                 return DefaultValue;
             }
+        }
+
+        /// <summary>
+        /// Get contact email.
+        /// </summary>
+        /// <param name="htmlNode">Html node.</param>
+        /// <returns>Email string.</returns>
+        public string GetContactEmail(HtmlNode htmlNode)
+        {
+            string email = string.Empty;
+
+            var emails = htmlNode
+                .SelectNodes("//a[@class='phone__link email']");
+
+            if (!(emails is null))
+            {
+                email = emails.First().InnerText;
+            }
+
+            return email;
         }
 
         public string GetRegion(HtmlNode htmlNode)
