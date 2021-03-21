@@ -45,5 +45,15 @@ namespace LoadData
         public string Description { get; set; }
 
         public string Facilities { get; set; }
+
+        public int RentalType { get; set; }
+
+        public int TotalViews { get; set; }
+
+        public int MonthViews { get; set; }
+
+        public int WeekViews { get; set; }
+
+        public double LandArea { get; set; }
     }
 }

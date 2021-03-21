@@ -9,5 +9,7 @@ namespace LoadData
         public ContactPersonDTO ContactPerson { get; set; }
 
         public IEnumerable<HousingPhotoDTO> HousingPhotos { get; set; }
+
+        public AditionalAdDataDTO AditionalAdData { get; set; }
     }
 }

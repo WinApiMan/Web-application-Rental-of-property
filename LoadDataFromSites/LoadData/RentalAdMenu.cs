@@ -6,12 +6,12 @@ namespace LoadData
     /// </summary>
     public enum RentalAdMenu
     {
-        GoHomeByLongTermRentalAd,
+        RealtApartmentsByLongTermRentalAd,
 
-        GoHomeByDailyRentalAd,
+        RealtHouseByLongTermRentalAd,
 
-        RealtByLongTermRentalAd,
+        RealtApartmentsByDailyRentalAd,
 
-        RealtByDailyRentalAd
+        RealtHousesByDailyRentalAd,
     }
 }

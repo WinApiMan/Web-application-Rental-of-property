@@ -14,7 +14,7 @@ namespace LoadData
             }).CreateMapper();
             var a = new GoHomeByDataLoader(new HtmlWeb(), config);
 
-            a.LoadDataInAds(RentalAdMenu.GoHomeByLongTermRentalAd);
+            a.LoadDataInAds(RentalAdMenu.RealtHouseByLongTermRentalAd);
             Console.ReadKey();
         }
     }

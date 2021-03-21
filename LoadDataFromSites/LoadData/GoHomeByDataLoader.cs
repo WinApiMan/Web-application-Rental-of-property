@@ -4,18 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace LoadData
 {
     public class GoHomeByDataLoader
     {
-        public const string SiteHead = "https://gohome.by", SiteLongTermPage = "https://gohome.by/rent/index/", SiteDailyPage = "https://gohome.by/rent/flat/one-day/";
+        public const string SiteHead = "https://gohome.by", SiteApartmentsLongTermPage = "https://gohome.by/rent/index/",
+            SiteApartmentsDailyTermPage = "https://gohome.by/rent/flat/one-day/", SiteHousesDailyTermPage = "https://gohome.by/houses_one_day/page/",
+            SiteHousesLongTermPage = "https://gohome.by/houses_rent/page/";
 
-        public const string DigitsPattern = @"\D+", NewLinePattern = "\r\n";
+        public const string DigitsPattern = @"\D+", NewLinePattern = "\r\n", FloatDigitsPatter = @"^[0-9]*[.,]?[0-9]+$";
 
-        public const char Point = '.', Comma = ',', EmptyEntrie = ' ';
+        public const char Point = '.', Comma = ',', EmptyEntrie = ' ', Semicolon = ';';
 
         public const int PageIndex = 30, ThreadCount = 15, DefaultValue = 0;
 
@@ -62,8 +62,14 @@ namespace LoadData
 
             while (isPagesAreNotOver)
             {
-                var pageHtmlDocument = _rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd ?
-                    _htmlWeb.Load($"{SiteLongTermPage}{index}") : _htmlWeb.Load($"{SiteDailyPage}{index}");
+                var pageHtmlDocument = _rentalAdMenu switch
+                {
+                    RentalAdMenu.RealtApartmentsByLongTermRentalAd => _htmlWeb.Load($"{SiteApartmentsLongTermPage}{index}"),
+                    RentalAdMenu.RealtApartmentsByDailyRentalAd => _htmlWeb.Load($"{SiteApartmentsDailyTermPage}{index}"),
+                    RentalAdMenu.RealtHousesByDailyRentalAd => _htmlWeb.Load($"{SiteHousesDailyTermPage}{index}"),
+                    RentalAdMenu.RealtHouseByLongTermRentalAd => _htmlWeb.Load($"{SiteHousesLongTermPage}{index}"),
+                    _ => _htmlWeb.Load($"{SiteApartmentsLongTermPage}{index}"),
+                };
 
                 var adLinkCollection = pageHtmlDocument.DocumentNode.SelectNodes("//a[@class='name__link']");
 
@@ -78,17 +84,22 @@ namespace LoadData
                         {
                             ContactPerson = GetContactPerson(adHtmlDocument.DocumentNode),
                             HousingPhotos = GetHousingPhotos(adHtmlDocument.DocumentNode),
+                            AditionalAdData = new AditionalAdDataDTO
+                            {
+                                UpdateDate = GetUpdateDate(adHtmlDocument.DocumentNode),
+                            }                            
                         };
 
-                        if (_rentalAdMenu == RentalAdMenu.GoHomeByLongTermRentalAd)
-                        {
-                            ad.RentalAd = GetLongTermRentalAd(adHtmlDocument.DocumentNode, link);
-                        }
-                        else
-                        {
-                            ad.RentalAd = GetDailyRentalAd(adHtmlDocument.DocumentNode, link);
-                        }
+                        GetAdViews(adHtmlDocument.DocumentNode, ad.AditionalAdData);
 
+                        ad.RentalAd = _rentalAdMenu switch
+                        {
+                            RentalAdMenu.RealtApartmentsByLongTermRentalAd => GetApartmentLongTermRentalAd(adHtmlDocument.DocumentNode, link),
+                            RentalAdMenu.RealtApartmentsByDailyRentalAd => GetApartmentDailyRentalAd(adHtmlDocument.DocumentNode, link),
+                            RentalAdMenu.RealtHousesByDailyRentalAd => GetHouseDailyRentalAd(adHtmlDocument.DocumentNode, link),
+                            RentalAdMenu.RealtHouseByLongTermRentalAd => GetHouseLongTermRentalAd(adHtmlDocument.DocumentNode, link),
+                            _ => GetApartmentLongTermRentalAd(adHtmlDocument.DocumentNode, link),
+                        };
                         ads.Add(ad);
                     }
 
@@ -196,7 +207,13 @@ namespace LoadData
 
                 RentalAdNumber = GetRentalAdNumber(htmlNode),
 
-                UpdateDate = GetUpdateDate(htmlNode),
+                UpdateDate = DateTime.Now,
+
+                TotalViews = DefaultValue,
+
+                MonthViews = DefaultValue,
+
+                WeekViews = DefaultValue,
 
                 Region = GetRegion(htmlNode),
 
@@ -229,6 +246,8 @@ namespace LoadData
                 Description = GetSingleNodeInnerText(htmlNode, "//article/p"),
 
                 Facilities = GetFacilities(htmlNode),
+
+                RentalType = (int)_rentalAdMenu,
             };
         }
 
@@ -238,7 +257,7 @@ namespace LoadData
         /// <param name="htmlDocument">Source html document.</param>
         /// <param name="sourceLink">Soruce html link.</param>
         /// <returns>Long term rental ad model.</returns>
-        public LongTermRentalAdDTO GetLongTermRentalAd(HtmlNode htmlNode, string sourceLink)
+        public LongTermRentalAdDTO GetApartmentLongTermRentalAd(HtmlNode htmlNode, string sourceLink)
         {
             var rentalAd = _mapper.Map<LongTermRentalAdDTO>(GetRentalAd(htmlNode, sourceLink));
 
@@ -257,11 +276,53 @@ namespace LoadData
         /// <param name="htmlDocument">Source html document.</param>
         /// <param name="sourceLink">Soruce html link.</param>
         /// <returns>Daily rental ad model.</returns>
-        public DailyRentalAdDTO GetDailyRentalAd(HtmlNode htmlNode, string sourceLink)
+        public DailyRentalAdDTO GetApartmentDailyRentalAd(HtmlNode htmlNode, string sourceLink)
         {
             var rentalAd = _mapper.Map<DailyRentalAdDTO>(GetRentalAd(htmlNode, sourceLink));
+            GetDailyPrices(htmlNode, rentalAd);
 
             return rentalAd;
+        }
+
+        public DailyRentalAdDTO GetHouseDailyRentalAd(HtmlNode htmlNode, string sourceLink)
+        {
+            var rentalAd = GetApartmentDailyRentalAd(htmlNode, sourceLink);
+
+            var noteCollection = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[4]/li/div[@class='description']");
+
+            if (!(noteCollection is null))
+            {
+                var notes = noteCollection.First().InnerText
+                    .Replace(NewLinePattern, string.Empty)
+                    .Split(Semicolon, StringSplitOptions.RemoveEmptyEntries);
+
+                string notesString = string.Empty;
+
+                foreach(var item in notes)
+                {
+                    notesString = string.Concat(notesString, $"{item.Trim()} ");
+                }
+
+                rentalAd.Notes = notesString;
+            }
+
+            return rentalAd;
+        }
+
+        public LongTermRentalAdDTO GetHouseLongTermRentalAd(HtmlNode htmlNode, string sourceLink)
+        {
+            var rentalAD = GetApartmentLongTermRentalAd(htmlNode, sourceLink);
+
+            var landAreaCollection = htmlNode.SelectNodes("//section[contains(@class,'s-line')]/div[@class='container']/div/ul/li[2]/div[@class='feature']");
+
+            if (!(landAreaCollection is null))
+            {
+                rentalAD.LandArea = Convert.ToDouble(landAreaCollection.First().InnerText
+                    .Split(EmptyEntrie).First()
+                    .Replace(Point, Comma));
+            }
+
+            return rentalAD;
         }
 
         /// <summary>
@@ -638,6 +699,64 @@ namespace LoadData
             else
             {
                 return string.Empty;
+            }
+        }
+
+        public void GetDailyPrices(HtmlNode htmlNode, DailyRentalAdDTO dailyRentalAdDTO)
+        {
+            const int NegotiatedPrice = -1;
+
+            var priceCollection = htmlNode.SelectNodes("//div[@class='price-row']/div");
+
+            if (!(priceCollection is null))
+            {
+                var uSDPriceCollection = htmlNode.SelectNodes("//div[@class='price-row']/div/div[@class='price']");
+
+                try
+                {
+                    dailyRentalAdDTO.BYNPricePerDay = Convert.ToDouble(htmlNode.SelectSingleNode("//div[@class='price big']/span").InnerText);
+
+                    dailyRentalAdDTO.USDPricePerDay = Convert.ToDouble(Regex.Split(uSDPriceCollection.First().InnerText, DigitsPattern)
+                        .Where(tempString => !string.IsNullOrEmpty(tempString))
+                        .ToArray()[NameIndex].Replace(Point, Comma));
+                }
+                catch (Exception)
+                {
+                    dailyRentalAdDTO.BYNPricePerDay = dailyRentalAdDTO.USDPricePerDay = NegotiatedPrice;
+                }
+
+                try
+                {
+                    dailyRentalAdDTO.BYNPricePerPerson = Convert.ToDouble(Regex.Split(htmlNode.SelectSingleNode("//div[@class='price-row']/div[2]/div[@class='price big']").InnerText, DigitsPattern)
+                        .Where(tempString => !string.IsNullOrEmpty(tempString))
+                        .ToArray()[NameIndex].Replace(Point, Comma));
+
+                    dailyRentalAdDTO.USDPricePerPerson = Convert.ToDouble(Regex.Split(htmlNode.SelectSingleNode("//div[@class='price-row']/div[2]/div[@class='price']").InnerText, DigitsPattern)
+                        .Where(tempString => !string.IsNullOrEmpty(tempString))
+                        .ToArray()[NameIndex].Replace(Point, Comma));
+                }
+                catch (Exception)
+                {
+                    dailyRentalAdDTO.BYNPricePerPerson = dailyRentalAdDTO.USDPricePerPerson = NegotiatedPrice;
+                }
+            }
+        }
+
+        public void GetAdViews(HtmlNode htmlNode, AditionalAdDataDTO aditionalAdDataDTO)
+        {
+            const int TotalViewIndex = 0, MonthViewIndex = 1, WeekViewIndex = 2;
+
+            var viewCollection = htmlNode.SelectNodes("//div[@class='w-page-view-row']");
+
+            if (!(viewCollection is null))
+            {
+                var views = Regex.Split(viewCollection.First().InnerText, DigitsPattern)
+                        .Where(tempString => !string.IsNullOrEmpty(tempString))
+                        .ToArray();
+
+                aditionalAdDataDTO.TotalViews = Convert.ToInt32(views[TotalViewIndex]);
+                aditionalAdDataDTO.MonthViews = Convert.ToInt32(views[MonthViewIndex]);
+                aditionalAdDataDTO.WeekViews = Convert.ToInt32(views[WeekViewIndex]);
             }
         }
     }
