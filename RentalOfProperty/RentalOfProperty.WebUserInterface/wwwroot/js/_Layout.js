@@ -63,8 +63,16 @@ function downloadImage(imageId, loadImage, incorrectImageFormat) {
         }
         else {
             document.getElementById(loadImage).click();
-        }  
+        }
     });
 
     image.click();
+}
+
+function loadData(sumbitId, confirmQuestion) {
+    let isLoad = confirm(confirmQuestion);
+
+    if (isLoad) {
+        document.getElementById(sumbitId).click();
+    }
 }

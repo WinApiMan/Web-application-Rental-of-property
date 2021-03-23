@@ -49,7 +49,7 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
-        /// <param name="logger">Error loger.</param>
+        /// <param name="logger">Error logger.</param>
         /// <param name="mapper">Models mapper.</param>
         /// <param name="usersManager">User manager object.</param>
         /// <param name="localizer">User controller localizer.</param>
@@ -172,14 +172,13 @@ namespace RentalOfProperty.WebUserInterface.Controllers
         {
             try
             {
-                const string UserRole = "User";
                 if (ModelState.IsValid)
                 {
                     var user = _mapper.Map<User>(registerModel);
                     user.Id = Guid.NewGuid().ToString();
                     user.AvatarImagePath = DefaultAvatarImagePath;
 
-                    var createResult = await _usersManager.Create(user, UserRole);
+                    var createResult = await _usersManager.Create(user, UserRoles.User);
 
                     if (createResult.Succeeded)
                     {

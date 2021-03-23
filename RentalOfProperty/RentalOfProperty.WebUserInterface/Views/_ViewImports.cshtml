@@ -1,4 +1,6 @@
 ﻿@using RentalOfProperty
+@using RentalOfProperty.WebUserInterface
+@using RentalOfProperty.WebUserInterface.Enums
 @using RentalOfProperty.Models
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -6,3 +8,8 @@
 @addTagHelper *, TagHelperPack
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.Extensions.Options
+@using System.Text.Json
+@using System.Globalization;
+@using System.Linq;

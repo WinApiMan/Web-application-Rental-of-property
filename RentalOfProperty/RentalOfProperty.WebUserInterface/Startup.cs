@@ -15,7 +15,6 @@ namespace RentalOfProperty
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Configuration;
-    using RentalOfProperty.WebUserInterface;
     using RentalOfProperty.WebUserInterface.Mapper;
 
     /// <summary>

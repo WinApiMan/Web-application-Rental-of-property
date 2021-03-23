@@ -1,11 +1,4 @@
-﻿@using Microsoft.AspNetCore.Builder
-@using Microsoft.Extensions.Options
-@using Microsoft.AspNetCore.Mvc.Localization
-@using System.Text.Json
-@using System.Globalization;
-@using System.Linq;
-
-@inject IOptions<RequestLocalizationOptions> LocOptions
+﻿@inject IOptions<RequestLocalizationOptions> LocOptions
 
 @{
     var textInfo = CultureInfo.CurrentUICulture.TextInfo;
@@ -54,9 +47,34 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
                     </li>
+                    @if (User.IsInRole(UserRoles.Administrator))
+                    {
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Disabled</a>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["LoadAds"]
+                            </button>
+                            <div class="dropdown-menu">
+                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.GoHomeByLongTermAds">
+                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-1', '@Localizer["UpdateConfirm"]')">@Localizer["GoHomeByLongTermAds"]</button>
+                                    <input type="submit" class="d-none" id="loadData-1" />
+                                </form>
+                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.RealtByLongTermAds">
+                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-2', '@Localizer["UpdateConfirm"]')">@Localizer["RealtByLongTermAds"]</button>
+                                    <input type="submit" class="d-none" id="loadData-2" />
+                                </form>
+                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.GoHomeByDailyAds">
+                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-3', '@Localizer["UpdateConfirm"]')">@Localizer["GoHomeByDailyAds"]</button>
+                                    <input type="submit" class="d-none" id="loadData-3" />
+                                </form>
+                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.RealtByDailyAds">
+                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-4', '@Localizer["UpdateConfirm"]')">@Localizer["RealtByDailyAds"]</button>
+                                    <input type="submit" class="d-none" id="loadData-4"/>
+                                </form>
+                            </div>
+                        </div>
                     </li>
+                    }
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown mr-2">
@@ -70,8 +88,8 @@
                     {
                         <li class="nav-item">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name</button>
-                                <div class="dropdown-menu">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name</button>
+                                <div class="dropdown-menu w-100 text-center">
                                     <button type="submit" class="dropdown-item">@Localizer["MyAds"] </button>
                                     <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
                                     <a asp-controller="Users" asp-action="EditUserData" class="dropdown-item">@Localizer["UpdatePersonalData"]</a>
@@ -125,6 +143,7 @@
         let url = JSON.parse(JSON.stringify(@Html.Raw(jsonUrl)));
         let cultures = JSON.parse(JSON.stringify(@Html.Raw(jsonCultures)));
         let loadUrl = JSON.parse(JSON.stringify(@Html.Raw(loadImageUrl)));
+
         callAvatarQuey(loadUrl);
         createLanguagesList(languages, cultures, url);
     </script>

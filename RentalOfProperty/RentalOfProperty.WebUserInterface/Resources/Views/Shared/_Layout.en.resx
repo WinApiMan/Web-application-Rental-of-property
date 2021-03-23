@@ -117,9 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GoHomeByDailyAds" xml:space="preserve">
+    <value>GoHome, daily ads</value>
+    <comment>GoHome.by daily ads</comment>
+  </data>
+  <data name="GoHomeByLongTermAds" xml:space="preserve">
+    <value>GoHome, long term ads</value>
+    <comment>GoHome.by long term ads</comment>
+  </data>
   <data name="IncorrectImageFormat" xml:space="preserve">
     <value>Incorrect image format</value>
     <comment>Incorrect image format</comment>
+  </data>
+  <data name="LoadAds" xml:space="preserve">
+    <value>Load ads</value>
+    <comment>Load ads</comment>
   </data>
   <data name="LogOff" xml:space="preserve">
     <value>Log off</value>
@@ -133,6 +145,14 @@
     <value>My ads</value>
     <comment>My ads</comment>
   </data>
+  <data name="RealtByDailyAds" xml:space="preserve">
+    <value>Realt, daily ads</value>
+    <comment>Realt.by daily ads</comment>
+  </data>
+  <data name="RealtByLongTermAds" xml:space="preserve">
+    <value>Realt, long term ads</value>
+    <comment>Realt.by long term ads</comment>
+  </data>
   <data name="Registration" xml:space="preserve">
     <value>Registration</value>
     <comment>Registration button</comment>
@@ -144,6 +164,10 @@
   <data name="SignIn" xml:space="preserve">
     <value>Sign in</value>
     <comment>Sign in button</comment>
+  </data>
+  <data name="UpdateConfirm" xml:space="preserve">
+    <value>Are you sure that you want to update the data, it will take some time?</value>
+    <comment>Update confirm question</comment>
   </data>
   <data name="UpdatePassword" xml:space="preserve">
     <value>Update password</value>

@@ -4,12 +4,14 @@
 
 namespace RentalOfProperty.DataAccessLayer.Configuration
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using RentalOfProperty.DataAccessLayer.Context;
     using RentalOfProperty.DataAccessLayer.Interfaces;
+    using RentalOfProperty.DataAccessLayer.Mapper;
     using RentalOfProperty.DataAccessLayer.Models;
     using RentalOfProperty.DataAccessLayer.Repositories;
 
@@ -50,6 +52,9 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
 
             // Adding classes injections
             services.AddTransient<IUserRepository, UsersRepository>();
+
+            // Adding automapper
+            services.AddAutoMapper(typeof(DataAccessProfile));
         }
     }
 }
