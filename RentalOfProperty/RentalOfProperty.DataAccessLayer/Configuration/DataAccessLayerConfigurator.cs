@@ -10,10 +10,13 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using RentalOfProperty.DataAccessLayer.Context;
+    using RentalOfProperty.DataAccessLayer.Enums;
     using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Mapper;
     using RentalOfProperty.DataAccessLayer.Models;
     using RentalOfProperty.DataAccessLayer.Repositories;
+    using RentalOfProperty.DataAccessLayer.Services;
+    using System;
 
     /// <summary>
     /// Configuration for data access layer classes.
@@ -52,6 +55,17 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
 
             // Adding classes injections
             services.AddTransient<IUserRepository, UsersRepository>();
+            services.AddScoped<GoHomeByDataLoader>();
+
+            services.AddScoped<Func<LoaderMenu, IDataLoader>>(serviceProvider => loaderMenu =>
+            {
+                return loaderMenu switch
+                {
+                    LoaderMenu.GoHomeBy => serviceProvider.GetService<GoHomeByDataLoader>(),
+                    LoaderMenu.RealtBY => null,
+                    _ => null,
+                };
+            });
 
             // Adding automapper
             services.AddAutoMapper(typeof(DataAccessProfile));

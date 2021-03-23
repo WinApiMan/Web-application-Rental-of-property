@@ -23,6 +23,14 @@ namespace RentalOfProperty.BusinessLogicLayer.Mapper
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<SignInUser, SignInUserDTO>().ReverseMap();
             CreateMap<SignInResult, DALSignInResult>().ReverseMap();
+
+            CreateMap<AditionalAdDataDTO, AditionalAdData>().ReverseMap();
+            CreateMap<ContactPersonDTO, ContactPerson>().ReverseMap();
+            CreateMap<HousingPhotoDTO, HousingPhoto>().ReverseMap();
+            CreateMap<RentalAdDTO, RentalAd>().ReverseMap();
+            CreateMap<AdDTO, Ad>().ReverseMap();
+            CreateMap<DailyRentalAdDTO, DailyRentalAd>().ReverseMap();
+            CreateMap<LongTermRentalAdDTO, LongTermRentalAd>().ReverseMap();
         }
     }
 }

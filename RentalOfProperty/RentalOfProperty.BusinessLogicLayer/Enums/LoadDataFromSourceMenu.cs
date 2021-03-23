@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace RentalOfProperty.WebUserInterface.Enums
+namespace RentalOfProperty.BusinessLogicLayer.Enums
 {
     /// <summary>
     /// Menu for load data.

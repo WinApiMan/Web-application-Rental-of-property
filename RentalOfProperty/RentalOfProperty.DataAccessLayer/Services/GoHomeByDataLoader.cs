@@ -117,11 +117,9 @@ namespace RentalOfProperty.DataAccessLayer.Services
         /// </summary>
         /// <param name="htmlWeb">Htnm web model.</param>
         /// <param name="mapper">Mapper model.</param>
-        public GoHomeByDataLoader(
-            HtmlWeb htmlWeb,
-            IMapper mapper)
+        public GoHomeByDataLoader(IMapper mapper)
         {
-            _htmlWeb = htmlWeb;
+            _htmlWeb = new HtmlWeb();
             _mapper = mapper;
             _locker = new object();
         }

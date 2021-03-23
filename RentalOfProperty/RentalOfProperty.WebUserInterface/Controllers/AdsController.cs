@@ -2,10 +2,13 @@
 {
     using System;
     using System.Threading.Tasks;
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.WebUserInterface.Enums;
+    using BLLLoadDataFromSourceMenu = BusinessLogicLayer.Enums.LoadDataFromSourceMenu;
 
     /// <summary>
     /// Ads controller.
@@ -14,12 +17,20 @@
     {
         private readonly ILogger<AdsController> _logger;
 
+        private readonly IAdsManager _adsManager;
+
+        private readonly IMapper _mapper;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AdsController"/> class.
         /// </summary>
+        /// <param name="adsManager">Ads manager model.</param>
+        /// <param name="mapper">Mapper model..</param>
         /// <param name="logger">Error logger.</param>
-        public AdsController(ILogger<AdsController> logger)
+        public AdsController(IAdsManager adsManager, IMapper mapper, ILogger<AdsController> logger)
         {
+            _adsManager = adsManager;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -30,23 +41,8 @@
         {
             try
             {
-                switch (dataSourceMenuItem)
-                {
-                    case LoadDataFromSourceMenu.GoHomeByLongTermAds:
-                        break;
+                await _adsManager.LoadLongTermAdsFromGoHomeBy(_mapper.Map<BLLLoadDataFromSourceMenu>(dataSourceMenuItem));
 
-                    case LoadDataFromSourceMenu.RealtByLongTermAds:
-                        break;
-
-                    case LoadDataFromSourceMenu.GoHomeByDailyAds:
-                        break;
-
-                    case LoadDataFromSourceMenu.RealtByDailyAds:
-                        break;
-
-                    default:
-                        break;
-                }
             }
             catch (Exception exception)
             {

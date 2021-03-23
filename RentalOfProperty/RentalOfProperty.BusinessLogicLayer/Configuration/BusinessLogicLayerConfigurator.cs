@@ -33,6 +33,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Configuration
             services.AddTransient<IMailService, EmailService>();
 
             services.AddAutoMapper(typeof(BusinessLogicProfile));
+
+            services.AddScoped<IAdsManager, AdsManager>();
         }
     }
 }

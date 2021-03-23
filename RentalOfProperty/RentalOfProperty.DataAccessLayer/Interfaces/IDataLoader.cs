@@ -4,13 +4,20 @@
 
 namespace RentalOfProperty.DataAccessLayer.Interfaces
 {
+    using System.Collections.Generic;
     using RentalOfProperty.DataAccessLayer.Enums;
+    using RentalOfProperty.DataAccessLayer.Models;
 
     /// <summary>
     /// Data loader interface.
     /// </summary>
     public interface IDataLoader
     {
+        /// <summary>
+        /// Gets or sets ad list.
+        /// </summary>
+        public List<AdDTO> Ads { get; set; }
+
         /// <summary>
         /// Load data in ads.
         /// </summary>
