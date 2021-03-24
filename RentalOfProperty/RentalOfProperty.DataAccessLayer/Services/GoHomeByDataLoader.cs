@@ -115,7 +115,6 @@ namespace RentalOfProperty.DataAccessLayer.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="GoHomeByDataLoader"/> class.
         /// </summary>
-        /// <param name="htmlWeb">Htnm web model.</param>
         /// <param name="mapper">Mapper model.</param>
         public GoHomeByDataLoader(IMapper mapper)
         {
@@ -199,6 +198,15 @@ namespace RentalOfProperty.DataAccessLayer.Services
                             RentalAdMenu.RealtHousesByLongTermRentalAd => GetHouseLongTermRentalAd(adHtmlDocument.DocumentNode, link),
                             _ => GetApartmentLongTermRentalAd(adHtmlDocument.DocumentNode, link),
                         };
+
+                        ad.RentalAd.ContactPersonId = ad.ContactPerson.Id;
+                        ad.AditionalAdData.Id = ad.RentalAd.Id;
+
+                        foreach (var photo in ad.HousingPhotos)
+                        {
+                            photo.RentalAdId = ad.RentalAd.Id;
+                        }
+
                         ads.Add(ad);
                     }
 
@@ -228,11 +236,14 @@ namespace RentalOfProperty.DataAccessLayer.Services
 
             var phones = GetPhoneNodes(htmlNode);
 
+            var id = Guid.NewGuid().ToString();
+
             // Get any person parametrs and return person model
             if (phones.Length == MainPhoneNumber)
             {
                 return new ContactPersonDTO
                 {
+                    Id = id,
                     Name = GetContactName(htmlNode),
                     Email = GetContactEmail(htmlNode),
                 };
@@ -241,6 +252,7 @@ namespace RentalOfProperty.DataAccessLayer.Services
             {
                 return new ContactPersonDTO
                 {
+                    Id = id,
                     Name = GetContactName(htmlNode),
                     Email = GetContactEmail(htmlNode),
                     PhoneNumber = phones[NameIndex].InnerText,
@@ -250,6 +262,7 @@ namespace RentalOfProperty.DataAccessLayer.Services
             {
                 return new ContactPersonDTO
                 {
+                    Id = id,
                     Name = GetContactName(htmlNode),
                     Email = GetContactEmail(htmlNode),
                     PhoneNumber = phones[MainPhoneNumber].InnerText,
@@ -299,11 +312,11 @@ namespace RentalOfProperty.DataAccessLayer.Services
             (int floor, int totalFloor) = GetTotalAndCurrentFloors(htmlNode);
 
             // Get parametrs and return ad model
-            return new LongTermRentalAdDTO
+            return new RentalAdDTO
             {
-                SourceLink = sourceLink,
+                Id = Guid.NewGuid().ToString(),
 
-                RentalAdNumber = GetRentalAdNumber(htmlNode),
+                SourceLink = sourceLink,
 
                 UpdateDate = DateTime.Now,
 
@@ -818,25 +831,6 @@ namespace RentalOfProperty.DataAccessLayer.Services
             }
 
             return (uSDPrice, bYNPrice);
-        }
-
-        /// <summary>
-        /// Get rental ad number.
-        /// </summary>
-        /// <param name="htmlNode">Source html node.</param>
-        /// <returns>Rental ad number.</returns>
-        public int GetRentalAdNumber(HtmlNode htmlNode)
-        {
-            var rentalAdNumbers = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[1]/li[1]/div[2]");
-
-            if (!(rentalAdNumbers is null))
-            {
-                return Convert.ToInt32(rentalAdNumbers.First().InnerText);
-            }
-            else
-            {
-                return DefaultValue;
-            }
         }
 
         /// <summary>

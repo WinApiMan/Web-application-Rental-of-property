@@ -74,8 +74,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             switch (loadDataFromSourceMenuItem)
             {
                 case LoadDataFromSourceMenu.GoHomeByDailyAds:
-                    _goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtApartmentsByDailyRentalAd);
-                    _goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtHousesByDailyRentalAd);
+                    //_goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtApartmentsByDailyRentalAd);
+                    //_goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtHousesByDailyRentalAd);
 
                     var newAds = _goHomeByDataLoader.Ads;
 
@@ -103,40 +103,20 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                         oldContactPersons.Add(tempContactPersons.First());
                     }
 
-                    if (oldContactPersons.Count > newAds.Count)
+                    foreach (var contactPerson in oldContactPersons)
                     {
-                        var newContactPersons = newAds.Select(ad => ad.ContactPerson);
-                        var removableContactPersons = oldContactPersons.Except(newContactPersons);
-
-                        foreach (var contactPerson in removableContactPersons)
-                        {
-                            await _contactPersonsRepository.Remove(contactPerson);
-                        }
+                        await _contactPersonsRepository.Remove(contactPerson);
                     }
-                    else if (oldContactPersons.Count < newAds.Count)
+
+                    foreach (var ad in newAds)
                     {
-                        var newContactPersons = newAds.Select(ad => ad.ContactPerson);
-                        var addableContactPersons = newContactPersons.Except(oldContactPersons);
-
-                        foreach (var contactPerson in addableContactPersons)
+                        await _contactPersonsRepository.Create(ad.ContactPerson);
+                        await _dailyRentalAdsRepository.Create(ad.RentalAd as DailyRentalAdDTO);
+                        await _aditionalAdDatasRepository.Create(ad.AditionalAdData);
+ 
+                        foreach (var photo in ad.HousingPhotos)
                         {
-                            contactPerson.Id = Guid.NewGuid().ToString();
-                            await _contactPersonsRepository.Create(contactPerson);
-                            var ad = newAds.FirstOrDefault(ad => ad.ContactPerson.Equals(contactPerson));
-
-                            ad.RentalAd.ContactPersonId = contactPerson.Id;
-                            await _dailyRentalAdsRepository.Create(ad.RentalAd as DailyRentalAdDTO);
-                            var tempAd = await _rentalAdsRepository.Get(tempAd => tempAd.RentalAdNumber == ad.RentalAd.RentalAdNumber);
-
-                            foreach (var photo in ad.HousingPhotos)
-                            {
-                                photo.RentalAdId = tempAd.Last().Id;
-                                await _housingPhotosRepository.Create(photo);
-                            }
-
-                            ad.AditionalAdData.Id = tempAd.Last().Id;
-
-                            await _aditionalAdDatasRepository.Create(ad.AditionalAdData);
+                            await _housingPhotosRepository.Create(photo);
                         }
                     }
 

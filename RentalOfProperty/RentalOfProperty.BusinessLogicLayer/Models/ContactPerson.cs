@@ -12,12 +12,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         /// <summary>
         /// Gets or sets unique key.
         /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets rental ad unique key.
-        /// </summary>
-        public int RentalAdId { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets name.

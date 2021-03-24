@@ -17,7 +17,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         /// <summary>
         /// Gets or sets rental ad unique key.
         /// </summary>
-        public int RentalAdId { get; set; }
+        public string RentalAdId { get; set; }
 
         /// <summary>
         /// Gets or sets path to photo.

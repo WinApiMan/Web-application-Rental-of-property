@@ -14,7 +14,7 @@ namespace RentalOfProperty.DataAccessLayer.Models
         /// <summary>
         /// Gets or sets unique key.
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets contact person unique key.
@@ -25,11 +25,6 @@ namespace RentalOfProperty.DataAccessLayer.Models
         /// Gets or sets unique link.
         /// </summary>
         public string SourceLink { get; set; }
-
-        /// <summary>
-        /// Gets or sets rental ad number.
-        /// </summary>
-        public int RentalAdNumber { get; set; }
 
         /// <summary>
         /// Gets or sets update date.

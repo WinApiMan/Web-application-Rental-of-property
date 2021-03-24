@@ -14,7 +14,7 @@ namespace RentalOfProperty.DataAccessLayer.Models
         /// <summary>
         /// Gets or sets unique key.
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets update date.
