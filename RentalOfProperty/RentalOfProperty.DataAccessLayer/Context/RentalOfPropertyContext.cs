@@ -74,12 +74,6 @@ namespace RentalOfProperty.DataAccessLayer.Context
                .HasForeignKey(rentalAd => rentalAd.ContactPersonId)
                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<AditionalAdDataDTO>()
-                .HasOne<RentalAdDTO>()
-                .WithOne()
-                .HasForeignKey<AditionalAdDataDTO>(aditionalAdData => aditionalAdData.Id)
-                .OnDelete(DeleteBehavior.Cascade);
-
             // Initialize data base
             DbInitializer.Initialize(modelBuilder);
         }

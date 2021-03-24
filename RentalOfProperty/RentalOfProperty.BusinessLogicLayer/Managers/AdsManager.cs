@@ -99,7 +99,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
                     foreach (var id in contactPersonsId)
                     {
-                        var tempContactPersons = await _contactPersonsRepository.Get(contactPerson => !string.IsNullOrEmpty(contactPerson.Id));
+                        var tempContactPersons = await _contactPersonsRepository.Get(contactPerson => contactPerson.Id.Equals(id));
                         oldContactPersons.Add(tempContactPersons.First());
                     }
 
