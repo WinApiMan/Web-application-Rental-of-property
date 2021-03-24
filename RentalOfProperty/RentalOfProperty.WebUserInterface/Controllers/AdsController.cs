@@ -34,6 +34,11 @@
             _logger = logger;
         }
 
+        /// <summary>
+        /// Load data from source post request.
+        /// </summary>
+        /// <param name="dataSourceMenuItem">Data source menu item.</param>
+        /// <returns>Action result object.</returns>
         [Authorize(Roles = UserRoles.Administrator)]
         [HttpPost]
         [ValidateAntiForgeryToken]
