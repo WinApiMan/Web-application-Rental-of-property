@@ -4,6 +4,7 @@
 
 namespace RentalOfProperty.DataAccessLayer.Configuration
 {
+    using System;
     using AutoMapper;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,6 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
     using RentalOfProperty.DataAccessLayer.Models;
     using RentalOfProperty.DataAccessLayer.Repositories;
     using RentalOfProperty.DataAccessLayer.Services;
-    using System;
 
     /// <summary>
     /// Configuration for data access layer classes.
@@ -66,6 +66,14 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
                     _ => null,
                 };
             });
+
+            // Repository settings
+            services.AddTransient<IRepository<AditionalAdDataDTO>, RentalOfPropertyRepository<AditionalAdDataDTO>>();
+            services.AddTransient<IRepository<ContactPersonDTO>, RentalOfPropertyRepository<ContactPersonDTO>>();
+            services.AddTransient<IRepository<HousingPhotoDTO>, RentalOfPropertyRepository<HousingPhotoDTO>>();
+            services.AddTransient<IRepository<DailyRentalAdDTO>, RentalOfPropertyRepository<DailyRentalAdDTO>>();
+            services.AddTransient<IRepository<LongTermRentalAdDTO>, RentalOfPropertyRepository<LongTermRentalAdDTO>>();
+            services.AddTransient<IRepository<RentalAdDTO>, RentalOfPropertyRepository<RentalAdDTO>>();
 
             // Adding automapper
             services.AddAutoMapper(typeof(DataAccessProfile));

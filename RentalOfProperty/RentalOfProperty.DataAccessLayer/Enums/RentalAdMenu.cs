@@ -17,7 +17,7 @@ namespace RentalOfProperty.DataAccessLayer.Enums
         /// <summary>
         /// Long term house ads.
         /// </summary>
-        RealtHouseByLongTermRentalAd,
+        RealtHousesByLongTermRentalAd,
 
         /// <summary>
         /// Daily apartment ads.

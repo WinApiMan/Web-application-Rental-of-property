@@ -102,8 +102,6 @@ namespace LoadData
                         };
                         ads.Add(ad);
                     }
-
-                    index += nextPageCoefficient;
                 }
                 else
                 {

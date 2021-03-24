@@ -166,7 +166,7 @@ namespace RentalOfProperty.DataAccessLayer.Services
                     RentalAdMenu.RealtApartmentsByLongTermRentalAd => _htmlWeb.Load($"{SiteApartmentsLongTermPage}{index}"),
                     RentalAdMenu.RealtApartmentsByDailyRentalAd => _htmlWeb.Load($"{SiteApartmentsDailyTermPage}{index}"),
                     RentalAdMenu.RealtHousesByDailyRentalAd => _htmlWeb.Load($"{SiteHousesDailyTermPage}{index}"),
-                    RentalAdMenu.RealtHouseByLongTermRentalAd => _htmlWeb.Load($"{SiteHousesLongTermPage}{index}"),
+                    RentalAdMenu.RealtHousesByLongTermRentalAd => _htmlWeb.Load($"{SiteHousesLongTermPage}{index}"),
                     _ => _htmlWeb.Load($"{SiteApartmentsLongTermPage}{index}"),
                 };
 
@@ -196,7 +196,7 @@ namespace RentalOfProperty.DataAccessLayer.Services
                             RentalAdMenu.RealtApartmentsByLongTermRentalAd => GetApartmentLongTermRentalAd(adHtmlDocument.DocumentNode, link),
                             RentalAdMenu.RealtApartmentsByDailyRentalAd => GetApartmentDailyRentalAd(adHtmlDocument.DocumentNode, link),
                             RentalAdMenu.RealtHousesByDailyRentalAd => GetHouseDailyRentalAd(adHtmlDocument.DocumentNode, link),
-                            RentalAdMenu.RealtHouseByLongTermRentalAd => GetHouseLongTermRentalAd(adHtmlDocument.DocumentNode, link),
+                            RentalAdMenu.RealtHousesByLongTermRentalAd => GetHouseLongTermRentalAd(adHtmlDocument.DocumentNode, link),
                             _ => GetApartmentLongTermRentalAd(adHtmlDocument.DocumentNode, link),
                         };
                         ads.Add(ad);

@@ -6,6 +6,7 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -23,13 +24,6 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         Task Create(TEntity item);
 
         /// <summary>
-        /// Method for find item in table.
-        /// </summary>
-        /// <param name="id">Primary key.</param>
-        /// <returns>Result item.</returns>
-        Task<TEntity> FindById(int id);
-
-        /// <summary>
         /// Method for getting all items from table.
         /// </summary>
         /// <returns>All items.</returns>
@@ -40,7 +34,7 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         /// </summary>
         /// <param name="predicate">Search filter.</param>
         /// <returns>Result items.</returns>
-        Task<IEnumerable<TEntity>> Get(Func<TEntity, bool> predicate);
+        Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Metohd for removing an item from table.

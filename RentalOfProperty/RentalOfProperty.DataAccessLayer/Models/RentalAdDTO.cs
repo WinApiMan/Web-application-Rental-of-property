@@ -17,6 +17,11 @@ namespace RentalOfProperty.DataAccessLayer.Models
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets contact person unique key.
+        /// </summary>
+        public string ContactPersonId { get; set; }
+
+        /// <summary>
         /// Gets or sets unique link.
         /// </summary>
         public string SourceLink { get; set; }
@@ -122,7 +127,7 @@ namespace RentalOfProperty.DataAccessLayer.Models
         public int RentalType { get; set; }
 
         /// <summary>
-        /// Gets or sets total views
+        /// Gets or sets total views.
         /// </summary>
         public int TotalViews { get; set; }
 
