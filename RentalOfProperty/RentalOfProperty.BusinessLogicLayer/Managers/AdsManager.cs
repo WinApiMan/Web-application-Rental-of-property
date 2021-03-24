@@ -11,7 +11,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
     using AutoMapper;
     using RentalOfProperty.BusinessLogicLayer.Enums;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
-    using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.DataAccessLayer.Enums;
     using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Models;
@@ -131,11 +130,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
                             foreach (var photo in ad.HousingPhotos)
                             {
-                                photo.RentalAdId = tempAd.First().Id;
+                                photo.RentalAdId = tempAd.Last().Id;
                                 await _housingPhotosRepository.Create(photo);
                             }
 
-                            ad.AditionalAdData.Id = tempAd.First().Id;
+                            ad.AditionalAdData.Id = tempAd.Last().Id;
 
                             await _aditionalAdDatasRepository.Create(ad.AditionalAdData);
                         }

@@ -44,15 +44,14 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoadDataFromSource(LoadDataFromSourceMenu dataSourceMenuItem)
         {
-            try
-            {
+            //try
+            //{
                 await _adsManager.LoadLongTermAdsFromGoHomeBy(_mapper.Map<BLLLoadDataFromSourceMenu>(dataSourceMenuItem));
-
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError($"Error : {exception.Message}");
-            }
+            //}
+            //catch (Exception exception)
+            //{
+            //    _logger.LogError($"Error : {exception.Message}");
+            //}
 
             return RedirectToAction("Index", "Home");
         }
