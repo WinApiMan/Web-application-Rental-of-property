@@ -107,6 +107,8 @@ namespace RentalOfProperty
             app.UseAuthentication();
             app.UseAuthorization();
 
+            string name = "sanya plohoi";
+
             // Installation default route
             app.UseEndpoints(endpoints =>
             {
