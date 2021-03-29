@@ -49,31 +49,47 @@
                     </li>
                     @if (User.IsInRole(UserRoles.Administrator))
                     {
-                    <li class="nav-item">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @Localizer["LoadAds"]
-                            </button>
-                            <div class="dropdown-menu">
-                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.GoHomeByLongTermAds">
-                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-1', '@Localizer["UpdateConfirm"]')">@Localizer["GoHomeByLongTermAds"]</button>
-                                    <input type="submit" class="d-none" id="loadData-1" />
-                                </form>
-                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.RealtByLongTermAds">
-                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-2', '@Localizer["UpdateConfirm"]')">@Localizer["RealtByLongTermAds"]</button>
-                                    <input type="submit" class="d-none" id="loadData-2" />
-                                </form>
-                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.GoHomeByDailyAds">
-                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-3', '@Localizer["UpdateConfirm"]')">@Localizer["GoHomeByDailyAds"]</button>
-                                    <input type="submit" class="d-none" id="loadData-3" />
-                                </form>
-                                <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.RealtByDailyAds">
-                                    <button class="dropdown-item" type="button" onclick="loadData('loadData-4', '@Localizer["UpdateConfirm"]')">@Localizer["RealtByDailyAds"]</button>
-                                    <input type="submit" class="d-none" id="loadData-4"/>
-                                </form>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @Localizer["LoadAds"]
+                                </button>
+                                <div class="dropdown-menu">
+                                    <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.GoHomeByLongTermAds"
+                                          data-ajax="true"
+                                          data-ajax-method="POST"
+                                          data-ajax-mode="replace"
+                                          data-ajax-update="#loadResult">
+                                        <button class="dropdown-item" type="button" onclick="loadData('loadData-1', '@Localizer["UpdateConfirm"]')">@Localizer["GoHomeByLongTermAds"]</button>
+                                        <input type="submit" class="d-none" id="loadData-1" />
+                                    </form>
+                                    <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.RealtByLongTermAds"
+                                          data-ajax="true"
+                                          data-ajax-method="POST"
+                                          data-ajax-mode="replace"
+                                          data-ajax-update="#loadResult">
+                                        <button class="dropdown-item" type="button" onclick="loadData('loadData-2', '@Localizer["UpdateConfirm"]')">@Localizer["RealtByLongTermAds"]</button>
+                                        <input type="submit" class="d-none" id="loadData-2" />
+                                    </form>
+                                    <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.GoHomeByDailyAds"
+                                          data-ajax="true"
+                                          data-ajax-method="POST"
+                                          data-ajax-mode="replace"
+                                          data-ajax-update="#loadResult">
+                                        <button class="dropdown-item" type="button" onclick="loadData('loadData-3', '@Localizer["UpdateConfirm"]')">@Localizer["GoHomeByDailyAds"]</button>
+                                        <input type="submit" class="d-none" id="loadData-3" />
+                                    </form>
+                                    <form asp-controller="Ads" asp-action="LoadDataFromSource" asp-route-dataSourceMenuItem="@LoadDataFromSourceMenu.RealtByDailyAds"
+                                          data-ajax="true"
+                                          data-ajax-method="POST"
+                                          data-ajax-mode="replace"
+                                          data-ajax-update="#loadResult">
+                                        <button class="dropdown-item" type="button" onclick="loadData('loadData-4', '@Localizer["UpdateConfirm"]')">@Localizer["RealtByDailyAds"]</button>
+                                        <input type="submit" class="d-none" id="loadData-4" />
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
                     }
                 </ul>
                 <ul class="navbar-nav">
@@ -135,17 +151,23 @@
             &copy; 2020 - RentalOfProperty - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/jquery.js"></script>
+    <div id="loadResult">
+        @{await Html.RenderPartialAsync("~/Views/Ads/_AdsPage.cshtml");}
+    </div>
+    <script src="/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+    <script src="/lib/jquery/jquery.js"></script>
+    <script src="/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     <script src="~/js/_Layout.js" asp-append-version="true"></script>
     <script>
-        let languages = JSON.parse(JSON.stringify(@Html.Raw(jsonLanguages)));
-        let url = JSON.parse(JSON.stringify(@Html.Raw(jsonUrl)));
-        let cultures = JSON.parse(JSON.stringify(@Html.Raw(jsonCultures)));
-        let loadUrl = JSON.parse(JSON.stringify(@Html.Raw(loadImageUrl)));
+    let languages = JSON.parse(JSON.stringify(@Html.Raw(jsonLanguages)));
+    let url = JSON.parse(JSON.stringify(@Html.Raw(jsonUrl)));
+    let cultures = JSON.parse(JSON.stringify(@Html.Raw(jsonCultures)));
+    let loadUrl = JSON.parse(JSON.stringify(@Html.Raw(loadImageUrl)));
 
-        callAvatarQuey(loadUrl);
-        createLanguagesList(languages, cultures, url);
+    callAvatarQuey(loadUrl);
+    createLanguagesList(languages, cultures, url);
     </script>
 
     @RenderSection("Scripts", required: false)
