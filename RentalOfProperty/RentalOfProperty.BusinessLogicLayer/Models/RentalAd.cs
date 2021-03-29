@@ -26,6 +26,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         public string SourceLink { get; set; }
 
         /// <summary>
+        /// Gets or sets rental ad number.
+        /// </summary>
+        public int RentalAdNumber { get; set; }
+
+        /// <summary>
         /// Gets or sets update date.
         /// </summary>
         public DateTime UpdateDate { get; set; }

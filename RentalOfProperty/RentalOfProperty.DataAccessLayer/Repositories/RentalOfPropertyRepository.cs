@@ -74,6 +74,17 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         }
 
         /// <summary>
+        /// Add models.
+        /// </summary>
+        /// <param name="entities">Adding models.</param>
+        /// <returns>Task result.</returns>
+        public async Task CreateRange(IEnumerable<TEntity> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Update model.
         /// </summary>
         /// <param name="item">Updating model.</param>
@@ -92,6 +103,17 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         public async Task Remove(TEntity item)
         {
             _dbSet.Remove(item);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Remove models.
+        /// </summary>
+        /// <param name="entities">Removing entities.</param>
+        /// <returns>Task result.</returns>
+        public async Task RemoveRange(IEnumerable<TEntity> entities)
+        {
+            _dbSet.RemoveRange(entities);
             await _context.SaveChangesAsync();
         }
     }

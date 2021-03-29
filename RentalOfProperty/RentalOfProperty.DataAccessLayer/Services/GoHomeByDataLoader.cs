@@ -184,11 +184,9 @@ namespace RentalOfProperty.DataAccessLayer.Services
                             HousingPhotos = GetHousingPhotos(adHtmlDocument.DocumentNode),
                             AditionalAdData = new AditionalAdDataDTO
                             {
-                                UpdateDate = GetUpdateDate(adHtmlDocument.DocumentNode),
+                                UpdateDate = DateTime.Now,
                             },
                         };
-
-                        GetAdViews(adHtmlDocument.DocumentNode, ad.AditionalAdData);
 
                         ad.RentalAd = _rentalAdMenu switch
                         {
@@ -199,8 +197,11 @@ namespace RentalOfProperty.DataAccessLayer.Services
                             _ => GetApartmentLongTermRentalAd(adHtmlDocument.DocumentNode, link),
                         };
 
+                        GetAdViews(adHtmlDocument.DocumentNode, ad.RentalAd);
+
                         ad.RentalAd.ContactPersonId = ad.ContactPerson.Id;
                         ad.AditionalAdData.Id = ad.RentalAd.Id;
+                        ad.AditionalAdData.RentalAdNumber = ad.RentalAd.RentalAdNumber;
 
                         foreach (var photo in ad.HousingPhotos)
                         {
@@ -318,7 +319,9 @@ namespace RentalOfProperty.DataAccessLayer.Services
 
                 SourceLink = sourceLink,
 
-                UpdateDate = DateTime.Now,
+                RentalAdNumber = GetRentalAdNumber(htmlNode),
+
+                UpdateDate = GetUpdateDate(htmlNode),
 
                 TotalViews = DefaultValue,
 
@@ -534,6 +537,25 @@ namespace RentalOfProperty.DataAccessLayer.Services
             }
 
             return email;
+        }
+
+        /// <summary>
+        /// Get rental ad number.
+        /// </summary>
+        /// <param name="htmlNode">Source html node.</param>
+        /// <returns>Rental ad number.</returns>
+        public int GetRentalAdNumber(HtmlNode htmlNode)
+        {
+            var rentalAdNumbers = htmlNode.SelectNodes("//div[contains(@class,'w-fetures')]/ul[1]/li[1]/div[2]");
+
+            if (!(rentalAdNumbers is null))
+            {
+                return Convert.ToInt32(rentalAdNumbers.First().InnerText);
+            }
+            else
+            {
+                return DefaultValue;
+            }
         }
 
         /// <summary>
@@ -921,8 +943,8 @@ namespace RentalOfProperty.DataAccessLayer.Services
         /// Get ad views.
         /// </summary>
         /// <param name="htmlNode">Source html node.</param>
-        /// <param name="aditionalAdDataDTO">Aditional ad data model.</param>
-        public void GetAdViews(HtmlNode htmlNode, AditionalAdDataDTO aditionalAdDataDTO)
+        /// <param name="rentalAdDTO">Rental ad data model.</param>
+        public void GetAdViews(HtmlNode htmlNode, RentalAdDTO rentalAdDTO)
         {
             const int TotalViewIndex = 0, MonthViewIndex = 1, WeekViewIndex = 2;
 
@@ -934,9 +956,9 @@ namespace RentalOfProperty.DataAccessLayer.Services
                         .Where(tempString => !string.IsNullOrEmpty(tempString))
                         .ToArray();
 
-                aditionalAdDataDTO.TotalViews = Convert.ToInt32(views[TotalViewIndex]);
-                aditionalAdDataDTO.MonthViews = Convert.ToInt32(views[MonthViewIndex]);
-                aditionalAdDataDTO.WeekViews = Convert.ToInt32(views[WeekViewIndex]);
+                rentalAdDTO.TotalViews = Convert.ToInt32(views[TotalViewIndex]);
+                rentalAdDTO.MonthViews = Convert.ToInt32(views[MonthViewIndex]);
+                rentalAdDTO.WeekViews = Convert.ToInt32(views[WeekViewIndex]);
             }
         }
     }

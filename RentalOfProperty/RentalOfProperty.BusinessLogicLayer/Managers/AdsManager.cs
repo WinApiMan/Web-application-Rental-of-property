@@ -74,8 +74,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             switch (loadDataFromSourceMenuItem)
             {
                 case LoadDataFromSourceMenu.GoHomeByDailyAds:
-                    //_goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtApartmentsByDailyRentalAd);
-                    //_goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtHousesByDailyRentalAd);
+                    _goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtApartmentsByDailyRentalAd);
+                    _goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtHousesByDailyRentalAd);
 
                     var newAds = _goHomeByDataLoader.Ads;
 
@@ -96,29 +96,66 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
                     // Apartment + house contact persons
                     var oldContactPersons = new List<ContactPersonDTO>();
+                    var allOldContactPersons = await _contactPersonsRepository.Get();
 
                     foreach (var id in contactPersonsId)
                     {
-                        var tempContactPersons = await _contactPersonsRepository.Get(contactPerson => contactPerson.Id.Equals(id));
-                        oldContactPersons.Add(tempContactPersons.First());
+                        var contactPerson = allOldContactPersons.FirstOrDefault(contactPerson => contactPerson.Id.Equals(id));
+
+                        if (!(contactPerson is null))
+                        {
+                            oldContactPersons.Add(contactPerson);
+                        }
                     }
 
-                    foreach (var contactPerson in oldContactPersons)
+                    // Remove contact persons with any tables items
+                    await _contactPersonsRepository.RemoveRange(oldContactPersons);
+
+                    var oldAditionalDatas = new List<AditionalAdDataDTO>();
+
+                    foreach (var oldRentalAd in oldRentalAds)
                     {
-                        await _contactPersonsRepository.Remove(contactPerson);
+                        var aditionalAdData = newAds.FirstOrDefault(newAd => newAd.AditionalAdData.RentalAdNumber == oldRentalAd.RentalAdNumber);
+
+                        if (aditionalAdData is null)
+                        {
+                            var oldAditionalAdData = await _aditionalAdDatasRepository.Get(aditionalAdData => aditionalAdData.RentalAdNumber == oldRentalAd.RentalAdNumber);
+                            oldAditionalDatas.Add(oldAditionalAdData.First());
+                        }
                     }
+
+                    // Remove filter aditional ad datas
+                    await _aditionalAdDatasRepository.RemoveRange(oldAditionalDatas);
+
+                    // All aditional ad datas
+                    var oldAditionalAdDatas = await _aditionalAdDatasRepository.Get();
+
+                    var addingAditionalAdDatas = new List<AditionalAdDataDTO>();
+                    var addingHousingPhotos = new List<HousingPhotoDTO>();
 
                     foreach (var ad in newAds)
                     {
-                        await _contactPersonsRepository.Create(ad.ContactPerson);
-                        await _dailyRentalAdsRepository.Create(ad.RentalAd as DailyRentalAdDTO);
-                        await _aditionalAdDatasRepository.Create(ad.AditionalAdData);
- 
-                        foreach (var photo in ad.HousingPhotos)
+                        var aditionalAdData = oldAditionalAdDatas.FirstOrDefault(adData => adData.RentalAdNumber == ad.AditionalAdData.RentalAdNumber);
+
+                        if (aditionalAdData is null)
                         {
-                            await _housingPhotosRepository.Create(photo);
+                            addingAditionalAdDatas.Add(ad.AditionalAdData);
                         }
+
+                        addingHousingPhotos.AddRange(ad.HousingPhotos);
                     }
+
+                    // Add contact persons
+                    await _contactPersonsRepository.CreateRange(newAds.Select(ad => ad.ContactPerson));
+
+                    // Add daily rental ads
+                    await _dailyRentalAdsRepository.CreateRange(newAds.Select(ad => ad.RentalAd as DailyRentalAdDTO));
+
+                    // Add housing photos
+                    await _housingPhotosRepository.CreateRange(addingHousingPhotos);
+
+                    // Add aditional ad datas
+                    await _aditionalAdDatasRepository.CreateRange(addingAditionalAdDatas);
 
                     break;
 
@@ -127,6 +164,85 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                     _goHomeByDataLoader.LoadDataInAds(RentalAdMenu.RealtHousesByLongTermRentalAd);
 
                     newAds = _goHomeByDataLoader.Ads;
+
+                    // Apartment ads
+                    var oldLongTermApartmentRentalAds = await _longTermRentalAdsRepository
+                        .Get(longTermRentalAd => longTermRentalAd.RentalType == (int)RentalAdMenu.RealtApartmentsByLongTermRentalAd
+                        && longTermRentalAd.SourceLink.Contains(GoHomeByHead));
+
+                    // House ads
+                    var oldLongTermHouseRentalAds = await _longTermRentalAdsRepository
+                        .Get(longTermRentalAd => longTermRentalAd.RentalType == (int)RentalAdMenu.RealtHousesByLongTermRentalAd
+                        && longTermRentalAd.SourceLink.Contains(GoHomeByHead));
+
+                    // Apartment + house ads
+                    var oldLongTermRentalAds = oldLongTermApartmentRentalAds.Concat(oldLongTermHouseRentalAds);
+
+                    contactPersonsId = oldLongTermRentalAds.Select(oldRentalAd => oldRentalAd.ContactPersonId).Distinct();
+
+                    // Apartment + house contact persons
+                    oldContactPersons = new List<ContactPersonDTO>();
+                    allOldContactPersons = await _contactPersonsRepository.Get();
+
+                    foreach (var id in contactPersonsId)
+                    {
+                        var contactPerson = allOldContactPersons.FirstOrDefault(contactPerson => contactPerson.Id.Equals(id));
+
+                        if (!(contactPerson is null))
+                        {
+                            oldContactPersons.Add(contactPerson);
+                        }
+                    }
+
+                    // Remove contact persons with any tables items
+                    await _contactPersonsRepository.RemoveRange(oldContactPersons);
+
+                    oldAditionalDatas = new List<AditionalAdDataDTO>();
+
+                    foreach (var oldRentalAd in oldLongTermRentalAds)
+                    {
+                        var aditionalAdData = newAds.FirstOrDefault(newAd => newAd.AditionalAdData.RentalAdNumber == oldRentalAd.RentalAdNumber);
+
+                        if (aditionalAdData is null)
+                        {
+                            var oldAditionalAdData = await _aditionalAdDatasRepository.Get(aditionalAdData => aditionalAdData.RentalAdNumber == oldRentalAd.RentalAdNumber);
+                            oldAditionalDatas.Add(oldAditionalAdData.First());
+                        }
+                    }
+
+                    // Remove filter aditional ad datas
+                    await _aditionalAdDatasRepository.RemoveRange(oldAditionalDatas);
+
+                    // All aditional ad datas
+                    oldAditionalAdDatas = await _aditionalAdDatasRepository.Get();
+
+                    addingAditionalAdDatas = new List<AditionalAdDataDTO>();
+                    addingHousingPhotos = new List<HousingPhotoDTO>();
+
+                    foreach (var ad in newAds)
+                    {
+                        var aditionalAdData = oldAditionalAdDatas.FirstOrDefault(adData => adData.RentalAdNumber == ad.AditionalAdData.RentalAdNumber);
+
+                        if (aditionalAdData is null)
+                        {
+                            addingAditionalAdDatas.Add(ad.AditionalAdData);
+                        }
+
+                        addingHousingPhotos.AddRange(ad.HousingPhotos);
+                    }
+
+                    // Add contact persons
+                    await _contactPersonsRepository.CreateRange(newAds.Select(ad => ad.ContactPerson));
+
+                    // Add daily rental ads
+                    await _longTermRentalAdsRepository.CreateRange(newAds.Select(ad => ad.RentalAd as LongTermRentalAdDTO));
+
+                    // Add housing photos
+                    await _housingPhotosRepository.CreateRange(addingHousingPhotos);
+
+                    // Add aditional ad datas
+                    await _aditionalAdDatasRepository.CreateRange(addingAditionalAdDatas);
+
                     break;
 
                 default:

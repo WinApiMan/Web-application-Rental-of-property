@@ -24,6 +24,13 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         Task Create(TEntity item);
 
         /// <summary>
+        /// Add models.
+        /// </summary>
+        /// <param name="entities">Adding models.</param>
+        /// <returns>Task result.</returns>
+        Task CreateRange(IEnumerable<TEntity> entities);
+
+        /// <summary>
         /// Method for getting all items from table.
         /// </summary>
         /// <returns>All items.</returns>
@@ -42,6 +49,13 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         /// <param name="item">Removing item.</param>
         /// <returns>Void return.</returns>
         Task Remove(TEntity item);
+
+        /// <summary>
+        /// Remove models.
+        /// </summary>
+        /// <param name="entities">Removing entities.</param>
+        /// <returns>Task result.</returns>
+        Task RemoveRange(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Method for updating item.
