@@ -17,7 +17,7 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
     /// Generic repository for data base.
     /// </summary>
     /// <typeparam name="TEntity">Entity type.</typeparam>
-    public class RentalOfPropertyRepository<TEntity> : IRepository<TEntity>
+    public class RentalOfPropertyRepository<TEntity> : IRepository<TEntity>, IAdsFilter<TEntity>
         where TEntity : class
     {
         /// <summary>
@@ -115,6 +115,31 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         {
             _dbSet.RemoveRange(entities);
             await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Get ads for page.
+        /// </summary>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        public async Task<IEnumerable<TEntity>> GetAdsForPage(int pageNumber, int pageSize)
+        {
+            const int DefaultIndex = 1;
+
+            return await _dbSet.AsNoTracking()
+                .Skip((pageNumber - DefaultIndex) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get rental ads count.
+        /// </summary>
+        /// <returns>Ads count.</returns>
+        public int GetRentalAdsCount()
+        {
+            return _dbSet.AsNoTracking().Count();
         }
     }
 }

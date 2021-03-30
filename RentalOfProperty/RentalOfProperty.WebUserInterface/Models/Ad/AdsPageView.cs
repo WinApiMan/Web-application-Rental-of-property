@@ -17,6 +17,11 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         public IEnumerable<RentalAdView> RentalAdView { get; set; }
 
         /// <summary>
+        /// Gets or sets page info model.
+        /// </summary>
+        public PageInfo PageInfo { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether is load success.
         /// </summary>
         public bool IsSuccess { get; set; }

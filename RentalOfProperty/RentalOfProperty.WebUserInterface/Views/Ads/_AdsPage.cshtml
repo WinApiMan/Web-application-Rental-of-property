@@ -1,14 +1,15 @@
 ﻿@model RentalOfProperty.WebUserInterface.Models.Ad.AdsPageView
 
 <script src="/js/_AdsPage.js"></script>
-@{ 
+@{
     var resultText = JsonSerializer.Serialize(Localizer["SuccessfulLoad"].Value);
 
     if (Model.IsSuccess)
     {
-    <script>
+        <script>
         let resultText =JSON.parse(JSON.stringify(@Html.Raw(resultText)));
         outputLoadResult(resultText);
-    </script>
+        </script>
+        <form asp-></form>
     }
 }

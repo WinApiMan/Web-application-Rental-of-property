@@ -39,6 +39,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
         private readonly IRepository<LongTermRentalAdDTO> _longTermRentalAdsRepository;
 
+        private readonly IAdsFilter<RentalAdDTO> _adsFilterRepository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AdsManager"/> class.
         /// </summary>
@@ -50,7 +52,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <param name="rentalAdsRepository">Rental ads repository.</param>
         /// <param name="dailyRentalAdsRepository">Daily rental ads repository.</param>
         /// <param name="longTermRentalAdsRepository">Long term rental ads repository.</param>
-        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository)
+        /// <param name="adsFilterRepository">Ads filter repository.</param>
+        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository)
         {
             _goHomeByDataLoader = serviceResolver(LoaderMenu.GoHomeBy);
             _realtByDataLoader = serviceResolver(LoaderMenu.RealtBY);
@@ -61,6 +64,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             _rentalAdsRepository = rentalAdsRepository;
             _dailyRentalAdsRepository = dailyRentalAdsRepository;
             _longTermRentalAdsRepository = longTermRentalAdsRepository;
+            _adsFilterRepository = adsFilterRepository;
         }
 
         /// <summary>
@@ -249,6 +253,41 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 default:
                     return;
             }
+        }
+
+        /// <summary>
+        /// Gets ads for page.
+        /// </summary>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <returns>Ads list.</returns>
+        public async Task<IEnumerable<RentalAd>> GetAdsForPage(int pageNumber, int pageSize)
+        {
+            var adsDTO = await _adsFilterRepository.GetAdsForPage(pageNumber, pageSize);
+            var ads = new List<RentalAd>();
+
+            foreach (var ad in adsDTO)
+            {
+                if (ad is DailyRentalAdDTO)
+                {
+                    ads.Add(_mapper.Map<DailyRentalAd>(ad as DailyRentalAdDTO));
+                }
+                else
+                {
+                    ads.Add(_mapper.Map<LongTermRentalAd>(ad as LongTermRentalAdDTO));
+                }
+            }
+
+            return ads;
+        }
+
+        /// <summary>
+        /// Get rental ads count.
+        /// </summary>
+        /// <returns>Ads count.</returns>
+        public int GetRentalAdsCount()
+        {
+            return _adsFilterRepository.GetRentalAdsCount();
         }
     }
 }

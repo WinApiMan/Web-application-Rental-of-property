@@ -11,6 +11,7 @@ namespace RentalOfProperty.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
+    using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.Models;
     using RentalOfProperty.WebUserInterface.Models.Ad;
 
@@ -19,6 +20,10 @@ namespace RentalOfProperty.Controllers
     /// </summary>
     public class HomeController : Controller
     {
+        private const int DefaultPage = 1;
+
+        private const int PageSize = 30;
+
         private readonly ILogger<HomeController> _logger;
 
         private readonly IAdsManager _adsManager;
@@ -39,14 +44,38 @@ namespace RentalOfProperty.Controllers
         }
 
         /// <summary>
-        /// Index.
+        /// Index get request.
         /// </summary>
-        /// <returns>Result object.</returns>
-        public async Task<IActionResult> Index()
+        /// <param name="pageNumber">Current page number.</param>
+        /// <returns>Task result.</returns>
+        public async Task<IActionResult> Index(int pageNumber = DefaultPage)
         {
+            const int DefaultPageSize = 30;
+
+            var ads = await _adsManager.GetAdsForPage(pageNumber, DefaultPageSize);
+            var adViews = new List<RentalAdView>();
+
+            foreach (var ad in ads)
+            {
+                if (ad is DailyRentalAd)
+                {
+                    adViews.Add(_mapper.Map<DailyRentalAdView>(ad as DailyRentalAd));
+                }
+                else
+                {
+                    adViews.Add(_mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd));
+                }
+            }
+
             return View(new AdsPageView
             {
-                RentalAdView = new List<RentalAdView>(),
+                RentalAdView = adViews,
+                PageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = DefaultPageSize,
+                    TotalItems = _adsManager.GetRentalAdsCount(),
+                },
                 IsSuccess = false,
             });
         }

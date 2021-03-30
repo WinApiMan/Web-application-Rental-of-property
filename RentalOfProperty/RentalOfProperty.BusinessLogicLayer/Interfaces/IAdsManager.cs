@@ -22,15 +22,17 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         Task LoadLongTermAdsFromGoHomeBy(LoadDataFromSourceMenu loadDataFromSourceMenuItem);
 
         /// <summary>
-        /// Get daily rental ads.
+        /// Gets ads for page.
         /// </summary>
-        /// <returns>Rental ads list.</returns>
-        Task<IEnumerable<DailyRentalAd>> GetDailyRentalAds();
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <returns>Ads list.</returns>
+        Task<IEnumerable<RentalAd>> GetAdsForPage(int pageNumber, int pageSize);
 
         /// <summary>
-        /// Get longTerm rental ads.
+        /// Get rental ads count.
         /// </summary>
-        /// <returns>Rental ads list.</returns>
-        Task<IEnumerable<LongTermRentalAd>> GetLongTermRentalAds();
+        /// <returns>Ads count.</returns>
+        int GetRentalAdsCount();
     }
 }

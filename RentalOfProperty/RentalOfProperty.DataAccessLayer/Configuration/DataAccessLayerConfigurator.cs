@@ -75,6 +75,8 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
             services.AddTransient<IRepository<LongTermRentalAdDTO>, RentalOfPropertyRepository<LongTermRentalAdDTO>>();
             services.AddTransient<IRepository<RentalAdDTO>, RentalOfPropertyRepository<RentalAdDTO>>();
 
+            services.AddTransient<IAdsFilter<RentalAdDTO>, RentalOfPropertyRepository<RentalAdDTO>>();
+
             // Adding automapper
             services.AddAutoMapper(typeof(DataAccessProfile));
         }
