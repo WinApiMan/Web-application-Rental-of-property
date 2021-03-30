@@ -137,6 +137,10 @@
     <value>Log off</value>
     <comment>Log off</comment>
   </data>
+  <data name="LongTermRent" xml:space="preserve">
+    <value>Long term rent</value>
+    <comment>Long term rent</comment>
+  </data>
   <data name="Messages" xml:space="preserve">
     <value>Messages</value>
     <comment>Messages</comment>
@@ -144,6 +148,10 @@
   <data name="MyAds" xml:space="preserve">
     <value>My ads</value>
     <comment>My ads</comment>
+  </data>
+  <data name="PostAnAd" xml:space="preserve">
+    <value>Post an ad</value>
+    <comment>Post an ad</comment>
   </data>
   <data name="RealtByDailyAds" xml:space="preserve">
     <value>Realt, daily ads</value>
@@ -160,6 +168,10 @@
   <data name="RentalOfProperty" xml:space="preserve">
     <value>The rental of property</value>
     <comment>Site name</comment>
+  </data>
+  <data name="RentForADay" xml:space="preserve">
+    <value>Rent for a day</value>
+    <comment>Rent for a day</comment>
   </data>
   <data name="SignIn" xml:space="preserve">
     <value>Sign in</value>

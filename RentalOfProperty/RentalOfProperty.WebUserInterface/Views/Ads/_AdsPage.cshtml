@@ -1,12 +1,10 @@
-﻿@model int
+﻿@model RentalOfProperty.WebUserInterface.Models.Ad.AdsPageView
 
 <script src="/js/_AdsPage.js"></script>
 @{ 
-    const int Success = 1;
-
     var resultText = JsonSerializer.Serialize(Localizer["SuccessfulLoad"].Value);
 
-    if (Model == Success)
+    if (Model.IsSuccess)
     {
     <script>
         let resultText =JSON.parse(JSON.stringify(@Html.Raw(resultText)));

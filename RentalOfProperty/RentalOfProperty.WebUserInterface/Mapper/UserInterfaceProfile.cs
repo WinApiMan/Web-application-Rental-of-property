@@ -7,6 +7,7 @@ namespace RentalOfProperty.WebUserInterface.Mapper
     using AutoMapper;
     using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.WebUserInterface.Enums;
+    using RentalOfProperty.WebUserInterface.Models.Ad;
     using RentalOfProperty.WebUserInterface.Models.User;
     using BLLLoadDataFromSourceMenu = BusinessLogicLayer.Enums.LoadDataFromSourceMenu;
 
@@ -23,6 +24,10 @@ namespace RentalOfProperty.WebUserInterface.Mapper
             CreateMap<RegisterView, User>().ReverseMap();
             CreateMap<AuthorizeView, SignInUser>().ReverseMap();
             CreateMap<EditView, User>().ReverseMap();
+
+            CreateMap<RentalAdView, RentalAd>().ReverseMap();
+            CreateMap<DailyRentalAdView, DailyRentalAd>().ReverseMap();
+            CreateMap<LongTermRentalAdView, LongTermRentalAd>().ReverseMap();
 
             CreateMap<LoadDataFromSourceMenu, BLLLoadDataFromSourceMenu>().ReverseMap();
         }

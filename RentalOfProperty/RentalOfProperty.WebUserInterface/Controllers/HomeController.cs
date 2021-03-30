@@ -4,10 +4,15 @@
 
 namespace RentalOfProperty.Controllers
 {
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Threading.Tasks;
+    using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.Models;
+    using RentalOfProperty.WebUserInterface.Models.Ad;
 
     /// <summary>
     /// Main.
@@ -16,22 +21,34 @@ namespace RentalOfProperty.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private readonly IAdsManager _adsManager;
+
+        private readonly IMapper _mapper;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HomeController"/> class.
         /// </summary>
-        /// <param name="logger">Logger for exceptions writing.</param>
-        public HomeController(ILogger<HomeController> logger)
+        /// <param name="logger">Logger object.</param>
+        /// <param name="adsManager">Ads manager.</param>
+        /// <param name="mapper">Automapper object.</param>
+        public HomeController(ILogger<HomeController> logger, IAdsManager adsManager, IMapper mapper)
         {
             _logger = logger;
+            _adsManager = adsManager;
+            _mapper = mapper;
         }
 
         /// <summary>
         /// Index.
         /// </summary>
         /// <returns>Result object.</returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(new AdsPageView
+            {
+                RentalAdView = new List<RentalAdView>(),
+                IsSuccess = false,
+            });
         }
 
         /// <summary>

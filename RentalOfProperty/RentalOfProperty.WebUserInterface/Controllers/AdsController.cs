@@ -46,9 +46,9 @@
         {
             try
             {
-                const int Success = 1;
+                const bool IsLoadSuccess = true;
                 await _adsManager.LoadLongTermAdsFromGoHomeBy(_mapper.Map<BLLLoadDataFromSourceMenu>(dataSourceMenuItem));
-                return PartialView("_AdsPage", Success);
+                return PartialView("_AdsPage", IsLoadSuccess);
             }
             catch (Exception exception)
             {

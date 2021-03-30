@@ -4,8 +4,10 @@
 
 namespace RentalOfProperty.BusinessLogicLayer.Interfaces
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using RentalOfProperty.BusinessLogicLayer.Enums;
+    using RentalOfProperty.BusinessLogicLayer.Models;
 
     /// <summary>
     /// Ads manager interface.
@@ -18,5 +20,17 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="loadDataFromSourceMenuItem">Menu item.</param>
         /// <returns>Task result.</returns>
         Task LoadLongTermAdsFromGoHomeBy(LoadDataFromSourceMenu loadDataFromSourceMenuItem);
+
+        /// <summary>
+        /// Get daily rental ads.
+        /// </summary>
+        /// <returns>Rental ads list.</returns>
+        Task<IEnumerable<DailyRentalAd>> GetDailyRentalAds();
+
+        /// <summary>
+        /// Get longTerm rental ads.
+        /// </summary>
+        /// <returns>Rental ads list.</returns>
+        Task<IEnumerable<LongTermRentalAd>> GetLongTermRentalAds();
     }
 }

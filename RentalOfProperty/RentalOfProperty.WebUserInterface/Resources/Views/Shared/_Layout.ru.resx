@@ -137,6 +137,10 @@
     <value>Выход</value>
     <comment>Log off</comment>
   </data>
+  <data name="LongTermRent" xml:space="preserve">
+    <value>Долгосрочная аренда</value>
+    <comment>Long term rent</comment>
+  </data>
   <data name="Messages" xml:space="preserve">
     <value>Сообщения</value>
     <comment>Messages</comment>
@@ -144,6 +148,10 @@
   <data name="MyAds" xml:space="preserve">
     <value>Мои объявления</value>
     <comment>My ads</comment>
+  </data>
+  <data name="PostAnAd" xml:space="preserve">
+    <value>Разместить объявление</value>
+    <comment>Post an ad</comment>
   </data>
   <data name="RealtByDailyAds" xml:space="preserve">
     <value>Realt, посуточные объявления</value>
@@ -160,6 +168,10 @@
   <data name="RentalOfProperty" xml:space="preserve">
     <value>Аренда жилья</value>
     <comment>Site name</comment>
+  </data>
+  <data name="RentForADay" xml:space="preserve">
+    <value>Аренда на сутки</value>
+    <comment>Rent for a day</comment>
   </data>
   <data name="SignIn" xml:space="preserve">
     <value>Вход</value>

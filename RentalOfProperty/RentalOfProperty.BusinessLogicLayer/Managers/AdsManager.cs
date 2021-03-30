@@ -11,6 +11,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
     using AutoMapper;
     using RentalOfProperty.BusinessLogicLayer.Enums;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
+    using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.DataAccessLayer.Enums;
     using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Models;
