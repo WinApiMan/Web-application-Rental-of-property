@@ -134,12 +134,42 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         }
 
         /// <summary>
+        /// Get ads with predicate for page.
+        /// </summary>
+        /// <param name="predicate">Predicate object.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        public async Task<IEnumerable<TEntity>> GetAdsForPage(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize)
+        {
+            const int DefaultIndex = 1;
+
+            return await _dbSet.AsNoTracking()
+                .Where(predicate)
+                .Skip((pageNumber - DefaultIndex) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        /// <summary>
         /// Get rental ads count.
         /// </summary>
         /// <returns>Ads count.</returns>
         public int GetRentalAdsCount()
         {
             return _dbSet.AsNoTracking().Count();
+        }
+
+        /// <summary>
+        /// Get rental ads count with predicate.
+        /// </summary>
+        /// <param name="predicate">Predicate object.</param>
+        /// <returns>Ads count.</returns>
+        public int GetRentalAdsCount(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbSet.AsNoTracking()
+            .Where(predicate)
+            .Count();
         }
     }
 }

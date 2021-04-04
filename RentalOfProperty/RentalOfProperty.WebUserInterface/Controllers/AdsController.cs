@@ -12,6 +12,7 @@
     using RentalOfProperty.WebUserInterface.Enums;
     using RentalOfProperty.WebUserInterface.Models.Ad;
     using BLLLoadDataFromSourceMenu = BusinessLogicLayer.Enums.LoadDataFromSourceMenu;
+    using BLLAdsTypeMenu = BusinessLogicLayer.Enums.AdsTypeMenu;
 
     /// <summary>
     /// Ads controller.
@@ -39,6 +40,50 @@
             _adsManager = adsManager;
             _mapper = mapper;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Long term rent get query.
+        /// </summary>
+        /// <param name="adsTypeMenuItem">Ads type menu item.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <returns>Task result.</returns>
+        public async Task<IActionResult> AdsByType(AdsTypeMenu adsTypeMenuItem, int pageNumber = DefaultPage)
+        {
+            var ads = await _adsManager.GetAdsForPage(_mapper.Map<BLLAdsTypeMenu>(adsTypeMenuItem), pageNumber, PageSize);
+            var adViews = new List<AdView>();
+
+            foreach (var ad in ads)
+            {
+                if (ad is DailyRentalAd)
+                {
+                    adViews.Add(new AdView
+                    {
+                        RentalAdView = _mapper.Map<DailyRentalAdView>(ad as DailyRentalAd),
+                        HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                    });
+                }
+                else
+                {
+                    adViews.Add(new AdView
+                    {
+                        RentalAdView = _mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd),
+                        HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                    });
+                }
+            }
+
+            return View("Views/Home/Index.cshtml", new AdsPageView
+            {
+                AdViews = adViews,
+                PageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = PageSize,
+                    TotalItems = _adsManager.GetRentalAdsCount(_mapper.Map<BLLAdsTypeMenu>(adsTypeMenuItem)),
+                },
+                IsSuccess = false,
+            });
         }
 
         /// <summary>

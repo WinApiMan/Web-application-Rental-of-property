@@ -30,10 +30,26 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         Task<IEnumerable<RentalAd>> GetAdsForPage(int pageNumber, int pageSize);
 
         /// <summary>
+        /// Get ads with predicate for page.
+        /// </summary>
+        /// <param name="adsTypeMenuItem">Ads type menu item.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        Task<IEnumerable<RentalAd>> GetAdsForPage(AdsTypeMenu adsTypeMenuItem, int pageNumber, int pageSize);
+
+        /// <summary>
         /// Get rental ads count.
         /// </summary>
         /// <returns>Ads count.</returns>
         int GetRentalAdsCount();
+
+        /// <summary>
+        /// Get rental ads count with predicate.
+        /// </summary>
+        /// <param name="adsTypeMenuItem">Ads type menu item.</param>
+        /// <returns>Ads count.</returns>
+        int GetRentalAdsCount(AdsTypeMenu adsTypeMenuItem);
 
         /// <summary>
         /// Get housing photos by rental ad id.

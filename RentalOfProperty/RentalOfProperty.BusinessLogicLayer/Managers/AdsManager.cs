@@ -282,12 +282,60 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Get ads with predicate for page.
+        /// </summary>
+        /// <param name="adsTypeMenuItem">Ads type menu item.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        public async Task<IEnumerable<RentalAd>> GetAdsForPage(AdsTypeMenu adsTypeMenuItem, int pageNumber, int pageSize)
+        {
+            var adsDTO = adsTypeMenuItem switch
+            {
+                AdsTypeMenu.LongTermAds => await _adsFilterRepository.GetAdsForPage(ad => ad is LongTermRentalAdDTO, pageNumber, pageSize),
+                AdsTypeMenu.DayilyAds => await _adsFilterRepository.GetAdsForPage(ad => ad is DailyRentalAdDTO, pageNumber, pageSize),
+                _ => new List<RentalAdDTO>(),
+            };
+
+            var ads = new List<RentalAd>();
+
+            foreach (var ad in adsDTO)
+            {
+                if (ad is DailyRentalAdDTO)
+                {
+                    ads.Add(_mapper.Map<DailyRentalAd>(ad as DailyRentalAdDTO));
+                }
+                else
+                {
+                    ads.Add(_mapper.Map<LongTermRentalAd>(ad as LongTermRentalAdDTO));
+                }
+            }
+
+            return ads;
+        }
+
+        /// <summary>
         /// Get rental ads count.
         /// </summary>
         /// <returns>Ads count.</returns>
         public int GetRentalAdsCount()
         {
             return _adsFilterRepository.GetRentalAdsCount();
+        }
+
+        /// <summary>
+        /// Get rental ads count with predicate.
+        /// </summary>
+        /// <param name="adsTypeMenuItem">Ads type menu item.</param>
+        /// <returns>Ads count.</returns>
+        public int GetRentalAdsCount(AdsTypeMenu adsTypeMenuItem)
+        {
+            return adsTypeMenuItem switch
+            {
+                AdsTypeMenu.LongTermAds => _adsFilterRepository.GetRentalAdsCount(ad => ad is LongTermRentalAdDTO),
+                AdsTypeMenu.DayilyAds => _adsFilterRepository.GetRentalAdsCount(ad => ad is DailyRentalAdDTO),
+                _ => default,
+            };
         }
 
         /// <summary>

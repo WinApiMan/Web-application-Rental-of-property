@@ -4,7 +4,9 @@
 
 namespace RentalOfProperty.DataAccessLayer.Interfaces
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -23,9 +25,25 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         Task<IEnumerable<TEntity>> GetAdsForPage(int pageNumber, int pageSize);
 
         /// <summary>
+        /// Get ads with predicate for page.
+        /// </summary>
+        /// <param name="predicate">Predicate object.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        Task<IEnumerable<TEntity>> GetAdsForPage(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize);
+
+        /// <summary>
         /// Get rental ads count.
         /// </summary>
         /// <returns>Ads count.</returns>
         int GetRentalAdsCount();
+
+        /// <summary>
+        /// Get rental ads count with predicate.
+        /// </summary>
+        /// <param name="predicate">Predicate object.</param>
+        /// <returns>Ads count.</returns>
+        public int GetRentalAdsCount(Expression<Func<TEntity, bool>> predicate);
     }
 }
