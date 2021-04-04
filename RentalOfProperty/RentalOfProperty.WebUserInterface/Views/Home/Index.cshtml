@@ -5,7 +5,14 @@
 }
 
 <div id="loadResult">
-    @{await Html.RenderPartialAsync("~/Views/Ads/_AdsPage.cshtml", Model);}
+    @if (Model.AdViews.Count() != 0)
+    {
+        await Html.RenderPartialAsync("~/Views/Ads/_AdsPage.cshtml", Model);
+    }
+    else
+    {
+        <h4 class="text-center text-warning pt-5">@Localizer["AdsNotFound"]</h4>
+    }
 </div>
 
 @section Scripts

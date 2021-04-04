@@ -73,7 +73,9 @@
                 }
             }
 
-            return View("Views/Home/Index.cshtml", new AdsPageView
+            ViewBag.AdsTypeMenuItem = adsTypeMenuItem;
+
+            return View(new AdsPageView
             {
                 AdViews = adViews,
                 PageInfo = new PageInfo

@@ -1,0 +1,119 @@
+﻿@model RentalOfProperty.WebUserInterface.Models.Ad.AdsPageView
+
+@{
+    ViewData["Title"] = Localizer["AdsByType"];
+}
+
+<div id="loadResult">
+    @{ string type = ViewBag.AdsTypeMenuItem == AdsTypeMenu.DayilyAds ? Localizer["RentForADay"].Value : Localizer["LongTermRent"].Value; }
+    <h4 class="text-center text-danger pt-4">@type</h4>
+    @if (Model.AdViews.Count() != 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ad in Model.AdViews)
+                {
+                    <tr>
+                        <td class="w-25">
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    @{
+                                        string imagePath = ad.HousingPhotos.Count() == 0 ? @"\Files\Images\DefaultAdPhoto.png" : ad.HousingPhotos.First().PathToPhoto;
+                                        <div class="carousel-item active" style="height:250px">
+                                            <img class="h-100 w-100" src="@imagePath" alt="@Localizer["ImageNotFound"]">
+                                        </div>
+                                    }
+                                    @foreach (var photo in ad.HousingPhotos)
+                                    {
+                                        <div class="carousel-item" style="height:250px">
+                                            <img class="h-100 w-100" src="@photo.PathToPhoto" alt="@Localizer["ImageNotFound"]">
+                                        </div>
+                                    }
+                                </div>
+                                @if (ad.HousingPhotos.Count() != 0)
+                                {
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            Otto
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" class="mb-md-5 ml-md-4">
+            <ul class="pagination">
+                @{
+                    const int PagesLinks = 3, DefaultPageCount = 0;
+
+                    if (Model.PageInfo.PageNumber - PagesLinks > DefaultPageCount)
+                    {
+                        <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="1" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">1</a></li>
+                        <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@(Model.PageInfo.PageNumber - PagesLinks - 1)" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Localizer["Previous"]</a></li>
+
+                        for (int index = PagesLinks; index > DefaultPageCount; index--)
+                        {
+                            <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@(Model.PageInfo.PageNumber - index)" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@(Model.PageInfo.PageNumber - index)</a></li>
+                        }
+                    }
+                    else
+                    {
+                        for (int index = 1; index < Model.PageInfo.PageNumber; index++)
+                        {
+                            <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@index" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@index</a></li>
+                        }
+                    }
+
+                    <li class="page-item active"><a asp-action="AdsByType" asp-route-pageNumber="@Model.PageInfo.PageNumber" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Model.PageInfo.PageNumber</a></li>
+
+                    if (Model.PageInfo.PageNumber + PagesLinks <= Model.PageInfo.TotalPages)
+                    {
+                        for (int index = DefaultPageCount + 1; index <= PagesLinks; index++)
+                        {
+                            <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@(Model.PageInfo.PageNumber + index)" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@(Model.PageInfo.PageNumber + index)</a></li>
+                        }
+
+                        <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@(Model.PageInfo.PageNumber + PagesLinks + 1)" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Localizer["Next"]</a></li>
+                        <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@Model.PageInfo.TotalPages" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Model.PageInfo.TotalPages</a></li>
+                    }
+                    else
+                    {
+                        for (int index = Model.PageInfo.PageNumber + 1; index <= Model.PageInfo.TotalPages; index++)
+                        {
+                            <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@index" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@index</a></li>
+                        }
+                    }
+                }
+            </ul>
+        </nav>
+    }
+    else
+    {
+        <h4 class="text-center text-warning pt-5">@Localizer["AdsNotFound"]</h4>
+    }
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
