@@ -14,7 +14,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// <summary>
         /// Gets or sets rental ad view objects list.
         /// </summary>
-        public IEnumerable<RentalAdView> RentalAdView { get; set; }
+        public IEnumerable<AdView> AdViews { get; set; }
 
         /// <summary>
         /// Gets or sets page info model.

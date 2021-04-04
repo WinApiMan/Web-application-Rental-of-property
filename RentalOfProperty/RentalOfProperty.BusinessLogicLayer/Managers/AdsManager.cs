@@ -289,5 +289,15 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         {
             return _adsFilterRepository.GetRentalAdsCount();
         }
+
+        /// <summary>
+        /// Get housing photos by rental ad id.
+        /// </summary>
+        /// <param name="id">Rental ad id.</param>
+        /// <returns>Housing photo list.</returns>
+        public async Task<IEnumerable<HousingPhoto>> GetHousingPhotosByRentalAdId(string id)
+        {
+            return _mapper.Map<IEnumerable<HousingPhoto>>(await _housingPhotosRepository.Get(housingPhoto => housingPhoto.RentalAdId.Equals(id)));
+        }
     }
 }

@@ -34,5 +34,12 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// </summary>
         /// <returns>Ads count.</returns>
         int GetRentalAdsCount();
+
+        /// <summary>
+        /// Get housing photos by rental ad id.
+        /// </summary>
+        /// <param name="id">Rental ad id.</param>
+        /// <returns>Housing photo list.</returns>
+        Task<IEnumerable<HousingPhoto>> GetHousingPhotosByRentalAdId(string id);
     }
 }

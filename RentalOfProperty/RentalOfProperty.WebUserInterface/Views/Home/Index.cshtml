@@ -4,9 +4,6 @@
     ViewData["Title"] = Localizer["RealEstateInBelarus"];
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
 <div id="loadResult">
     @{await Html.RenderPartialAsync("~/Views/Ads/_AdsPage.cshtml", Model);}
 </div>

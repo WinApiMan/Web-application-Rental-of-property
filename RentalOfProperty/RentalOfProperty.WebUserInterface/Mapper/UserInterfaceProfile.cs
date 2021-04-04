@@ -28,6 +28,7 @@ namespace RentalOfProperty.WebUserInterface.Mapper
             CreateMap<RentalAdView, RentalAd>().ReverseMap();
             CreateMap<DailyRentalAdView, DailyRentalAd>().ReverseMap();
             CreateMap<LongTermRentalAdView, LongTermRentalAd>().ReverseMap();
+            CreateMap<HousingPhotoView, HousingPhoto>().ReverseMap();
 
             CreateMap<LoadDataFromSourceMenu, BLLLoadDataFromSourceMenu>().ReverseMap();
         }

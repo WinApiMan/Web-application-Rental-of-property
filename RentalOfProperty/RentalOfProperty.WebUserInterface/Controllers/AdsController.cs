@@ -1,13 +1,16 @@
 ﻿namespace RentalOfProperty.WebUserInterface.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
+    using RentalOfProperty.BusinessLogicLayer.Models;
     using RentalOfProperty.WebUserInterface.Enums;
+    using RentalOfProperty.WebUserInterface.Models.Ad;
     using BLLLoadDataFromSourceMenu = BusinessLogicLayer.Enums.LoadDataFromSourceMenu;
 
     /// <summary>
@@ -15,6 +18,10 @@
     /// </summary>
     public class AdsController : Controller
     {
+        private const int DefaultPage = 1;
+
+        private const int PageSize = 30;
+
         private readonly ILogger<AdsController> _logger;
 
         private readonly IAdsManager _adsManager;
@@ -48,7 +55,41 @@
             {
                 const bool IsLoadSuccess = true;
                 await _adsManager.LoadLongTermAdsFromGoHomeBy(_mapper.Map<BLLLoadDataFromSourceMenu>(dataSourceMenuItem));
-                return PartialView("_AdsPage", IsLoadSuccess);
+
+                var ads = await _adsManager.GetAdsForPage(DefaultPage, PageSize);
+                var adViews = new List<AdView>();
+
+                foreach (var ad in ads)
+                {
+                    if (ad is DailyRentalAd)
+                    {
+                        adViews.Add(new AdView
+                        {
+                            RentalAdView = _mapper.Map<DailyRentalAdView>(ad as DailyRentalAd),
+                            HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                        });
+                    }
+                    else
+                    {
+                        adViews.Add(new AdView
+                        {
+                            RentalAdView = _mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd),
+                            HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                        });
+                    }
+                }
+
+                return PartialView("_AdsPage", new AdsPageView
+                {
+                    AdViews = adViews,
+                    PageInfo = new PageInfo
+                    {
+                        PageNumber = DefaultPage,
+                        PageSize = PageSize,
+                        TotalItems = _adsManager.GetRentalAdsCount(),
+                    },
+                    IsSuccess = IsLoadSuccess,
+                });
             }
             catch (Exception exception)
             {

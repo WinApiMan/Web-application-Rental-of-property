@@ -50,30 +50,36 @@ namespace RentalOfProperty.Controllers
         /// <returns>Task result.</returns>
         public async Task<IActionResult> Index(int pageNumber = DefaultPage)
         {
-            const int DefaultPageSize = 30;
-
-            var ads = await _adsManager.GetAdsForPage(pageNumber, DefaultPageSize);
-            var adViews = new List<RentalAdView>();
+            var ads = await _adsManager.GetAdsForPage(pageNumber, PageSize);
+            var adViews = new List<AdView>();
 
             foreach (var ad in ads)
             {
                 if (ad is DailyRentalAd)
                 {
-                    adViews.Add(_mapper.Map<DailyRentalAdView>(ad as DailyRentalAd));
+                    adViews.Add(new AdView
+                    {
+                        RentalAdView = _mapper.Map<DailyRentalAdView>(ad as DailyRentalAd),
+                        HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                    });
                 }
                 else
                 {
-                    adViews.Add(_mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd));
+                    adViews.Add(new AdView
+                    {
+                        RentalAdView = _mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd),
+                        HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                    });
                 }
             }
 
             return View(new AdsPageView
             {
-                RentalAdView = adViews,
+                AdViews = adViews,
                 PageInfo = new PageInfo
                 {
                     PageNumber = pageNumber,
-                    PageSize = DefaultPageSize,
+                    PageSize = PageSize,
                     TotalItems = _adsManager.GetRentalAdsCount(),
                 },
                 IsSuccess = false,
