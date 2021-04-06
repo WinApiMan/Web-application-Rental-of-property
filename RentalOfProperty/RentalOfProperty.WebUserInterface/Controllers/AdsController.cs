@@ -98,13 +98,14 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoadDataFromSource(LoadDataFromSourceMenu dataSourceMenuItem)
         {
+            bool isLoadSuccess = true;
+            var adViews = new List<AdView>();
+
             try
             {
-                const bool IsLoadSuccess = true;
                 await _adsManager.LoadLongTermAdsFromGoHomeBy(_mapper.Map<BLLLoadDataFromSourceMenu>(dataSourceMenuItem));
 
                 var ads = await _adsManager.GetAdsForPage(DefaultPage, PageSize);
-                var adViews = new List<AdView>();
 
                 foreach (var ad in ads)
                 {
@@ -125,24 +126,24 @@
                         });
                     }
                 }
-
-                return PartialView("_AdsPage", new AdsPageView
-                {
-                    AdViews = adViews,
-                    PageInfo = new PageInfo
-                    {
-                        PageNumber = DefaultPage,
-                        PageSize = PageSize,
-                        TotalItems = _adsManager.GetRentalAdsCount(),
-                    },
-                    IsSuccess = IsLoadSuccess,
-                });
             }
             catch (Exception exception)
             {
                 _logger.LogError($"Error : {exception.Message}");
-                return RedirectToAction("Error", "Home");
+                isLoadSuccess = false;
             }
+
+            return PartialView("_AdsPage", new AdsPageView
+            {
+                AdViews = adViews,
+                PageInfo = new PageInfo
+                {
+                    PageNumber = DefaultPage,
+                    PageSize = PageSize,
+                    TotalItems = _adsManager.GetRentalAdsCount(),
+                },
+                IsSuccess = isLoadSuccess,
+            });
         }
     }
 }

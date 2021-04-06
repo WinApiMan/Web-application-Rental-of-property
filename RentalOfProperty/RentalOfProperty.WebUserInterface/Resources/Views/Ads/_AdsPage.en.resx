@@ -133,8 +133,16 @@
     <value>Previous</value>
     <comment>Previous</comment>
   </data>
+  <data name="SourceLink" xml:space="preserve">
+    <value>Source link</value>
+    <comment>Source link</comment>
+  </data>
   <data name="SuccessfulLoad" xml:space="preserve">
     <value>Successful load</value>
     <comment>SucccessfulLoad</comment>
+  </data>
+  <data name="UnsuccessfullLoad" xml:space="preserve">
+    <value>Load error</value>
+    <comment>Load error</comment>
   </data>
 </root>

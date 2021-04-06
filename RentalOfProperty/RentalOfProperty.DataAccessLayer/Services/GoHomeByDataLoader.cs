@@ -6,10 +6,12 @@ namespace RentalOfProperty.DataAccessLayer.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using AutoMapper;
     using HtmlAgilityPack;
+    using Microsoft.AspNetCore.Localization;
     using RentalOfProperty.DataAccessLayer.Enums;
     using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Models;
@@ -842,14 +844,16 @@ namespace RentalOfProperty.DataAccessLayer.Services
 
             if (!(uSDPrices is null))
             {
-                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText, DigitsPattern)
+                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText.Replace(EmptyEntrie, ' '), DigitsPattern)
                     .Where(tempString => !string.IsNullOrEmpty(tempString))
                     .ToArray()[NameIndex].Replace(Point, Comma));
             }
 
             if (!(bYNPrices is null))
             {
-                bYNPrice = Convert.ToDouble(bYNPrices.First().InnerText.Replace(Point, Comma));
+                bYNPrice = Convert.ToDouble(Regex.Split(bYNPrices.First().InnerText.Replace(EmptyEntrie, ' '), DigitsPattern)
+                    .Where(tempString => !string.IsNullOrEmpty(tempString))
+                    .ToArray()[NameIndex].Replace(Point, Comma));
             }
 
             return (uSDPrice, bYNPrice);
@@ -866,7 +870,7 @@ namespace RentalOfProperty.DataAccessLayer.Services
 
             if (!(updateDates is null))
             {
-                return Convert.ToDateTime(updateDates.First().InnerText);
+                return DateTime.ParseExact(updateDates.First().InnerText, "dd.MM.yyyy", new CultureInfo("ru"));
             }
             else
             {

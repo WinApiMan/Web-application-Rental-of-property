@@ -6,7 +6,7 @@
 
 <div id="loadResult">
     @{ string type = ViewBag.AdsTypeMenuItem == AdsTypeMenu.DayilyAds ? Localizer["RentForADay"].Value : Localizer["LongTermRent"].Value; }
-    <h4 class="text-center text-danger pt-4">@type</h4>
+    <h4 class="text-center text-danger pt-4 w-100">@type</h4>
     @if (Model.AdViews.Count() != 0)
     {
         <table class="table">
@@ -16,6 +16,7 @@
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
                     <th scope="col">Handle</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -23,7 +24,7 @@
                 {
                     <tr>
                         <td class="w-25">
-                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                            <div id="carousel-@ad.RentalAdView.Id" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     @{
                                         string imagePath = ad.HousingPhotos.Count() == 0 ? @"\Files\Images\DefaultAdPhoto.png" : ad.HousingPhotos.First().PathToPhoto;
@@ -40,11 +41,11 @@
                                 </div>
                                 @if (ad.HousingPhotos.Count() != 0)
                                 {
-                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <a class="carousel-control-prev" href="#carousel-@ad.RentalAdView.Id" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Previous</span>
                                     </a>
-                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <a class="carousel-control-next" href="#carousel-@ad.RentalAdView.Id" role="button" data-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Next</span>
                                     </a>
@@ -55,6 +56,10 @@
                             Otto
                         </td>
                         <td></td>
+                        <td></td>
+                        <td class="text-center" style="width:15%">
+                            <a href="@ad.RentalAdView.SourceLink" class="text-warning">@ad.RentalAdView.SourceLink</a>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -64,7 +69,7 @@
                 @{
                     const int PagesLinks = 3, DefaultPageCount = 0;
 
-                    if (Model.PageInfo.PageNumber - PagesLinks > DefaultPageCount)
+                    if (Model.PageInfo.PageNumber - PagesLinks > DefaultPageCount && Model.AdViews.Count() > DefaultPageCount)
                     {
                         <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="1" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">1</a></li>
                         <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@(Model.PageInfo.PageNumber - PagesLinks - 1)" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Localizer["Previous"]</a></li>

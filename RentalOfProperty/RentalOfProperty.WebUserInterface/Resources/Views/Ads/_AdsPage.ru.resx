@@ -133,8 +133,16 @@
     <value>Предыдущие</value>
     <comment>Previous</comment>
   </data>
+  <data name="SourceLink" xml:space="preserve">
+    <value>Ссылка на источник</value>
+    <comment>Source link</comment>
+  </data>
   <data name="SuccessfulLoad" xml:space="preserve">
     <value>Загрузка успешно завершена</value>
     <comment>Successful load</comment>
+  </data>
+  <data name="UnsuccessfullLoad" xml:space="preserve">
+    <value>Ошибка загрузки</value>
+    <comment>Load error</comment>
   </data>
 </root>
