@@ -63,5 +63,12 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         /// <param name="item">Updating item.</param>
         /// <returns>Void return.</returns>
         Task Update(TEntity item);
+
+        /// <summary>
+        /// Update models.
+        /// </summary>
+        /// <param name="items">Updating models.</param>
+        /// <returns>Task result.</returns>
+        Task UpdateRange(IEnumerable<TEntity> items);
     }
 }

@@ -1,4 +1,5 @@
 ﻿@model RentalOfProperty.WebUserInterface.Models.Ad.AdsPageView
+@using RentalOfProperty.WebUserInterface.Models.Ad
 
 <script src="/js/_AdsPage.js"></script>
 @{
@@ -12,39 +13,38 @@
         </script>
     }
 }
-<table class="table">
+<table class="table table-striped w-100">
     <thead>
         <tr>
-            <th scope="col" class="w-25"></th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-            <th class="text-md-center">@Localizer["SourceLink"]</th>
-            <th></th>
+            <th scope="col" class="text-md-center" style="width:20%"></th>
+            <th scope="col" class="text-md-center" style="width:25%">@Localizer["AddressAndDescription"]</th>
+            <th scope="col" class="text-md-center" style="width:17%">@Localizer["RealEstateData"]</th>
+            <th scope="col" class="text-md-center" style="width:28%">@Localizer["Price"]</th>
+            <th scope="col" class="text-md-center" style="width:10%">@Localizer["SourceLink"]</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var ad in Model.AdViews)
         {
-            <tr>
-                <td class="w-25">
-                    <div id="carousel-@ad.RentalAdView.Id" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            @{
-                                string imagePath = ad.HousingPhotos.Count() == 0 ? @"\Files\Images\DefaultAdPhoto.png" : ad.HousingPhotos.First().PathToPhoto;
-                                <div class="carousel-item active" style="height:250px">
-                                    <img class="h-100 w-100" src="@imagePath" alt="@Localizer["ImageNotFound"]">
-                                </div>
-                            }
-                            @foreach (var photo in ad.HousingPhotos)
-                            {
-                                <div class="carousel-item" style="height:250px">
-                                    <img class="h-100 w-100" src="@photo.PathToPhoto" alt="@Localizer["ImageNotFound"]">
-                                </div>
-                            }
-                        </div>
-                        @if (ad.HousingPhotos.Count() != 0)
+        <tr>
+            <td>
+                <div id="carousel-@ad.RentalAdView.Id" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @{
+                            string imagePath = ad.HousingPhotos.Count() == 0 ? @"\Files\Images\DefaultAdPhoto.png" : ad.HousingPhotos.First().PathToPhoto;
+                            <div class="carousel-item active" style="height:250px">
+                                <img class="h-100 w-100" src="@imagePath" alt="@Localizer["ImageNotFound"]">
+                            </div>
+                        }
+                        @foreach (var photo in ad.HousingPhotos)
                         {
+                            <div class="carousel-item" style="height:250px">
+                                <img class="h-100 w-100" src="@photo.PathToPhoto" alt="@Localizer["ImageNotFound"]">
+                            </div>
+                        }
+                    </div>
+                    @if (ad.HousingPhotos.Count() != 0)
+                    {
                         <a class="carousel-control-prev" href="#carousel-@ad.RentalAdView.Id" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
@@ -53,18 +53,96 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>
+                    }
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <a href="#" class="col-md-12 text-primary pb-4">@ad.RentalAdView.Locality, @ad.RentalAdView.Address</a>
+                    <div class="col-md-12">
+                        @{ 
+                            var descriptionArray = ad.RentalAdView.Description.ToArray();
+                            var outputString = descriptionArray.Length < 200 ? string.Concat(descriptionArray.Take(descriptionArray.Length)) : string.Concat(descriptionArray.Take(200));
                         }
+                        @outputString ...
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Localizer["Rooms"]: @ad.RentalAdView.RentCountOfRooms / @ad.RentalAdView.TotalCountOfRooms
+                    </div>
+                    <div class="col-md-12">
+                        @Localizer["Square"]: @(ad.RentalAdView.TotalArea <= 0 ? "-" : $"{ad.RentalAdView.TotalArea}") / @(ad.RentalAdView.LivingArea <= 0 ? "-" : $"{ad.RentalAdView.LivingArea}") / @(ad.RentalAdView.KitchenArea <= 0 ? "-" : $"{ad.RentalAdView.KitchenArea}") / @(ad.RentalAdView.LandArea <= 0 ? "-" : $"{ad.RentalAdView.LandArea}") м2
+                    </div>
+                    <div class="col-md-12">
+                        @Localizer["Floors"]: @ad.RentalAdView.Floor / @ad.RentalAdView.TotalFloors
+                    </div>
+                </div>
+            </td>
+            @if (ad.RentalAdView is DailyRentalAdView)
+            {
+                var dailyAd = ad.RentalAdView as DailyRentalAdView;
+                <td>
+                    <div class="row">
+                        <div class="col-md-12 row pb-4">
+                            <div class="col-md-4 text-left">
+                                @Localizer["PricePerPerson"]
+                            </div>
+                            <div class="col-md-4 text-center">
+                                @(dailyAd.BYNPricePerPerson <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.BYNPricePerPerson} {Localizer["BYNHuman"].Value}")
+                            </div>
+                            <div class="col-md-4 text-right">
+                                @(dailyAd.USDPricePerPerson <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.USDPricePerPerson} {Localizer["USDHuman"].Value}")
+                            </div>
+                        </div>
+                        <div class="col-md-12 row pb-5">
+                            <div class="col-md-4 text-left">
+                                @Localizer["PricePerDay"]
+                            </div>
+                            <div class="col-md-4 text-center">
+                                @(dailyAd.BYNPricePerDay <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.BYNPricePerDay} {Localizer["BYNDay"].Value}")
+                            </div>
+                            <div class="col-md-4 text-right">
+                                @(dailyAd.USDPricePerDay <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.USDPricePerDay} {Localizer["USDDay"].Value}")
+                            </div>
+                        </div>
+                        <div class="col-md-12 pt-3">
+                            @Localizer["UpdateDateOnThisSite"] @ad.RentalAdView.UpdateDate.ToShortDateString().ToString(CultureInfo.CurrentUICulture)
+                        </div>
                     </div>
                 </td>
                 <td>
-                    Otto
+                    <a href="@ad.RentalAdView.SourceLink" class="text-warning text-md-center">@Localizer["Source"]</a>
                 </td>
-                <td></td>
-                <td></td>
-                <td class="text-center" style="width:15%">
-                    <a href="@ad.RentalAdView.SourceLink" class="text-warning">@ad.RentalAdView.SourceLink</a>
+            }
+            else
+            {
+                var longTermAd = ad.RentalAdView as LongTermRentalAdView;
+                <td>
+                    <div class="row">
+                        <div class="col-md-12 row pb-5 mb-4">
+                            <div class="col-md-4 text-left">
+                                @Localizer["Price"]
+                            </div>
+                            <div class="col-md-4 text-center">
+                                @(longTermAd.BYNPrice <= 0 ? Localizer["ContractPrice"].Value : $"{longTermAd.BYNPrice} {Localizer["BYN"].Value}")
+                            </div>
+                            <div class="col-md-4 text-right">
+                                @(longTermAd.USDPrice <= 0 ? Localizer["ContractPrice"].Value : $"{longTermAd.USDPrice} $")
+                            </div>
+                        </div>
+                        <div class="col-md-12 pt-5 mt-3">
+                            @Localizer["UpdateDateOnThisSite"] @ad.RentalAdView.UpdateDate.ToShortDateString().ToString(CultureInfo.CurrentUICulture)
+                        </div>
+                    </div>
                 </td>
-            </tr>
+                <td class="text-md-center">
+                    <a href="@ad.RentalAdView.SourceLink" class="text-warning text-md-center">@Localizer["Source"]</a>
+                </td>
+            }
+        </tr>
         }
     </tbody>
 </table>

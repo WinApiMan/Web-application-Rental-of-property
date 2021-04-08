@@ -117,9 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddressAndDescription" xml:space="preserve">
+    <value>Адрес и описание</value>
+    <comment>Address and description</comment>
+  </data>
   <data name="AdsNotFound" xml:space="preserve">
     <value>Объявления не найдены</value>
     <comment>Ads not found</comment>
+  </data>
+  <data name="BYN" xml:space="preserve">
+    <value>Руб</value>
+    <comment>BYN</comment>
+  </data>
+  <data name="BYNDay" xml:space="preserve">
+    <value>Руб/день</value>
+    <comment>Byn day</comment>
+  </data>
+  <data name="BYNHuman" xml:space="preserve">
+    <value>Руб/человек</value>
+    <comment>Byn human</comment>
+  </data>
+  <data name="ContractPrice" xml:space="preserve">
+    <value>Договорная</value>
+    <comment>Contract parice</comment>
+  </data>
+  <data name="Floors" xml:space="preserve">
+    <value>Этажность</value>
+    <comment>Floors</comment>
   </data>
   <data name="ImageNotFound" xml:space="preserve">
     <value>Изображение не найдено</value>
@@ -133,9 +157,37 @@
     <value>Предыдущие</value>
     <comment>Previous</comment>
   </data>
+  <data name="Price" xml:space="preserve">
+    <value>Цена</value>
+    <comment>Price</comment>
+  </data>
+  <data name="PricePerDay" xml:space="preserve">
+    <value>Цена в за сутки</value>
+    <comment>Price per day</comment>
+  </data>
+  <data name="PricePerPerson" xml:space="preserve">
+    <value>Цена за человка</value>
+    <comment>Price per person</comment>
+  </data>
+  <data name="RealEstateData" xml:space="preserve">
+    <value>Данные о недвижимости</value>
+    <comment>Real estate data</comment>
+  </data>
+  <data name="Rooms" xml:space="preserve">
+    <value>Комнат</value>
+    <comment>Rooms</comment>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Источник</value>
+    <comment>Source</comment>
+  </data>
   <data name="SourceLink" xml:space="preserve">
     <value>Ссылка на источник</value>
     <comment>Source link</comment>
+  </data>
+  <data name="Square" xml:space="preserve">
+    <value>Площадь</value>
+    <comment>Square</comment>
   </data>
   <data name="SuccessfulLoad" xml:space="preserve">
     <value>Загрузка успешно завершена</value>
@@ -144,5 +196,17 @@
   <data name="UnsuccessfullLoad" xml:space="preserve">
     <value>Ошибка загрузки</value>
     <comment>Load error</comment>
+  </data>
+  <data name="UpdateDateOnThisSite" xml:space="preserve">
+    <value>Дата обновления на сайте источнике:</value>
+    <comment>Update date on tihs site</comment>
+  </data>
+  <data name="USDDay" xml:space="preserve">
+    <value>$/день</value>
+    <comment>Usd day</comment>
+  </data>
+  <data name="USDHuman" xml:space="preserve">
+    <value>$/человек</value>
+    <comment>Usd human</comment>
   </data>
 </root>

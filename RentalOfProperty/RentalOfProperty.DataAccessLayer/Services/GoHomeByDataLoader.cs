@@ -11,7 +11,6 @@ namespace RentalOfProperty.DataAccessLayer.Services
     using System.Text.RegularExpressions;
     using AutoMapper;
     using HtmlAgilityPack;
-    using Microsoft.AspNetCore.Localization;
     using RentalOfProperty.DataAccessLayer.Enums;
     using RentalOfProperty.DataAccessLayer.Interfaces;
     using RentalOfProperty.DataAccessLayer.Models;

@@ -96,6 +96,17 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         }
 
         /// <summary>
+        /// Update models.
+        /// </summary>
+        /// <param name="items">Updating models.</param>
+        /// <returns>Task result.</returns>
+        public async Task UpdateRange(IEnumerable<TEntity> items)
+        {
+            _context.UpdateRange(items);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Remove model.
         /// </summary>
         /// <param name="item">Removing model.</param>

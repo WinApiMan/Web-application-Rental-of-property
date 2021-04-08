@@ -136,6 +136,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                     var oldAditionalAdDatas = await _aditionalAdDatasRepository.Get();
 
                     var addingAditionalAdDatas = new List<AditionalAdDataDTO>();
+                    var updatingAditionalAdDatas = new List<AditionalAdDataDTO>();
                     var addingHousingPhotos = new List<HousingPhotoDTO>();
 
                     foreach (var ad in newAds)
@@ -145,6 +146,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                         if (aditionalAdData is null)
                         {
                             addingAditionalAdDatas.Add(ad.AditionalAdData);
+                        }
+                        else
+                        {
+                            aditionalAdData.UpdateDate = ad.AditionalAdData.UpdateDate;
+                            updatingAditionalAdDatas.Add(aditionalAdData);
                         }
 
                         addingHousingPhotos.AddRange(ad.HousingPhotos);
@@ -161,6 +167,9 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
                     // Add aditional ad datas
                     await _aditionalAdDatasRepository.CreateRange(addingAditionalAdDatas);
+
+                    // Update exsisting ad datas
+                    await _aditionalAdDatasRepository.UpdateRange(updatingAditionalAdDatas);
 
                     break;
 
@@ -222,6 +231,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                     oldAditionalAdDatas = await _aditionalAdDatasRepository.Get();
 
                     addingAditionalAdDatas = new List<AditionalAdDataDTO>();
+                    updatingAditionalAdDatas = new List<AditionalAdDataDTO>();
                     addingHousingPhotos = new List<HousingPhotoDTO>();
 
                     foreach (var ad in newAds)
@@ -232,6 +242,12 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                         {
                             addingAditionalAdDatas.Add(ad.AditionalAdData);
                         }
+                        else
+                        {
+                            aditionalAdData.UpdateDate = ad.AditionalAdData.UpdateDate;
+                            updatingAditionalAdDatas.Add(aditionalAdData);
+                        }
+
 
                         addingHousingPhotos.AddRange(ad.HousingPhotos);
                     }
@@ -247,6 +263,9 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
                     // Add aditional ad datas
                     await _aditionalAdDatasRepository.CreateRange(addingAditionalAdDatas);
+
+                    // Update exsisting ad datas
+                    await _aditionalAdDatasRepository.UpdateRange(updatingAditionalAdDatas);
 
                     break;
 
