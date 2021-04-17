@@ -74,6 +74,7 @@ namespace RentalOfProperty.DataAccessLayer.Configuration
             services.AddTransient<IRepository<DailyRentalAdDTO>, RentalOfPropertyRepository<DailyRentalAdDTO>>();
             services.AddTransient<IRepository<LongTermRentalAdDTO>, RentalOfPropertyRepository<LongTermRentalAdDTO>>();
             services.AddTransient<IRepository<RentalAdDTO>, RentalOfPropertyRepository<RentalAdDTO>>();
+            services.AddTransient<IRepository<UserRentalAdDTO>, RentalOfPropertyRepository<UserRentalAdDTO>>();
 
             services.AddTransient<IAdsFilter<RentalAdDTO>, RentalOfPropertyRepository<RentalAdDTO>>();
 

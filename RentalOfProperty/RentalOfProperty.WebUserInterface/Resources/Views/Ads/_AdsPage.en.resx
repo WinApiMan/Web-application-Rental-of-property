@@ -121,6 +121,10 @@
     <value>Address and description</value>
     <comment>Address and description</comment>
   </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>Add to favorites</value>
+    <comment>Add to favorites</comment>
+  </data>
   <data name="AdsNotFound" xml:space="preserve">
     <value>Ads not found</value>
     <comment>Ads not found</comment>
@@ -153,6 +157,10 @@
     <value>Next</value>
     <comment>Next</comment>
   </data>
+  <data name="PostAnAd" xml:space="preserve">
+    <value>Post an ad</value>
+    <comment>Post an ad</comment>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
     <comment>Previous</comment>
@@ -172,6 +180,10 @@
   <data name="RealEstateData" xml:space="preserve">
     <value>Real estate data</value>
     <comment>Real estate data</comment>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>Remove from favorites</value>
+    <comment>Remove from favorites</comment>
   </data>
   <data name="Rooms" xml:space="preserve">
     <value>Rooms</value>

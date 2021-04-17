@@ -1,29 +1,44 @@
 ﻿@model RentalOfProperty.WebUserInterface.Models.Ad.AdsPageView
+@using RentalOfProperty.WebUserInterface.Models.Ad
 
 @{
     ViewData["Title"] = Localizer["AdsByType"];
 }
+<div class="sticky-top container bg-light" style="z-index:2">
+    <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.LongTermAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["LongTermRent"]</a>
+    <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.DayilyAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["RentForADay"]</a>
+    <a href="#" class="col-md-2 offset-md-1 text-center btn btn-success text-white h3 mt-md-2 pl-md-1">@Localizer["PostAnAd"]</a>
+</div>
 
 <div id="loadResult">
-    @{ string type = ViewBag.AdsTypeMenuItem == AdsTypeMenu.DayilyAds ? Localizer["RentForADay"].Value : Localizer["LongTermRent"].Value; }
+    @{
+        string type = ViewBag.AdsTypeMenuItem switch
+        {
+            AdsTypeMenu.DayilyAds => Localizer["RentForADay"].Value,
+            AdsTypeMenu.LongTermAds => Localizer["LongTermRent"].Value,
+            AdsTypeMenu.FavoriteAds => Localizer["MyFavourites"].Value,
+            _ => default,
+        };
+    }
     <h4 class="text-center text-danger pt-4 w-100">@type</h4>
     @if (Model.AdViews.Count() != 0)
     {
-        <table class="table">
+        <table class="table table-striped w-100">
             <thead>
                 <tr>
-                    <th scope="col"></th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                    <th></th>
+                    <th scope="col" class="text-md-center" style="width:20%"></th>
+                    <th scope="col" class="text-md-center" style="width:25%">@Localizer["AddressAndDescription"]</th>
+                    <th scope="col" class="text-md-center" style="width:17%">@Localizer["RealEstateData"]</th>
+                    <th scope="col" class="text-md-center" style="width:28%">@Localizer["Price"]</th>
+                    <th scope="col" class="text-md-center" style="width:10%">@Localizer["SourceLink"]</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var ad in Model.AdViews)
                 {
-                    <tr>
-                        <td class="w-25">
+                    string adColor = ad.RentalAdView.IsFavorite ? "#90EE90" : string.Empty;
+                    <tr style="background-color:@adColor">
+                        <td>
                             <div id="carousel-@ad.RentalAdView.Id" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     @{
@@ -53,13 +68,123 @@
                             </div>
                         </td>
                         <td>
-                            Otto
+                            <div class="row">
+                                <a href="#" class="col-md-12 text-primary pb-4">@ad.RentalAdView.Locality, @ad.RentalAdView.Address</a>
+                                <div class="col-md-12">
+                                    @{
+                                        var descriptionArray = ad.RentalAdView.Description.ToArray();
+                                        var outputString = descriptionArray.Length < 130 ? string.Concat(descriptionArray.Take(descriptionArray.Length)) : string.Concat(descriptionArray.Take(130));
+                                    }
+                                    @outputString ...
+                                </div>
+                            </div>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center" style="width:15%">
-                            <a href="@ad.RentalAdView.SourceLink" class="text-warning">@ad.RentalAdView.SourceLink</a>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-12 pt-4">
+                                    @Localizer["Rooms"]: @ad.RentalAdView.RentCountOfRooms / @ad.RentalAdView.TotalCountOfRooms
+                                </div>
+                                <div class="col-md-12">
+                                    @Localizer["Square"]: @(ad.RentalAdView.TotalArea <= 0 ? "-" : $"{ad.RentalAdView.TotalArea}") / @(ad.RentalAdView.LivingArea <= 0 ? "-" : $"{ad.RentalAdView.LivingArea}") / @(ad.RentalAdView.KitchenArea <= 0 ? "-" : $"{ad.RentalAdView.KitchenArea}") / @(ad.RentalAdView.LandArea <= 0 ? "-" : $"{ad.RentalAdView.LandArea}") м2
+                                </div>
+                                <div class="col-md-12">
+                                    @Localizer["Floors"]: @ad.RentalAdView.Floor / @ad.RentalAdView.TotalFloors
+                                </div>
+                            </div>
                         </td>
+                        @if (ad.RentalAdView is DailyRentalAdView)
+                        {
+                            var dailyAd = ad.RentalAdView as DailyRentalAdView;
+                            <td>
+                                <div class="row">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" class="form-check col-md-12 text-left">
+                                            @if (ad.RentalAdView.IsFavorite)
+                                            {
+                                                <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
+
+                                            }
+                                            else
+                                            {
+                                                <input class="btn btn-success" type="submit" value="@Localizer["AddToFavorites"]" />
+                                            }
+                                        </form>
+                                    }
+                                    <div class="col-md-12 row pb-4">
+                                        <div class="col-md-4 text-left">
+                                            @Localizer["PricePerPerson"]
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            @(dailyAd.BYNPricePerPerson <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.BYNPricePerPerson} {Localizer["BYNHuman"].Value}")
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            @(dailyAd.USDPricePerPerson <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.USDPricePerPerson} {Localizer["USDHuman"].Value}")
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 row pb-5">
+                                        <div class="col-md-4 text-left">
+                                            @Localizer["PricePerDay"]
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            @(dailyAd.BYNPricePerDay <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.BYNPricePerDay} {Localizer["BYNDay"].Value}")
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            @(dailyAd.USDPricePerDay <= 0 ? Localizer["ContractPrice"].Value : $"{dailyAd.USDPricePerDay} {Localizer["USDDay"].Value}")
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 pt-3">
+                                        @Localizer["UpdateDateOnThisSite"] @ad.RentalAdView.UpdateDate.ToShortDateString().ToString(CultureInfo.CurrentUICulture)
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-md-center">
+                                <div class="row text-md-center">
+                                    <a href="@ad.RentalAdView.SourceLink" class="text-warning col-md-12 pt-3">@Localizer["Source"]</a>
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            var longTermAd = ad.RentalAdView as LongTermRentalAdView;
+                            <td>
+                                <div class="row">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" class="form-check col-md-12 text-left">
+                                            @if (ad.RentalAdView.IsFavorite)
+                                            {
+                                                <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
+
+                                            }
+                                            else
+                                            {
+                                                <input class="btn btn-success" type="submit" value="@Localizer["AddToFavorites"]" />
+                                            }
+                                        </form>
+                                    }
+                                    <div class="col-md-12 row pb-5 mb-4">
+                                        <div class="col-md-4 text-left">
+                                            @Localizer["Price"]
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            @(longTermAd.BYNPrice <= 0 ? Localizer["ContractPrice"].Value : $"{longTermAd.BYNPrice} {Localizer["BYN"].Value}")
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            @(longTermAd.USDPrice <= 0 ? Localizer["ContractPrice"].Value : $"{longTermAd.USDPrice} $")
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 pt-5 mt-3">
+                                        @Localizer["UpdateDateOnThisSite"] @ad.RentalAdView.UpdateDate.ToShortDateString().ToString(CultureInfo.CurrentUICulture)
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-md-center">
+                                <div class="row text-md-center">
+                                    <a href="@ad.RentalAdView.SourceLink" class="text-warning col-md-12 pt-3">@Localizer["Source"]</a>
+                                </div>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -86,9 +211,10 @@
                             <li class="page-item"><a asp-action="AdsByType" asp-route-pageNumber="@index" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@index</a></li>
                         }
                     }
-
-                    <li class="page-item active"><a asp-action="AdsByType" asp-route-pageNumber="@Model.PageInfo.PageNumber" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Model.PageInfo.PageNumber</a></li>
-
+                    @if (Model.PageInfo.TotalItems > 30)
+                    {
+                        <li class="page-item active"><a asp-action="AdsByType" asp-route-pageNumber="@Model.PageInfo.PageNumber" asp-route-adsTypeMenuItem="@ViewBag.AdsTypeMenuItem" class="page-link">@Model.PageInfo.PageNumber</a></li>
+                    }
                     if (Model.PageInfo.PageNumber + PagesLinks <= Model.PageInfo.TotalPages)
                     {
                         for (int index = DefaultPageCount + 1; index <= PagesLinks; index++)

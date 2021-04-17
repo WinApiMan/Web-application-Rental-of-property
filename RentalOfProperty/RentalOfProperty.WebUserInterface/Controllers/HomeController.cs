@@ -6,6 +6,7 @@ namespace RentalOfProperty.Controllers
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,8 @@ namespace RentalOfProperty.Controllers
 
         private readonly IAdsManager _adsManager;
 
+        private readonly IUsersManager _usersManager;
+
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -35,11 +38,13 @@ namespace RentalOfProperty.Controllers
         /// </summary>
         /// <param name="logger">Logger object.</param>
         /// <param name="adsManager">Ads manager.</param>
+        /// <param name="usersManager">User manager.</param>
         /// <param name="mapper">Automapper object.</param>
-        public HomeController(ILogger<HomeController> logger, IAdsManager adsManager, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, IAdsManager adsManager, IUsersManager usersManager, IMapper mapper)
         {
             _logger = logger;
             _adsManager = adsManager;
+            _usersManager = usersManager;
             _mapper = mapper;
         }
 
@@ -50,8 +55,15 @@ namespace RentalOfProperty.Controllers
         /// <returns>Task result.</returns>
         public async Task<IActionResult> Index(int pageNumber = DefaultPage)
         {
+            if (pageNumber < DefaultPage)
+            {
+                pageNumber = DefaultPage;
+            }
+
             var ads = await _adsManager.GetAdsForPage(pageNumber, PageSize);
             var adViews = new List<AdView>();
+            var userId = User.Identity.Name is null ? default : _usersManager.FindByEmail(User.Identity.Name).Id;
+            var userFavoriteAds = userId is null ? default : await _adsManager.GetUserFavoriteAds(userId);
 
             foreach (var ad in ads)
             {
@@ -62,6 +74,11 @@ namespace RentalOfProperty.Controllers
                         RentalAdView = _mapper.Map<DailyRentalAdView>(ad as DailyRentalAd),
                         HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
                     });
+
+                    if (!(userFavoriteAds is null))
+                    {
+                        adViews.Last().RentalAdView.IsFavorite = userFavoriteAds.FirstOrDefault(userAd => userAd.RentalAdId.Equals(ad.Id) && userAd.UserId.Equals(userId)) is null ? false : true;
+                    }
                 }
                 else
                 {
@@ -70,6 +87,11 @@ namespace RentalOfProperty.Controllers
                         RentalAdView = _mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd),
                         HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
                     });
+
+                    if (!(userFavoriteAds is null))
+                    {
+                        adViews.Last().RentalAdView.IsFavorite = userFavoriteAds.FirstOrDefault(userAd => userAd.RentalAdId.Equals(ad.Id) && userAd.UserId.Equals(userId)) is null ? false : true;
+                    }
                 }
             }
 

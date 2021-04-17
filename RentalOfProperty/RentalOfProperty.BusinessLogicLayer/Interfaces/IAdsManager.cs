@@ -57,5 +57,27 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="id">Rental ad id.</param>
         /// <returns>Housing photo list.</returns>
         Task<IEnumerable<HousingPhoto>> GetHousingPhotosByRentalAdId(string id);
+
+        /// <summary>
+        /// Method add to favourites if isFavorite==false or remove if isFavorite==true.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <param name="rentalAdId">Ads unique key.</param>
+        /// <returns>Action result.</returns>
+        Task AddOrRemoveFavorite(string userId, string rentalAdId);
+
+        /// <summary>
+        /// Get user favorite ads.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <returns>Favorite ads list.</returns>
+        Task<IEnumerable<UserRentalAd>> GetUserFavoriteAds(string userId);
+
+        /// <summary>
+        /// Get user favorite ads.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <returns>Favorite ads list.</returns>
+        Task<IEnumerable<RentalAd>> GetFavoriteAds(string userId);
     }
 }

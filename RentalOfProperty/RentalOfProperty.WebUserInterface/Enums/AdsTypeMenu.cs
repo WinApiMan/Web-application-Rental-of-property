@@ -18,5 +18,10 @@ namespace RentalOfProperty.WebUserInterface.Enums
         /// Ads for a day.
         /// </summary>
         DayilyAds,
+
+        /// <summary>
+        /// User favorite ads.
+        /// </summary>
+        FavoriteAds,
     }
 }

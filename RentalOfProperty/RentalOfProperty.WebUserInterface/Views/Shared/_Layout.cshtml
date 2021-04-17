@@ -100,7 +100,7 @@
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name</button>
                                 <div class="dropdown-menu w-100 text-center">
                                     <button type="submit" class="dropdown-item">@Localizer["MyAds"] </button>
-                                    <button type="submit" class="dropdown-item">@Localizer["Messages"]</button>
+                                    <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.FavoriteAds" class="dropdown-item">@Localizer["MyFavourites"]</a>
                                     <a asp-controller="Users" asp-action="EditUserData" class="dropdown-item">@Localizer["UpdatePersonalData"]</a>
                                     <a asp-controller="Users" asp-action="ChangePassword" class="dropdown-item">@Localizer["UpdatePassword"]</a>
                                     <form asp-controller="Users" asp-action="LoadAvatarImage" enctype="multipart/form-data">
@@ -133,11 +133,6 @@
             </div>
         </nav>
     </header>
-    <div class="sticky-top container bg-light" style="z-index:2">
-        <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.LongTermAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["LongTermRent"]</a>
-        <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.DayilyAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["RentForADay"]</a>
-        <a href="#" class="col-md-2 offset-md-1 text-center btn btn-success text-white h3 mt-md-2 pl-md-1">@Localizer["PostAnAd"]</a>
-    </div>
     <div class="bg-white container">
         <main role="main" class="min-vh-100">
             @RenderBody()

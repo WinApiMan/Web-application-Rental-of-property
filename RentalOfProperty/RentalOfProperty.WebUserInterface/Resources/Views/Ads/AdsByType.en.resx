@@ -121,6 +121,10 @@
     <value>Address and description</value>
     <comment>Address and description</comment>
   </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>Add to favorites</value>
+    <comment>Add to favorites</comment>
+  </data>
   <data name="AdsByType" xml:space="preserve">
     <value>Ads by type</value>
     <comment>Ads by type</comment>
@@ -156,9 +160,17 @@
   <data name="LongTermRent" xml:space="preserve">
     <value>Long term rent</value>
   </data>
+  <data name="MyFavourites" xml:space="preserve">
+    <value>Favourites</value>
+    <comment>Favourites</comment>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
     <comment>Next</comment>
+  </data>
+  <data name="PostAnAd" xml:space="preserve">
+    <value>Post an ad</value>
+    <comment>Post an ad</comment>
   </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
@@ -179,6 +191,10 @@
   <data name="RealEstateData" xml:space="preserve">
     <value>Real estate data</value>
     <comment>Real estate data</comment>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>Remove from favorites</value>
+    <comment>Remove from favorites</comment>
   </data>
   <data name="RentForADay" xml:space="preserve">
     <value>Rent for a day</value>

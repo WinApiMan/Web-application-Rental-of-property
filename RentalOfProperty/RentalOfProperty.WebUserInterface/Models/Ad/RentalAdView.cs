@@ -145,5 +145,10 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets land area.
         /// </summary>
         public double LandArea { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether is favorite.
+        /// </summary>
+        public bool IsFavorite { get; set; }
     }
 }

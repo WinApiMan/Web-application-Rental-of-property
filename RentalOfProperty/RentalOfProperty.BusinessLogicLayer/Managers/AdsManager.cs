@@ -39,6 +39,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
         private readonly IRepository<LongTermRentalAdDTO> _longTermRentalAdsRepository;
 
+        private readonly IRepository<UserRentalAdDTO> _userRentalAdsRepository;
+
         private readonly IAdsFilter<RentalAdDTO> _adsFilterRepository;
 
         /// <summary>
@@ -52,8 +54,9 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <param name="rentalAdsRepository">Rental ads repository.</param>
         /// <param name="dailyRentalAdsRepository">Daily rental ads repository.</param>
         /// <param name="longTermRentalAdsRepository">Long term rental ads repository.</param>
+        /// <param name="userRentalAdsRepository">User rental ads repository.</param>
         /// <param name="adsFilterRepository">Ads filter repository.</param>
-        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository)
+        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IRepository<UserRentalAdDTO> userRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository)
         {
             _goHomeByDataLoader = serviceResolver(LoaderMenu.GoHomeBy);
             _realtByDataLoader = serviceResolver(LoaderMenu.RealtBY);
@@ -64,6 +67,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             _rentalAdsRepository = rentalAdsRepository;
             _dailyRentalAdsRepository = dailyRentalAdsRepository;
             _longTermRentalAdsRepository = longTermRentalAdsRepository;
+            _userRentalAdsRepository = userRentalAdsRepository;
             _adsFilterRepository = adsFilterRepository;
         }
 
@@ -365,6 +369,93 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         public async Task<IEnumerable<HousingPhoto>> GetHousingPhotosByRentalAdId(string id)
         {
             return _mapper.Map<IEnumerable<HousingPhoto>>(await _housingPhotosRepository.Get(housingPhoto => housingPhoto.RentalAdId.Equals(id)));
+        }
+
+        /// <summary>
+        /// Method add to favourites if isFavorite==false or remove if isFavorite==true.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <param name="rentalAdId">Ads unique key.</param>
+        /// <returns>Action result.</returns>
+        public async Task AddOrRemoveFavorite(string userId, string rentalAdId)
+        {
+            if (userId is null || rentalAdId is null)
+            {
+                throw new ArgumentNullException("User id or rental ad id is null");
+            }
+            else
+            {
+                var rentalAds = await _rentalAdsRepository.Get(ad => ad.Id.Equals(rentalAdId));
+
+                if (rentalAds.Count() != default)
+                {
+                    var userRentalAds = await _userRentalAdsRepository.Get(userRentalAd => userRentalAd.RentalAdId.Equals(rentalAdId) && userRentalAd.UserId.Equals(userId));
+
+                    if (userRentalAds.Count() == default)
+                    {
+                        await _userRentalAdsRepository.Create(new UserRentalAdDTO
+                        {
+                            RentalAdId = rentalAdId,
+                            UserId = userId,
+                        });
+                    }
+                    else
+                    {
+                        await _userRentalAdsRepository.Remove(userRentalAds.First());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get user favorite ads.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <returns>Favorite ads list.</returns>
+        public async Task<IEnumerable<UserRentalAd>> GetUserFavoriteAds(string userId)
+        {
+            if (userId is null)
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else
+            {
+                return _mapper.Map<IEnumerable<UserRentalAd>>(await _userRentalAdsRepository.Get(userRentalAd => userRentalAd.UserId.Equals(userId)));
+            }
+        }
+
+        /// <summary>
+        /// Get user favorite ads.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <returns>Favorite ads list.</returns>
+        public async Task<IEnumerable<RentalAd>> GetFavoriteAds(string userId)
+        {
+            if (userId is null)
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else
+            {
+                var userAds = await _userRentalAdsRepository.Get(userRentalAd => userRentalAd.UserId.Equals(userId));
+                var rentalAds = new List<RentalAd>();
+
+                foreach (var userAd in userAds)
+                {
+                    var ads = await _rentalAdsRepository.Get(ad => ad.Id.Equals(userAd.RentalAdId));
+
+                    if (ads.First() is DailyRentalAdDTO)
+                    {
+                        rentalAds.Add(_mapper.Map<DailyRentalAd>(ads.First() as DailyRentalAdDTO));
+                    }
+                    else
+                    {
+                        rentalAds.Add(_mapper.Map<LongTermRentalAd>(ads.First() as LongTermRentalAdDTO));
+                    }
+                }
+
+                return rentalAds;
+            }
         }
     }
 }

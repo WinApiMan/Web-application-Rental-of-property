@@ -54,6 +54,11 @@ namespace RentalOfProperty.DataAccessLayer.Context
         public DbSet<LongTermRentalAdDTO> LongTermRentalAds { get; set; }
 
         /// <summary>
+        /// Gets or sets user rental ads list.
+        /// </summary>
+        public DbSet<UserRentalAdDTO> UserRentalAds { get; set; }
+
+        /// <summary>
         /// Method for setting parameters when creating a database.
         /// </summary>
         /// <param name="modelBuilder">Model builder object.</param>
@@ -73,6 +78,18 @@ namespace RentalOfProperty.DataAccessLayer.Context
                .WithMany()
                .HasForeignKey(rentalAd => rentalAd.ContactPersonId)
                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserRentalAdDTO>()
+               .HasOne<UserDTO>()
+               .WithMany()
+               .HasForeignKey(userRentalAd => userRentalAd.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserRentalAdDTO>()
+                .HasOne<RentalAdDTO>()
+                .WithMany()
+                .HasForeignKey(userRentalAd => userRentalAd.RentalAdId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Initialize data base
             DbInitializer.Initialize(modelBuilder);

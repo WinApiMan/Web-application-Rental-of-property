@@ -117,8 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LongTermRent" xml:space="preserve">
+    <value>Long term rent</value>
+  </data>
+  <data name="PostAnAd" xml:space="preserve">
+    <value>Post an ad</value>
+    <comment>Post an ad</comment>
+  </data>
   <data name="RealEstateInBelarus" xml:space="preserve">
     <value>Real estate in belarus</value>
     <comment>Real estate in belarus</comment>
+  </data>
+  <data name="RentForADay" xml:space="preserve">
+    <value>Rent for a day</value>
+    <comment>Rent for a day</comment>
   </data>
 </root>

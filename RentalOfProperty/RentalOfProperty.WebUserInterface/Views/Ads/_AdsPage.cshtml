@@ -26,7 +26,8 @@
     <tbody>
         @foreach (var ad in Model.AdViews)
         {
-        <tr>
+        string adColor = ad.RentalAdView.IsFavorite ? "#90EE90" : string.Empty;
+        <tr style="background-color:@adColor">
             <td>
                 <div id="carousel-@ad.RentalAdView.Id" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
@@ -62,7 +63,7 @@
                     <div class="col-md-12">
                         @{ 
                             var descriptionArray = ad.RentalAdView.Description.ToArray();
-                            var outputString = descriptionArray.Length < 200 ? string.Concat(descriptionArray.Take(descriptionArray.Length)) : string.Concat(descriptionArray.Take(200));
+                            var outputString = descriptionArray.Length < 130 ? string.Concat(descriptionArray.Take(descriptionArray.Length)) : string.Concat(descriptionArray.Take(130));
                         }
                         @outputString ...
                     </div>
@@ -70,7 +71,7 @@
             </td>
             <td>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 pt-4">
                         @Localizer["Rooms"]: @ad.RentalAdView.RentCountOfRooms / @ad.RentalAdView.TotalCountOfRooms
                     </div>
                     <div class="col-md-12">
@@ -86,6 +87,20 @@
                 var dailyAd = ad.RentalAdView as DailyRentalAdView;
                 <td>
                     <div class="row">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" class="form-check col-md-12 text-left">
+                            @if (ad.RentalAdView.IsFavorite)
+                            {
+                                <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
+
+                            }
+                            else
+                            {
+                                <input class="btn btn-success" type="submit" value="@Localizer["AddToFavorites"]" />
+                            }
+                        </form>
+                        }
                         <div class="col-md-12 row pb-4">
                             <div class="col-md-4 text-left">
                                 @Localizer["PricePerPerson"]
@@ -113,8 +128,10 @@
                         </div>
                     </div>
                 </td>
-                <td>
-                    <a href="@ad.RentalAdView.SourceLink" class="text-warning text-md-center">@Localizer["Source"]</a>
+                <td class="text-md-center">
+                    <div class="row text-md-center">
+                        <a href="@ad.RentalAdView.SourceLink" class="text-warning col-md-12 pt-3">@Localizer["Source"]</a>
+                    </div>
                 </td>
             }
             else
@@ -122,6 +139,20 @@
                 var longTermAd = ad.RentalAdView as LongTermRentalAdView;
                 <td>
                     <div class="row">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" class="form-check col-md-12 text-left">
+                                @if (ad.RentalAdView.IsFavorite)
+                                {
+                                    <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
+
+                                }
+                                else
+                                {
+                                    <input class="btn btn-success" type="submit" value="@Localizer["AddToFavorites"]" />
+                                }
+                            </form>
+                        }
                         <div class="col-md-12 row pb-5 mb-4">
                             <div class="col-md-4 text-left">
                                 @Localizer["Price"]
@@ -139,7 +170,9 @@
                     </div>
                 </td>
                 <td class="text-md-center">
-                    <a href="@ad.RentalAdView.SourceLink" class="text-warning text-md-center">@Localizer["Source"]</a>
+                    <div class="row text-md-center">
+                        <a href="@ad.RentalAdView.SourceLink" class="text-warning col-md-12 pt-3">@Localizer["Source"]</a>
+                    </div>
                 </td>
             }
         </tr>
@@ -168,8 +201,10 @@
                     <li class="page-item"><a asp-controller="Home" asp-action="Index" asp-route-pageNumber="@index" class="page-link">@index</a></li>
                 }
             }
-
+            @if (Model.PageInfo.TotalItems > 30)
+            {
             <li class="page-item active"><a asp-controller="Home" asp-action="Index" asp-route-pageNumber="@Model.PageInfo.PageNumber" class="page-link">@Model.PageInfo.PageNumber</a></li>
+            }
 
             if (Model.PageInfo.PageNumber + PagesLinks <= Model.PageInfo.TotalPages)
             {
