@@ -457,5 +457,161 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 return rentalAds;
             }
         }
+
+        /// <summary>
+        /// Search long term ads use parametrs.
+        /// </summary>
+        /// <param name="longTermSearch">Parametrs for searching.</param>
+        /// <returns>Result ads.</returns>
+        public async Task<IEnumerable<RentalAd>> LongTermSearch(LongTermSearch longTermSearch)
+        {
+            if (longTermSearch.Address is null && longTermSearch.District is null && longTermSearch.FinishBYNPrice is null
+                && longTermSearch.FinishCurrentFloor is null && longTermSearch.FinishKitchenArea is null && longTermSearch.FinishLandArea is null
+                && longTermSearch.FinishLivingArea is null && longTermSearch.FinishRoomsCount is null && longTermSearch.FinishTotalArea is null
+                && longTermSearch.FinishTotalFloor is null && longTermSearch.FinishUSDPrice is null && !longTermSearch.IsFirstFloor
+                && !longTermSearch.IsLastFloor && longTermSearch.Locality is null && longTermSearch.Region is null
+                && longTermSearch.StartBYNPrice is null && longTermSearch.StartCurrentFloor is null && longTermSearch.StartKitchenArea is null
+                && longTermSearch.StartLandArea is null && longTermSearch.StartLivingArea is null && longTermSearch.StartRoomsCount is null
+                && longTermSearch.StartTotalArea is null && longTermSearch.StartTotalFloor is null && longTermSearch.StartUSDPrice is null)
+            {
+                return new List<RentalAd>();
+            }
+            else
+            {
+                var ads = _mapper.Map<IEnumerable<LongTermRentalAd>>(await _longTermRentalAdsRepository.Get());
+
+                if (!longTermSearch.Region.Equals("Любая область"))
+                {
+                    ads = ads.Where(ad => ad.Region.ToLower().IndexOf(longTermSearch.Region.ToLower()) != -1);
+                }
+
+                if (!(longTermSearch.District is null))
+                {
+                    ads = ads.Where(ad => ad.District.ToLower().IndexOf(longTermSearch.District.ToLower()) != -1);
+                }
+
+                if (!(longTermSearch.Locality is null))
+                {
+                    ads = ads.Where(ad => ad.Locality.ToLower().IndexOf(longTermSearch.Locality.ToLower()) != -1);
+                }
+
+                if (!(longTermSearch.Address is null))
+                {
+                    ads = ads.Where(ad => ad.Address.ToLower().IndexOf(longTermSearch.Address.ToLower()) != -1);
+                }
+
+                if (!(longTermSearch.StartRoomsCount is null))
+                {
+                    ads = ads.Where(ad => ad.TotalCountOfRooms >= longTermSearch.StartRoomsCount);
+                }
+
+                if (!(longTermSearch.FinishRoomsCount is null))
+                {
+                    ads = ads.Where(ad => ad.TotalCountOfRooms <= longTermSearch.FinishRoomsCount);
+                }
+
+                if (!(longTermSearch.StartCurrentFloor is null))
+                {
+                    ads = ads.Where(ad => ad.Floor >= longTermSearch.StartCurrentFloor);
+                }
+
+                if (!(longTermSearch.FinishCurrentFloor is null))
+                {
+                    ads = ads.Where(ad => ad.Floor <= longTermSearch.FinishCurrentFloor);
+                }
+
+                if (!(longTermSearch.StartTotalFloor is null))
+                {
+                    ads = ads.Where(ad => ad.TotalFloors >= longTermSearch.StartTotalFloor);
+                }
+
+                if (!(longTermSearch.FinishTotalFloor is null))
+                {
+                    ads = ads.Where(ad => ad.TotalFloors <= longTermSearch.FinishTotalFloor);
+                }
+
+                if (longTermSearch.IsFirstFloor)
+                {
+                    ads = ads.Where(ad => ad.Floor > 1);
+                }
+
+                if (longTermSearch.IsLastFloor)
+                {
+                    ads = ads.Where(ad => ad.Floor < ad.TotalFloors);
+                }
+
+                if (!(longTermSearch.StartBYNPrice is null))
+                {
+                    ads = ads.Where(ad => ad.BYNPrice >= longTermSearch.StartBYNPrice);
+                }
+
+                if (!(longTermSearch.FinishBYNPrice is null))
+                {
+                    ads = ads.Where(ad => ad.BYNPrice <= longTermSearch.FinishBYNPrice);
+                }
+
+                if (!(longTermSearch.StartUSDPrice is null))
+                {
+                    ads = ads.Where(ad => ad.USDPrice >= longTermSearch.StartUSDPrice);
+                }
+
+                if (!(longTermSearch.FinishUSDPrice is null))
+                {
+                    ads = ads.Where(ad => ad.USDPrice <= longTermSearch.FinishUSDPrice);
+                }
+
+                if (!(longTermSearch.StartTotalArea is null))
+                {
+                    ads = ads.Where(ad => ad.TotalArea >= longTermSearch.StartTotalArea);
+                }
+
+                if (!(longTermSearch.FinishTotalArea is null))
+                {
+                    ads = ads.Where(ad => ad.TotalArea <= longTermSearch.FinishTotalArea);
+                }
+
+                if (!(longTermSearch.StartLivingArea is null))
+                {
+                    ads = ads.Where(ad => ad.LivingArea >= longTermSearch.StartLivingArea);
+                }
+
+                if (!(longTermSearch.FinishLivingArea is null))
+                {
+                    ads = ads.Where(ad => ad.LivingArea <= longTermSearch.FinishLivingArea);
+                }
+
+                if (!(longTermSearch.StartKitchenArea is null))
+                {
+                    ads = ads.Where(ad => ad.KitchenArea >= longTermSearch.StartKitchenArea);
+                }
+
+                if (!(longTermSearch.FinishKitchenArea is null))
+                {
+                    ads = ads.Where(ad => ad.KitchenArea <= longTermSearch.FinishKitchenArea);
+                }
+
+                if (!(longTermSearch.StartLandArea is null))
+                {
+                    ads = ads.Where(ad => ad.LandArea >= longTermSearch.StartLandArea);
+                }
+
+                if (!(longTermSearch.FinishLandArea is null))
+                {
+                    ads = ads.Where(ad => ad.LandArea <= longTermSearch.FinishLandArea);
+                }
+
+                return ads.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Search daily ads use parametrs.
+        /// </summary>
+        /// <param name="dailySearch">Parametrs for searching.</param>
+        /// <returns>Result ads.</returns>
+        public async Task<IEnumerable<RentalAd>> DailySearch(DailySearch dailySearch)
+        {
+            return new List<RentalAd>();
+        }
     }
 }

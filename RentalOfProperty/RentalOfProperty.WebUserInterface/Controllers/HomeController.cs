@@ -10,6 +10,7 @@ namespace RentalOfProperty.Controllers
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.Extensions.Logging;
     using RentalOfProperty.BusinessLogicLayer.Interfaces;
     using RentalOfProperty.BusinessLogicLayer.Models;
@@ -94,6 +95,33 @@ namespace RentalOfProperty.Controllers
                     }
                 }
             }
+
+            ViewBag.Regions = new SelectList(
+                new List<string>
+                {
+                    "Любая область",
+                    "Брестская область",
+                    "Витебская область",
+                    "Гомельская область",
+                    "Гродненская область",
+                    "Минская область",
+                    "Могилёвская область",
+                });
+
+            ViewBag.RoomsCount = new SelectList(
+                new List<string>
+                {
+                    string.Empty,
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                });
 
             return View(new AdsPageView
             {

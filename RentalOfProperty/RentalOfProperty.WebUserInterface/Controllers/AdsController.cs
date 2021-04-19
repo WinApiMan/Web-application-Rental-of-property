@@ -14,6 +14,7 @@
     using BLLLoadDataFromSourceMenu = BusinessLogicLayer.Enums.LoadDataFromSourceMenu;
     using BLLAdsTypeMenu = BusinessLogicLayer.Enums.AdsTypeMenu;
     using System.Linq;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     /// <summary>
     /// Ads controller.
@@ -76,8 +77,8 @@
                     favoriteCount = ads.Count();
 
                     ads = ads
-                    .Skip((pageNumber - DefaultPage) * PageSize)
-                    .Take(PageSize);
+                        .Skip((pageNumber - DefaultPage) * PageSize)
+                        .Take(PageSize);
                 }
             }
             else
@@ -121,6 +122,33 @@
             }
 
             ViewBag.AdsTypeMenuItem = adsTypeMenuItem;
+
+            ViewBag.Regions = new SelectList(
+                new List<string>
+                {
+                    "Любая область",
+                    "Брестская область",
+                    "Витебская область",
+                    "Гомельская область",
+                    "Гродненская область",
+                    "Минская область",
+                    "Могилёвская область",
+                });
+
+            ViewBag.RoomsCount = new SelectList(
+                new List<string>
+                {
+                    string.Empty,
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                });
 
             return View(new AdsPageView
             {
@@ -213,6 +241,31 @@
                 _logger.LogError($"Error : {exception.Message}");
             }
 
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Search long term ads.
+        /// </summary>
+        /// <param name="longTermSearchView">Object to search.</param>
+        /// <returns>Action result object.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LongTermSearch(LongTermSearchView longTermSearchView)
+        {
+            var ads = await _adsManager.LongTermSearch(_mapper.Map<LongTermSearch>(longTermSearchView));
+            return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Search daily ads.
+        /// </summary>
+        /// <param name="dailySearchView">Object to search.</param>
+        /// <returns>Action result object.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DailySearch(DailySearchView dailySearchView)
+        {
             return RedirectToAction("Index", "Home");
         }
     }

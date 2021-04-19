@@ -1,14 +1,279 @@
 ﻿@model RentalOfProperty.WebUserInterface.Models.Ad.AdsPageView
 
+
 @{
     ViewData["Title"] = Localizer["RealEstateInBelarus"];
 }
-
-<div class="sticky-top container bg-light" style="z-index:2">
+<script src="~/js/Index.js"></script>
+<div class="sticky-top container bg-light mb-3" style="z-index:2">
     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.LongTermAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["LongTermRent"]</a>
     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.DayilyAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["RentForADay"]</a>
     <a href="#" class="col-md-2 offset-md-1 text-center btn btn-success text-white h3 mt-md-2 pl-md-1">@Localizer["PostAnAd"]</a>
 </div>
+<div class="container text-center mb-3">
+    <div class="col-md-6">
+        <input type="button" value="@Localizer["LongTermAdsSearching"]" onclick="longTermVisible()" class="btn btn-success w-75" />
+    </div> 
+    <div class="col-md-6">
+        <input type="button" value="@Localizer["DailyAdsSearching"]" onclick="dailyVisible()" class="btn btn-success w-75" />
+    </div>
+</div>
+<form asp-action="LongTermSearch" asp-controller="Ads" class="bg-info container" style="display:block" id="longTermAdsSearching">
+    <h4 class="col-md-12 text-center text-dark">@Localizer["LongTermAdsSearching"]</h4>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.Region"></label>
+                <select name="Region" asp-items="ViewBag.Regions" class="form-control"></select>
+                <span asp-validation-for="LongTermSearch.Region" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.District"></label>
+                <input name="District" class="form-control" />
+                <span asp-validation-for="LongTermSearch.District" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.Locality"></label>
+                <input name="Locality" class="form-control" />
+                <span asp-validation-for="LongTermSearch.Locality" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.Address"></label>
+                <input name="Address" class="form-control" />
+                <span asp-validation-for="LongTermSearch.Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartRoomsCount"></label>
+                <select name="StartRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="LongTermSearch.StartRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishRoomsCount"></label>
+                <select name="FinishRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="LongTermSearch.FinishRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartCurrentFloor"></label>
+                <input name="StartCurrentFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishCurrentFloor"></label>
+                <input name="FinishCurrentFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartTotalFloor"></label>
+                <input name="StartTotalFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishTotalFloor"></label>
+                <input name="FinishTotalFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.IsFirstFloor"></label>
+                <input asp-for="LongTermSearch.IsFirstFloor" name="IsFirstFloor" />
+                <span asp-validation-for="LongTermSearch.IsFirstFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.IsLastFloor"></label>
+                <input asp-for="LongTermSearch.IsLastFloor" name="IsLastFloor" />
+                <span asp-validation-for="LongTermSearch.IsLastFloor" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartTotalArea"></label>
+                <input name="StartTotalArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartTotalArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishTotalArea"></label>
+                <input name="FinishTotalArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishTotalArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartLivingArea"></label>
+                <input name="StartLivingArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartLivingArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishLivingArea"></label>
+                <input name="FinishLivingArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishLivingArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartKitchenArea"></label>
+                <input name="StartKitchenArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartKitchenArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishKitchenArea"></label>
+                <input name="FinishKitchenArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishKitchenArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartLandArea"></label>
+                <input name="StartLandArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartLandArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishLandArea"></label>
+                <input name="FinishLandArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishLandArea" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartBYNPrice"></label>
+                <input name="StartBYNPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartBYNPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishBYNPrice"></label>
+                <input name="FinishBYNPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishBYNPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartUSDPrice"></label>
+                <input name="StartUSDPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartUSDPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishUSDPrice"></label>
+                <input name="FinishUSDPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishUSDPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-block btn-success w-100 mt-5" type="submit">@Localizer["Search"]</button>
+            </div>
+         </div>
+    </div>
+</form>
+<form asp-action="DailySearch" asp-controller="Ads" class="bg-info container" style="display:none" id="dailyAdsSearching">
+    <h4 class="col-md-12 text-center text-dark">@Localizer["DailyAdsSearching"]</h4>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.Region"></label>
+                <select name="Region" asp-items="ViewBag.Regions" class="form-control"></select>
+                <span asp-validation-for="DailySearch.Region" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.District"></label>
+                <input name="District" class="form-control" />
+                <span asp-validation-for="DailySearch.District" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.Locality"></label>
+                <input name="Locality" class="form-control" />
+                <span asp-validation-for="DailySearch.Locality" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.Address"></label>
+                <input name="Address" class="form-control" />
+                <span asp-validation-for="DailySearch.Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartRoomsCount"></label>
+                <select name="StartRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="DailySearch.StartRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishRoomsCount"></label>
+                <select name="FinishRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="DailySearch.FinishRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartCurrentFloor"></label>
+                <input name="StartCurrentFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.StartCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishCurrentFloor"></label>
+                <input name="FinishCurrentFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartTotalFloor"></label>
+                <input name="StartTotalFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.StartTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishTotalFloor"></label>
+                <input name="FinishTotalFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.IsFirstFloor"></label>
+                <input asp-for="DailySearch.IsFirstFloor" name="IsFirstFloor" />
+                <span asp-validation-for="LongTermSearch.IsFirstFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.IsLastFloor"></label>
+                <input asp-for="DailySearch.IsLastFloor" name="IsLastFloor" />
+                <span asp-validation-for="DailySearch.IsLastFloor" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartBYNPricePerPerson"></label>
+                <input name="StartBYNPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.StartBYNPricePerPerson" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishBYNPricePerPerson"></label>
+                <input name="FinishBYNPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishBYNPricePerPerson" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartUSDPricePerPerson"></label>
+                <input name="StartUSDPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.StartUSDPricePerPerson" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishUSDPricePerPerson"></label>
+                <input name="FinishUSDPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishUSDPricePerPerson" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartBYNPricePerDay"></label>
+                <input name="StartBYNPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.StartBYNPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishBYNPricePerDay"></label>
+                <input name="FinishBYNPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishBYNPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartUSDPricePerDay"></label>
+                <input name="StartUSDPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.StartUSDPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishUSDPricePerDay"></label>
+                <input name="FinishUSDPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishUSDPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-block btn-success w-100 mt-5 mb-3" type="submit">@Localizer["Search"]</button>
+            </div>
+        </div>
+    </div>
+</form>
 
 <div id="loadResult">
     @if (Model.AdViews.Count() != 0)

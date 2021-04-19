@@ -149,6 +149,10 @@
     <value>Contract</value>
     <comment>Contract parice</comment>
   </data>
+  <data name="DailyAdsSearching" xml:space="preserve">
+    <value>DailyAdsSearching</value>
+    <comment>Daily ads searching</comment>
+  </data>
   <data name="Floors" xml:space="preserve">
     <value>Floors</value>
     <comment>Floors</comment>
@@ -156,6 +160,10 @@
   <data name="ImageNotFound" xml:space="preserve">
     <value>Image not found</value>
     <comment>Image not found</comment>
+  </data>
+  <data name="LongTermAdsSearching" xml:space="preserve">
+    <value>Long term ads searching</value>
+    <comment>Long term ads searching</comment>
   </data>
   <data name="LongTermRent" xml:space="preserve">
     <value>Long term rent</value>

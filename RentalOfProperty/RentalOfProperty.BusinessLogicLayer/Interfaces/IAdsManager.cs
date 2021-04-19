@@ -79,5 +79,19 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="userId">User unique key.</param>
         /// <returns>Favorite ads list.</returns>
         Task<IEnumerable<RentalAd>> GetFavoriteAds(string userId);
+
+        /// <summary>
+        /// Search long term ads use parametrs.
+        /// </summary>
+        /// <param name="longTermSearch">Parametrs for searching.</param>
+        /// <returns>Result ads.</returns>
+        Task<IEnumerable<RentalAd>> LongTermSearch(LongTermSearch longTermSearch);
+
+        /// <summary>
+        /// Search daily ads use parametrs.
+        /// </summary>
+        /// <param name="dailySearch">Parametrs for searching.</param>
+        /// <returns>Result ads.</returns>
+        Task<IEnumerable<RentalAd>> DailySearch(DailySearch dailySearch);
     }
 }

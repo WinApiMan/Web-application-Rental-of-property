@@ -25,5 +25,15 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets a value indicating whether is load success.
         /// </summary>
         public bool IsSuccess { get; set; }
+
+        /// <summary>
+        /// Gets or sets daily search view.
+        /// </summary>
+        public DailySearchView DailySearch { get; set; }
+
+        /// <summary>
+        /// Gets or sets long term search view.
+        /// </summary>
+        public LongTermSearchView LongTermSearch { get; set; }
     }
 }

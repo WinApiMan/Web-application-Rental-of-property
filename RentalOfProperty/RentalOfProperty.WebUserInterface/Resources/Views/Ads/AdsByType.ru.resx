@@ -149,6 +149,10 @@
     <value>Договорная</value>
     <comment>Contract parice</comment>
   </data>
+  <data name="DailyAdsSearching" xml:space="preserve">
+    <value>Поиск жилья на сутки</value>
+    <comment>Daily ads searching</comment>
+  </data>
   <data name="Floors" xml:space="preserve">
     <value>Этажность</value>
     <comment>Floors</comment>
@@ -156,6 +160,10 @@
   <data name="ImageNotFound" xml:space="preserve">
     <value>Изображение не найдено</value>
     <comment>Image not found</comment>
+  </data>
+  <data name="LongTermAdsSearching" xml:space="preserve">
+    <value>Поиск долговременного жилья</value>
+    <comment>Long term ads searching</comment>
   </data>
   <data name="LongTermRent" xml:space="preserve">
     <value>Долгосрочная аренда</value>

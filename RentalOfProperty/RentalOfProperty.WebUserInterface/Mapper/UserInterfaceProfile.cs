@@ -33,6 +33,10 @@ namespace RentalOfProperty.WebUserInterface.Mapper
 
             CreateMap<LoadDataFromSourceMenu, BLLLoadDataFromSourceMenu>().ReverseMap();
             CreateMap<AdsTypeMenu, BLLAdsTypeMenu>().ReverseMap();
+
+            CreateMap<SearchView, Search>().ReverseMap();
+            CreateMap<DailySearchView, DailySearch>().ReverseMap();
+            CreateMap<LongTermSearchView, LongTermSearch>().ReverseMap();
         }
     }
 }

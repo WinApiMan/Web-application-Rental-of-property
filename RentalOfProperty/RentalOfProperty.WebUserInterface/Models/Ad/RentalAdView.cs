@@ -1,4 +1,4 @@
-﻿// <copyright file="RentalAdViewModel.cs" company="PlaceholderCompany">
+﻿// <copyright file="RentalAdView.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
