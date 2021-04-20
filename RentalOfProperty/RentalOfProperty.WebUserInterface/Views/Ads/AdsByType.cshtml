@@ -4,12 +4,276 @@
 @{
     ViewData["Title"] = Localizer["AdsByType"];
 }
+<script src="~/js/Index.js"></script>
 <div class="sticky-top container bg-light" style="z-index:2">
     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.LongTermAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["LongTermRent"]</a>
     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.DayilyAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["RentForADay"]</a>
     <a href="#" class="col-md-2 offset-md-1 text-center btn btn-success text-white h3 mt-md-2 pl-md-1">@Localizer["PostAnAd"]</a>
 </div>
-
+<div class="container text-center mb-3 mt-3">
+    <div class="col-md-6">
+        <input type="button" value="@Localizer["LongTermAdsSearching"]" onclick="longTermVisible()" class="btn btn-success w-75" />
+    </div>
+    <div class="col-md-6">
+        <input type="button" value="@Localizer["DailyAdsSearching"]" onclick="dailyVisible()" class="btn btn-success w-75" />
+    </div>
+</div>
+<form asp-action="LongTermSearch" asp-controller="Ads" class="bg-info container" style="display:block" id="longTermAdsSearching">
+    <h4 class="col-md-12 text-center text-dark">@Localizer["LongTermAdsSearching"]</h4>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.Region"></label>
+                <select name="Region" asp-items="ViewBag.Regions" class="form-control"></select>
+                <span asp-validation-for="LongTermSearch.Region" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.District"></label>
+                <input name="District" class="form-control" />
+                <span asp-validation-for="LongTermSearch.District" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.Locality"></label>
+                <input name="Locality" class="form-control" />
+                <span asp-validation-for="LongTermSearch.Locality" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="LongTermSearch.Address"></label>
+                <input name="Address" class="form-control" />
+                <span asp-validation-for="LongTermSearch.Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartRoomsCount"></label>
+                <select name="StartRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="LongTermSearch.StartRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishRoomsCount"></label>
+                <select name="FinishRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="LongTermSearch.FinishRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartCurrentFloor"></label>
+                <input name="StartCurrentFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishCurrentFloor"></label>
+                <input name="FinishCurrentFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartTotalFloor"></label>
+                <input name="StartTotalFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishTotalFloor"></label>
+                <input name="FinishTotalFloor" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.IsFirstFloor"></label>
+                <input asp-for="LongTermSearch.IsFirstFloor" name="IsFirstFloor" />
+                <span asp-validation-for="LongTermSearch.IsFirstFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.IsLastFloor"></label>
+                <input asp-for="LongTermSearch.IsLastFloor" name="IsLastFloor" />
+                <span asp-validation-for="LongTermSearch.IsLastFloor" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartTotalArea"></label>
+                <input name="StartTotalArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartTotalArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishTotalArea"></label>
+                <input name="FinishTotalArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishTotalArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartLivingArea"></label>
+                <input name="StartLivingArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartLivingArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishLivingArea"></label>
+                <input name="FinishLivingArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishLivingArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartKitchenArea"></label>
+                <input name="StartKitchenArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartKitchenArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishKitchenArea"></label>
+                <input name="FinishKitchenArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishKitchenArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartLandArea"></label>
+                <input name="StartLandArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartLandArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishLandArea"></label>
+                <input name="FinishLandArea" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishLandArea" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartBYNPrice"></label>
+                <input name="StartBYNPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartBYNPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishBYNPrice"></label>
+                <input name="FinishBYNPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishBYNPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.StartUSDPrice"></label>
+                <input name="StartUSDPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.StartUSDPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LongTermSearch.FinishUSDPrice"></label>
+                <input name="FinishUSDPrice" class="form-control" />
+                <span asp-validation-for="LongTermSearch.FinishUSDPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-block btn-success w-100 mt-5" type="submit">@Localizer["Search"]</button>
+            </div>
+        </div>
+    </div>
+</form>
+<form asp-action="DailySearch" asp-controller="Ads" class="bg-info container" style="display:none" id="dailyAdsSearching">
+    <h4 class="col-md-12 text-center text-dark">@Localizer["DailyAdsSearching"]</h4>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.Region"></label>
+                <select name="Region" asp-items="ViewBag.Regions" class="form-control"></select>
+                <span asp-validation-for="DailySearch.Region" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.District"></label>
+                <input name="District" class="form-control" />
+                <span asp-validation-for="DailySearch.District" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.Locality"></label>
+                <input name="Locality" class="form-control" />
+                <span asp-validation-for="DailySearch.Locality" class="text-danger"></span>
+            </div>
+            <div class="col-md-12 row">
+                <label asp-for="DailySearch.Address"></label>
+                <input name="Address" class="form-control" />
+                <span asp-validation-for="DailySearch.Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartRoomsCount"></label>
+                <select name="StartRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="DailySearch.StartRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishRoomsCount"></label>
+                <select name="FinishRoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+                <span asp-validation-for="DailySearch.FinishRoomsCount" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartCurrentFloor"></label>
+                <input name="StartCurrentFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.StartCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishCurrentFloor"></label>
+                <input name="FinishCurrentFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishCurrentFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartTotalFloor"></label>
+                <input name="StartTotalFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.StartTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishTotalFloor"></label>
+                <input name="FinishTotalFloor" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishTotalFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.IsFirstFloor"></label>
+                <input asp-for="DailySearch.IsFirstFloor" name="IsFirstFloor" />
+                <span asp-validation-for="LongTermSearch.IsFirstFloor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.IsLastFloor"></label>
+                <input asp-for="DailySearch.IsLastFloor" name="IsLastFloor" />
+                <span asp-validation-for="DailySearch.IsLastFloor" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartBYNPricePerPerson"></label>
+                <input name="StartBYNPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.StartBYNPricePerPerson" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishBYNPricePerPerson"></label>
+                <input name="FinishBYNPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishBYNPricePerPerson" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartUSDPricePerPerson"></label>
+                <input name="StartUSDPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.StartUSDPricePerPerson" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishUSDPricePerPerson"></label>
+                <input name="FinishUSDPricePerPerson" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishUSDPricePerPerson" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartBYNPricePerDay"></label>
+                <input name="StartBYNPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.StartBYNPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishBYNPricePerDay"></label>
+                <input name="FinishBYNPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishBYNPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.StartUSDPricePerDay"></label>
+                <input name="StartUSDPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.StartUSDPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DailySearch.FinishUSDPricePerDay"></label>
+                <input name="FinishUSDPricePerDay" class="form-control" />
+                <span asp-validation-for="DailySearch.FinishUSDPricePerDay" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-block btn-success w-100 mt-5 mb-3" type="submit">@Localizer["Search"]</button>
+            </div>
+        </div>
+    </div>
+</form>
 <div id="loadResult">
     @{
         string type = ViewBag.AdsTypeMenuItem switch
@@ -202,30 +466,30 @@
                         {
                             <li class="page-item" onclick="document.getElementById('pageLink-1').click()">
                                 <form asp-action="LongTermSearch" asp-route-pageNumber="1"
-                                    asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                      asp-route-Address="@Model.LongTermSearch.Address"
+                                      asp-route-District="@Model.LongTermSearch.District"
+                                      asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                      asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                      asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                      asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                      asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                      asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                      asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                      asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                      asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                      asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                      asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                      asp-route-Locality="@Model.LongTermSearch.Locality"
+                                      asp-route-Region="@Model.LongTermSearch.Region"
+                                      asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                      asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                      asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                      asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                      asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                      asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                      asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                      asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                      asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                       class="page-link">
                                     1
                                     <button type='submit' class="d-none" id="pageLink-1"></button>
@@ -233,30 +497,30 @@
                             </li>
                             <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber - PagesLinks - 1}")').click()">
                                 <form asp-action="LongTermSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber - PagesLinks - 1)"
-                                    asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                      asp-route-Address="@Model.LongTermSearch.Address"
+                                      asp-route-District="@Model.LongTermSearch.District"
+                                      asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                      asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                      asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                      asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                      asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                      asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                      asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                      asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                      asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                      asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                      asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                      asp-route-Locality="@Model.LongTermSearch.Locality"
+                                      asp-route-Region="@Model.LongTermSearch.Region"
+                                      asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                      asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                      asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                      asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                      asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                      asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                      asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                      asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                      asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                       class="page-link">
                                     @Localizer["Previous"]
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - PagesLinks - 1}")"></button>
@@ -267,30 +531,30 @@
                             {
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber - index}")').click()">
                                     <form asp-action="LongTermSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber - index)"
-                                        asp-route-Address="@Model.LongTermSearch.Address"
-                                        asp-route-District="@Model.LongTermSearch.District"
-                                        asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                        asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                        asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                        asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                        asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                        asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                        asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                        asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                        asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                        asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                        asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                        asp-route-Locality="@Model.LongTermSearch.Locality"
-                                        asp-route-Region="@Model.LongTermSearch.Region"
-                                        asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                        asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                        asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                        asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                        asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                        asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                        asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                        asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                        asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                          asp-route-Address="@Model.LongTermSearch.Address"
+                                          asp-route-District="@Model.LongTermSearch.District"
+                                          asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                          asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                          asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                          asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                          asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                          asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                          asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                          asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                          asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                          asp-route-Locality="@Model.LongTermSearch.Locality"
+                                          asp-route-Region="@Model.LongTermSearch.Region"
+                                          asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                          asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                          asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                          asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                          asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                          asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                          asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                          asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                          asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                           class="page-link">
                                         @(Model.PageInfo.PageNumber - index)
                                         <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - index}")"></button>
@@ -304,31 +568,31 @@
                             {
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{index}")').click()">
                                     <form asp-action="LongTermSearch" asp-route-pageNumber="@index"
-                                        asp-route-Address="@Model.LongTermSearch.Address"
-                                        asp-route-District="@Model.LongTermSearch.District"
-                                        asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                        asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                        asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                        asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                        asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                        asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                        asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                        asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                        asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                        asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                        asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                        asp-route-Locality="@Model.LongTermSearch.Locality"
-                                        asp-route-Region="@Model.LongTermSearch.Region"
-                                        asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                        asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                        asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                        asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                        asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                        asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                        asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                        asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                        asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
-                                        class="page-link">
+                                          asp-route-Address="@Model.LongTermSearch.Address"
+                                          asp-route-District="@Model.LongTermSearch.District"
+                                          asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                          asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                          asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                          asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                          asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                          asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                          asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                          asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                          asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                          asp-route-Locality="@Model.LongTermSearch.Locality"
+                                          asp-route-Region="@Model.LongTermSearch.Region"
+                                          asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                          asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                          asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                          asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                          asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                          asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                          asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                          asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                          asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                          class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
                                     </form>
@@ -339,30 +603,30 @@
                         {
                             <li class="page-item active" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber}")').click()">
                                 <form asp-action="LongTermSearch" asp-controller="Ads" asp-route-pageNumber="@Model.PageInfo.PageNumber"
-                                    asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                      asp-route-Address="@Model.LongTermSearch.Address"
+                                      asp-route-District="@Model.LongTermSearch.District"
+                                      asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                      asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                      asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                      asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                      asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                      asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                      asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                      asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                      asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                      asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                      asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                      asp-route-Locality="@Model.LongTermSearch.Locality"
+                                      asp-route-Region="@Model.LongTermSearch.Region"
+                                      asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                      asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                      asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                      asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                      asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                      asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                      asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                      asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                      asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                       class="page-link">
                                     @Model.PageInfo.PageNumber
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber}")"></button>
@@ -375,30 +639,30 @@
                             {
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber + index}")').click()">
                                     <form asp-action="LongTermSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber + index)"
-                                    asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                          asp-route-Address="@Model.LongTermSearch.Address"
+                                          asp-route-District="@Model.LongTermSearch.District"
+                                          asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                          asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                          asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                          asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                          asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                          asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                          asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                          asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                          asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                          asp-route-Locality="@Model.LongTermSearch.Locality"
+                                          asp-route-Region="@Model.LongTermSearch.Region"
+                                          asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                          asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                          asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                          asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                          asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                          asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                          asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                          asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                          asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                           class="page-link">
                                         @(Model.PageInfo.PageNumber + index)
                                         <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + index}")"></button>
@@ -408,30 +672,30 @@
 
                             <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber + PagesLinks + 1}")').click()">
                                 <form asp-action="LongTermSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber + PagesLinks + 1)"
-                                     asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice" 
+                                      asp-route-Address="@Model.LongTermSearch.Address"
+                                      asp-route-District="@Model.LongTermSearch.District"
+                                      asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                      asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                      asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                      asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                      asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                      asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                      asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                      asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                      asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                      asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                      asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                      asp-route-Locality="@Model.LongTermSearch.Locality"
+                                      asp-route-Region="@Model.LongTermSearch.Region"
+                                      asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                      asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                      asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                      asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                      asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                      asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                      asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                      asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                      asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                       class="page-link">
                                     @Localizer["Next"]
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + PagesLinks + 1}")"></button>
@@ -440,29 +704,29 @@
                             <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.TotalPages}")').click()">
                                 <form asp-action="LongTermSearch" asp-route-pageNumber="@Model.PageInfo.TotalPages"
                                       asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                      asp-route-District="@Model.LongTermSearch.District"
+                                      asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                      asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                      asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                      asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                      asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                      asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                      asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                      asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                      asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                      asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                      asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                      asp-route-Locality="@Model.LongTermSearch.Locality"
+                                      asp-route-Region="@Model.LongTermSearch.Region"
+                                      asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                      asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                      asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                      asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                      asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                      asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                      asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                      asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                      asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                       class="page-link">
                                     @Model.PageInfo.TotalPages
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.TotalPages}")"></button>
@@ -476,29 +740,29 @@
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{index}")').click()">
                                     <form asp-action="LongTermSearch" asp-route-pageNumber="@index"
                                           asp-route-Address="@Model.LongTermSearch.Address"
-                                    asp-route-District="@Model.LongTermSearch.District"
-                                    asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
-                                    asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
-                                    asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
-                                    asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea" 
-                                    asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
-                                    asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
-                                    asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
-                                    asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
-                                    asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
-                                    asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
-                                    asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
-                                    asp-route-Locality="@Model.LongTermSearch.Locality"
-                                    asp-route-Region="@Model.LongTermSearch.Region"
-                                    asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
-                                    asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
-                                    asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
-                                    asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
-                                    asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
-                                    asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
-                                    asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
-                                    asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
-                                    asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                          asp-route-District="@Model.LongTermSearch.District"
+                                          asp-route-FinishBYNPrice="@Model.LongTermSearch.FinishBYNPrice"
+                                          asp-route-FinishCurrentFloor="@Model.LongTermSearch.FinishCurrentFloor"
+                                          asp-route-FinishKitchenArea="@Model.LongTermSearch.FinishKitchenArea"
+                                          asp-route-FinishLandArea="@Model.LongTermSearch.FinishLandArea"
+                                          asp-route-FinishFinishLivingArea="@Model.LongTermSearch.FinishLivingArea"
+                                          asp-route-FinishRoomsCount="@Model.LongTermSearch.FinishRoomsCount"
+                                          asp-route-FinishTotalArea="@Model.LongTermSearch.FinishTotalArea"
+                                          asp-route-FinishTotalFloor="@Model.LongTermSearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPrice="@Model.LongTermSearch.FinishUSDPrice"
+                                          asp-route-IsFirstFloor="@Model.LongTermSearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.LongTermSearch.IsLastFloor"
+                                          asp-route-Locality="@Model.LongTermSearch.Locality"
+                                          asp-route-Region="@Model.LongTermSearch.Region"
+                                          asp-route-StartBYNPrice="@Model.LongTermSearch.StartBYNPrice"
+                                          asp-route-StartCurrentFloor="@Model.LongTermSearch.StartCurrentFloor"
+                                          asp-route-StartKitchenArea="@Model.LongTermSearch.StartKitchenArea"
+                                          asp-route-StartLandArea="@Model.LongTermSearch.StartLandArea"
+                                          asp-route-StartLivingArea="@Model.LongTermSearch.StartLivingArea"
+                                          asp-route-StartRoomsCount="@Model.LongTermSearch.StartRoomsCount"
+                                          asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
+                                          asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
+                                          asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
                                           class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
@@ -510,7 +774,7 @@
                 </ul>
             </nav>
         }
-        else if(ViewBag.AdsTypeMenuItem == AdsTypeMenu.DailySearch)
+        else if (ViewBag.AdsTypeMenuItem == AdsTypeMenu.DailySearch)
         {
             <nav aria-label="Page navigation example" class="mb-md-5 ml-md-4">
                 <ul class="pagination">
@@ -579,25 +843,25 @@
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber - index}")').click()">
                                     <form asp-action="DailySearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber - index)"
                                           asp-route-Address="@Model.DailySearch.Address"
-                                      asp-route-District="@Model.DailySearch.District"
-                                      asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
-                                      asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
-                                      asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
-                                      asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
-                                      asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
-                                      asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
-                                      asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
-                                      asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
-                                      asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
-                                      asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
-                                      asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
-                                      asp-route-Locality="@Model.DailySearch.Locality"
-                                      asp-route-Region="@Model.DailySearch.Region"
-                                      asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
-                                      asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
-                                      asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
-                                      asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
-                                      asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
+                                          asp-route-District="@Model.DailySearch.District"
+                                          asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
+                                          asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
+                                          asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
+                                          asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
+                                          asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
+                                          asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
+                                          asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
+                                          asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
+                                          asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
+                                          asp-route-Locality="@Model.DailySearch.Locality"
+                                          asp-route-Region="@Model.DailySearch.Region"
+                                          asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
+                                          asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
+                                          asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
+                                          asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
+                                          asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
                                           class="page-link">
                                         @(Model.PageInfo.PageNumber - index)
                                         <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - index}")"></button>
@@ -612,25 +876,25 @@
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{index}")').click()">
                                     <form asp-action="DailySearch" asp-route-pageNumber="@index"
                                           asp-route-Address="@Model.DailySearch.Address"
-                                      asp-route-District="@Model.DailySearch.District"
-                                      asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
-                                      asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
-                                      asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
-                                      asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
-                                      asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
-                                      asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
-                                      asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
-                                      asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
-                                      asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
-                                      asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
-                                      asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
-                                      asp-route-Locality="@Model.DailySearch.Locality"
-                                      asp-route-Region="@Model.DailySearch.Region"
-                                      asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
-                                      asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
-                                      asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
-                                      asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
-                                      asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
+                                          asp-route-District="@Model.DailySearch.District"
+                                          asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
+                                          asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
+                                          asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
+                                          asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
+                                          asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
+                                          asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
+                                          asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
+                                          asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
+                                          asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
+                                          asp-route-Locality="@Model.DailySearch.Locality"
+                                          asp-route-Region="@Model.DailySearch.Region"
+                                          asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
+                                          asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
+                                          asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
+                                          asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
+                                          asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
                                           class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
@@ -675,25 +939,25 @@
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber + index}")').click()">
                                     <form asp-action="DailySearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber + index)"
                                           asp-route-Address="@Model.DailySearch.Address"
-                                      asp-route-District="@Model.DailySearch.District"
-                                      asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
-                                      asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
-                                      asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
-                                      asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
-                                      asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
-                                      asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
-                                      asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
-                                      asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
-                                      asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
-                                      asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
-                                      asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
-                                      asp-route-Locality="@Model.DailySearch.Locality"
-                                      asp-route-Region="@Model.DailySearch.Region"
-                                      asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
-                                      asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
-                                      asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
-                                      asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
-                                      asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
+                                          asp-route-District="@Model.DailySearch.District"
+                                          asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
+                                          asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
+                                          asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
+                                          asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
+                                          asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
+                                          asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
+                                          asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
+                                          asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
+                                          asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
+                                          asp-route-Locality="@Model.DailySearch.Locality"
+                                          asp-route-Region="@Model.DailySearch.Region"
+                                          asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
+                                          asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
+                                          asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
+                                          asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
+                                          asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
                                           class="page-link">
                                         @(Model.PageInfo.PageNumber + index)
                                         <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + index}")"></button>
@@ -763,25 +1027,25 @@
                                 <li class="page-item" onclick="document.getElementById('@($"pageLink-{index}")').click()">
                                     <form asp-action="DailySearch" asp-route-pageNumber="@index"
                                           asp-route-Address="@Model.DailySearch.Address"
-                                      asp-route-District="@Model.DailySearch.District"
-                                      asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
-                                      asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
-                                      asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
-                                      asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
-                                      asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
-                                      asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
-                                      asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
-                                      asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
-                                      asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
-                                      asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
-                                      asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
-                                      asp-route-Locality="@Model.DailySearch.Locality"
-                                      asp-route-Region="@Model.DailySearch.Region"
-                                      asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
-                                      asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
-                                      asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
-                                      asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
-                                      asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
+                                          asp-route-District="@Model.DailySearch.District"
+                                          asp-route-StartBYNPricePerPerson="@Model.DailySearch.StartBYNPricePerPerson"
+                                          asp-route-FinishCurrentFloor="@Model.DailySearch.FinishCurrentFloor"
+                                          asp-route-FinishBYNPricePerPerson="@Model.DailySearch.FinishBYNPricePerPerson"
+                                          asp-route-StartUSDPricePerPerson="@Model.DailySearch.StartUSDPricePerPerson"
+                                          asp-route-FinishUSDPricePerPerson="@Model.DailySearch.FinishUSDPricePerPerson"
+                                          asp-route-FinishRoomsCount="@Model.DailySearch.FinishRoomsCount"
+                                          asp-route-StartUSDPricePerDay="@Model.DailySearch.StartUSDPricePerDay"
+                                          asp-route-FinishTotalFloor="@Model.DailySearch.FinishTotalFloor"
+                                          asp-route-FinishUSDPricePerDay="@Model.DailySearch.FinishUSDPricePerDay"
+                                          asp-route-IsFirstFloor="@Model.DailySearch.IsFirstFloor"
+                                          asp-route-IsLastFloor="@Model.DailySearch.IsLastFloor"
+                                          asp-route-Locality="@Model.DailySearch.Locality"
+                                          asp-route-Region="@Model.DailySearch.Region"
+                                          asp-route-StartBYNPricePerDay="@Model.DailySearch.StartBYNPricePerDay"
+                                          asp-route-StartCurrentFloor="@Model.DailySearch.StartCurrentFloor"
+                                          asp-route-FinishBYNPricePerDay="@Model.DailySearch.FinishBYNPricePerDay"
+                                          asp-route-StartRoomsCount="@Model.DailySearch.StartRoomsCount"
+                                          asp-route-StartTotalFloor="@Model.DailySearch.StartTotalFloor"
                                           class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
