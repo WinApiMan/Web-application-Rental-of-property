@@ -23,5 +23,15 @@ namespace RentalOfProperty.WebUserInterface.Enums
         /// User favorite ads.
         /// </summary>
         FavoriteAds,
+
+        /// <summary>
+        /// Long term ads searching.
+        /// </summary>
+        LongTermSearch,
+
+        /// <summary>
+        /// Daily ads searching.
+        /// </summary>
+        DailySearch,
     }
 }

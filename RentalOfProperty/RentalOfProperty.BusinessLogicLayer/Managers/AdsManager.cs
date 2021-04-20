@@ -611,7 +611,122 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Result ads.</returns>
         public async Task<IEnumerable<RentalAd>> DailySearch(DailySearch dailySearch)
         {
-            return new List<RentalAd>();
+            if (dailySearch.Address is null && dailySearch.District is null && dailySearch.StartBYNPricePerPerson is null
+                && dailySearch.FinishCurrentFloor is null && dailySearch.FinishBYNPricePerPerson is null && dailySearch.StartUSDPricePerPerson is null
+                && dailySearch.FinishUSDPricePerPerson is null && dailySearch.FinishRoomsCount is null && dailySearch.StartUSDPricePerDay is null
+                && dailySearch.FinishTotalFloor is null && dailySearch.FinishUSDPricePerDay is null && !dailySearch.IsFirstFloor
+                && !dailySearch.IsLastFloor && dailySearch.Locality is null && dailySearch.Region is null
+                && dailySearch.StartBYNPricePerDay is null && dailySearch.StartCurrentFloor is null && dailySearch.FinishBYNPricePerDay is null
+                && dailySearch.StartRoomsCount is null && dailySearch.StartTotalFloor is null)
+            {
+                return new List<RentalAd>();
+            }
+            else
+            {
+                var ads = _mapper.Map<IEnumerable<DailyRentalAd>>(await _dailyRentalAdsRepository.Get());
+
+                if (!dailySearch.Region.Equals("Любая область"))
+                {
+                    ads = ads.Where(ad => ad.Region.ToLower().IndexOf(dailySearch.Region.ToLower()) != -1);
+                }
+
+                if (!(dailySearch.District is null))
+                {
+                    ads = ads.Where(ad => ad.District.ToLower().IndexOf(dailySearch.District.ToLower()) != -1);
+                }
+
+                if (!(dailySearch.Locality is null))
+                {
+                    ads = ads.Where(ad => ad.Locality.ToLower().IndexOf(dailySearch.Locality.ToLower()) != -1);
+                }
+
+                if (!(dailySearch.Address is null))
+                {
+                    ads = ads.Where(ad => ad.Address.ToLower().IndexOf(dailySearch.Address.ToLower()) != -1);
+                }
+
+                if (!(dailySearch.StartRoomsCount is null))
+                {
+                    ads = ads.Where(ad => ad.TotalCountOfRooms >= dailySearch.StartRoomsCount);
+                }
+
+                if (!(dailySearch.FinishRoomsCount is null))
+                {
+                    ads = ads.Where(ad => ad.TotalCountOfRooms <= dailySearch.FinishRoomsCount);
+                }
+
+                if (!(dailySearch.StartCurrentFloor is null))
+                {
+                    ads = ads.Where(ad => ad.Floor >= dailySearch.StartCurrentFloor);
+                }
+
+                if (!(dailySearch.FinishCurrentFloor is null))
+                {
+                    ads = ads.Where(ad => ad.Floor <= dailySearch.FinishCurrentFloor);
+                }
+
+                if (!(dailySearch.StartTotalFloor is null))
+                {
+                    ads = ads.Where(ad => ad.TotalFloors >= dailySearch.StartTotalFloor);
+                }
+
+                if (!(dailySearch.FinishTotalFloor is null))
+                {
+                    ads = ads.Where(ad => ad.TotalFloors <= dailySearch.FinishTotalFloor);
+                }
+
+                if (dailySearch.IsFirstFloor)
+                {
+                    ads = ads.Where(ad => ad.Floor > 1);
+                }
+
+                if (dailySearch.IsLastFloor)
+                {
+                    ads = ads.Where(ad => ad.Floor < ad.TotalFloors);
+                }
+
+                if (!(dailySearch.StartBYNPricePerPerson is null))
+                {
+                    ads = ads.Where(ad => ad.BYNPricePerPerson >= dailySearch.StartBYNPricePerPerson);
+                }
+
+                if (!(dailySearch.FinishBYNPricePerPerson is null))
+                {
+                    ads = ads.Where(ad => ad.BYNPricePerPerson <= dailySearch.FinishBYNPricePerPerson);
+                }
+
+                if (!(dailySearch.StartUSDPricePerPerson is null))
+                {
+                    ads = ads.Where(ad => ad.USDPricePerPerson >= dailySearch.StartUSDPricePerPerson);
+                }
+
+                if (!(dailySearch.FinishUSDPricePerPerson is null))
+                {
+                    ads = ads.Where(ad => ad.USDPricePerPerson <= dailySearch.FinishUSDPricePerPerson);
+                }
+
+                if (!(dailySearch.StartUSDPricePerDay is null))
+                {
+                    ads = ads.Where(ad => ad.USDPricePerDay >= dailySearch.StartUSDPricePerDay);
+                }
+
+                if (!(dailySearch.FinishUSDPricePerDay is null))
+                {
+                    ads = ads.Where(ad => ad.USDPricePerDay <= dailySearch.FinishUSDPricePerDay);
+                }
+
+                if (!(dailySearch.StartBYNPricePerDay is null))
+                {
+                    ads = ads.Where(ad => ad.BYNPricePerDay >= dailySearch.StartBYNPricePerDay);
+                }
+
+                if (!(dailySearch.FinishBYNPricePerDay is null))
+                {
+                    ads = ads.Where(ad => ad.BYNPricePerDay <= dailySearch.FinishBYNPricePerDay);
+                }
+
+                return ads.ToList();
+            }
         }
     }
 }
