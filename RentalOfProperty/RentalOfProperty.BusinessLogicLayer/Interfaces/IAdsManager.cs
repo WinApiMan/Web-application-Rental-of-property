@@ -93,5 +93,12 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="dailySearch">Parametrs for searching.</param>
         /// <returns>Result ads.</returns>
         Task<IEnumerable<RentalAd>> DailySearch(DailySearch dailySearch);
+
+        /// <summary>
+        /// Get rental ad by id.
+        /// </summary>
+        /// <param name="id">Unique key.</param>
+        /// <returns>Rental ad.</returns>
+        Task<AllRentalAdInfo> GetAllRentalAdInfo(string id);
     }
 }

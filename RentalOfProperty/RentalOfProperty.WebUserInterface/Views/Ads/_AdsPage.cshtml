@@ -59,7 +59,7 @@
             </td>
             <td>
                 <div class="row">
-                    <a href="#" class="col-md-12 text-primary pb-4">@ad.RentalAdView.Locality, @ad.RentalAdView.Address</a>
+                    <a asp-action="RentalAd" asp-controller="Ads" asp-route-id="@ad.RentalAdView.Id" class="col-md-12 text-primary pb-4">@ad.RentalAdView.Locality, @ad.RentalAdView.Address</a>
                     <div class="col-md-12">
                         @{ 
                             var descriptionArray = ad.RentalAdView.Description.ToArray();

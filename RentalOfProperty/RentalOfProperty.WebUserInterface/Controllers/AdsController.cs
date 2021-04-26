@@ -15,6 +15,7 @@
     using BLLAdsTypeMenu = BusinessLogicLayer.Enums.AdsTypeMenu;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using RentalOfProperty.WebUserInterface.Models;
 
     /// <summary>
     /// Ads controller.
@@ -46,6 +47,25 @@
             _usersManager = usersManager;
             _mapper = mapper;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// All info about rental ad.
+        /// </summary>
+        /// <param name="id">Unique key.</param>
+        /// <returns>Action result object.</returns>
+        public async Task<IActionResult> RentalAd(string id)
+        {
+            try
+            {
+                var allRentalAdInfo = _mapper.Map<AllRentalAdInfoView>(await _adsManager.GetAllRentalAdInfo(id));
+                return View(allRentalAdInfo);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         /// <summary>

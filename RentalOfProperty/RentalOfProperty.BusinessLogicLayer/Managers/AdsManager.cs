@@ -43,6 +43,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
         private readonly IAdsFilter<RentalAdDTO> _adsFilterRepository;
 
+        private readonly IUserRepository _usersRepository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AdsManager"/> class.
         /// </summary>
@@ -56,7 +58,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <param name="longTermRentalAdsRepository">Long term rental ads repository.</param>
         /// <param name="userRentalAdsRepository">User rental ads repository.</param>
         /// <param name="adsFilterRepository">Ads filter repository.</param>
-        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IRepository<UserRentalAdDTO> userRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository)
+        /// <param name="userRepository">User repository.</param>
+        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IRepository<UserRentalAdDTO> userRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository, IUserRepository userRepository)
         {
             _goHomeByDataLoader = serviceResolver(LoaderMenu.GoHomeBy);
             _realtByDataLoader = serviceResolver(LoaderMenu.RealtBY);
@@ -69,6 +72,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             _longTermRentalAdsRepository = longTermRentalAdsRepository;
             _userRentalAdsRepository = userRentalAdsRepository;
             _adsFilterRepository = adsFilterRepository;
+            _usersRepository = userRepository;
         }
 
         /// <summary>
@@ -251,7 +255,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                             aditionalAdData.UpdateDate = ad.AditionalAdData.UpdateDate;
                             updatingAditionalAdDatas.Add(aditionalAdData);
                         }
-
 
                         addingHousingPhotos.AddRange(ad.HousingPhotos);
                     }
@@ -726,6 +729,81 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 }
 
                 return ads.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Get rental ad by id.
+        /// </summary>
+        /// <param name="id">Unique key.</param>
+        /// <returns>Rental ad.</returns>
+        public async Task<AllRentalAdInfo> GetAllRentalAdInfo(string id)
+        {
+            var allRentalAdInfo = new AllRentalAdInfo();
+
+            IEnumerable<RentalAdDTO> rentalAds = await _dailyRentalAdsRepository.Get(ad => ad.Id.Equals(id));
+
+            if (rentalAds.Count() == default)
+            {
+                rentalAds = await _longTermRentalAdsRepository.Get(ad => ad.Id.Equals(id));
+            }
+
+            if (rentalAds.Count() != default)
+            {
+                allRentalAdInfo.RentalAd = _mapper.Map<RentalAd>(rentalAds.First());
+
+                var contactPersons = await _contactPersonsRepository.Get(person => person.Id.Equals(allRentalAdInfo.RentalAd.ContactPersonId));
+
+                if (contactPersons.Count() != default)
+                {
+                    allRentalAdInfo.ContactPerson = _mapper.Map<ContactPerson>(contactPersons.First());
+                    allRentalAdInfo.IsOriginal = false;
+                }
+                else
+                {
+                    var user = await _usersRepository.FindById(allRentalAdInfo.RentalAd.ContactPersonId);
+
+                    if (user is null)
+                    {
+                        allRentalAdInfo.ContactPerson = new ContactPerson();
+                    }
+                    else
+                    {
+                        allRentalAdInfo.ContactPerson = new ContactPerson
+                        {
+                            Id = user.Id,
+                            Name = user.FullName,
+                            PhoneNumber = user.PhoneNumber,
+                            Email = user.Email,
+                            AdditionalPhoneNumber = "-",
+                        };
+                    }
+                }
+
+                allRentalAdInfo.IsOriginal = true;
+                allRentalAdInfo.Photos = await GetHousingPhotosByRentalAdId(id);
+                var aditionalAdDatas = await _aditionalAdDatasRepository.Get(data => data.Id.Equals(allRentalAdInfo.RentalAd.Id));
+
+                if (aditionalAdDatas.Count() == default)
+                {
+                    allRentalAdInfo.AditionalAdData = new AditionalAdData();
+                }
+                else
+                {
+                    var data = aditionalAdDatas.First();
+                    data.TotalViews += 1;
+                    data.WeekViews += 1;
+                    data.MonthViews += 1;
+                    await _aditionalAdDatasRepository.Update(data);
+
+                    allRentalAdInfo.AditionalAdData = _mapper.Map<AditionalAdData>(aditionalAdDatas.First());
+                }
+
+                return allRentalAdInfo;
+            }
+            else
+            {
+                throw new NullReferenceException("Rental ad not found");
             }
         }
     }
