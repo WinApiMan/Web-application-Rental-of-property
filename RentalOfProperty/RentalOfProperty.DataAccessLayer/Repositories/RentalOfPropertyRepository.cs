@@ -163,6 +163,21 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         }
 
         /// <summary>
+        /// Get ads with predicate for page.
+        /// </summary>
+        /// <param name="query">Sql query.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        public async Task<IEnumerable<TEntity>> GetAdsForPage(string query, int pageNumber, int pageSize)
+        {
+            const int DefaultIndex = 1;
+            query = string.Concat(query, $"order by Region offset {(pageNumber - DefaultIndex) * pageSize} rows fetch next {pageSize} rows only");
+            return await _dbSet.FromSqlRaw(query)
+                .ToListAsync();
+        }
+
+        /// <summary>
         /// Get rental ads count.
         /// </summary>
         /// <returns>Ads count.</returns>
@@ -181,6 +196,16 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
             return _dbSet.AsNoTracking()
             .Where(predicate)
             .Count();
+        }
+
+        /// <summary>
+        /// Get rental ads count with sql query.
+        /// </summary>
+        /// <param name="query">Sql query string.</param>
+        /// <returns>Ads count.</returns>
+        public int GetRentalAdsCount(string query)
+        {
+            return _dbSet.FromSqlRaw(query).Count();
         }
     }
 }

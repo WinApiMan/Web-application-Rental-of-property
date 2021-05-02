@@ -34,6 +34,15 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         Task<IEnumerable<TEntity>> GetAdsForPage(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize);
 
         /// <summary>
+        /// Get ads with predicate for page.
+        /// </summary>
+        /// <param name="query">Sql query.</param>
+        /// <param name="pageNumber">Current page number.</param>
+        /// <param name="pageSize">Ads count in page.</param>
+        /// <returns>Ads list.</returns>
+        Task<IEnumerable<TEntity>> GetAdsForPage(string query, int pageNumber, int pageSize);
+
+        /// <summary>
         /// Get rental ads count.
         /// </summary>
         /// <returns>Ads count.</returns>
@@ -44,6 +53,13 @@ namespace RentalOfProperty.DataAccessLayer.Interfaces
         /// </summary>
         /// <param name="predicate">Predicate object.</param>
         /// <returns>Ads count.</returns>
-        public int GetRentalAdsCount(Expression<Func<TEntity, bool>> predicate);
+        int GetRentalAdsCount(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// Get rental ads count with sql query.
+        /// </summary>
+        /// <param name="query">Sql query string.</param>
+        /// <returns>Ads count.</returns>
+        int GetRentalAdsCount(string query);
     }
 }

@@ -274,13 +274,7 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LongTermSearch(LongTermSearchView longTermSearchView, int pageNumber = DefaultPage)
         {
-            var ads = await _adsManager.LongTermSearch(_mapper.Map<LongTermSearch>(longTermSearchView));
-
-            int adsCount = ads.Count();
-
-            ads = ads
-                .Skip((pageNumber - DefaultPage) * PageSize)
-                .Take(PageSize);
+            var ads = await _adsManager.LongTermSearch(_mapper.Map<LongTermSearch>(longTermSearchView), pageNumber, PageSize);
 
             var adViews = new List<AdView>();
 
@@ -353,7 +347,7 @@
                 {
                     PageNumber = pageNumber,
                     PageSize = PageSize,
-                    TotalItems = adsCount,
+                    TotalItems = _adsManager.GetLongTermSearchCount(_mapper.Map<LongTermSearch>(longTermSearchView)),
                 },
                 LongTermSearch = longTermSearchView,
                 IsSuccess = false,
@@ -370,13 +364,7 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DailySearch(DailySearchView dailySearchView, int pageNumber = DefaultPage)
         {
-            var ads = await _adsManager.DailySearch(_mapper.Map<DailySearch>(dailySearchView));
-
-            int adsCount = ads.Count();
-
-            ads = ads
-                .Skip((pageNumber - DefaultPage) * PageSize)
-                .Take(PageSize);
+            var ads = await _adsManager.DailySearch(_mapper.Map<DailySearch>(dailySearchView), pageNumber, PageSize);
 
             var adViews = new List<AdView>();
 
@@ -449,7 +437,7 @@
                 {
                     PageNumber = pageNumber,
                     PageSize = PageSize,
-                    TotalItems = adsCount,
+                    TotalItems = _adsManager.GetDailySearchCount(_mapper.Map<DailySearch>(dailySearchView)),
                 },
                 DailySearch = dailySearchView,
                 IsSuccess = false,
