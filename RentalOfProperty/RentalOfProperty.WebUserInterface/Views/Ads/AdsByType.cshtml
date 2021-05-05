@@ -365,7 +365,7 @@
                                 <div class="row">
                                     @if (User.Identity.IsAuthenticated)
                                     {
-                                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" class="form-check col-md-12 text-left">
+                                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" asp-route-returnUrl="/Ads/AdsByType?adsTypeMenuItem=@ViewBag.AdsTypeMenuItem" class="form-check col-md-12 text-left">
                                             @if (ad.RentalAdView.IsFavorite)
                                             {
                                                 <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
@@ -417,7 +417,7 @@
                                 <div class="row">
                                     @if (User.Identity.IsAuthenticated)
                                     {
-                                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" class="form-check col-md-12 text-left">
+                                        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@ad.RentalAdView.Id" asp-route-returnUrl="/Ads/AdsByType?adsTypeMenuItem=@ViewBag.AdsTypeMenuItem" class="form-check col-md-12 text-left">
                                             @if (ad.RentalAdView.IsFavorite)
                                             {
                                                 <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />

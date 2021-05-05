@@ -58,8 +58,38 @@
         {
             try
             {
-                var allRentalAdInfo = _mapper.Map<AllRentalAdInfoView>(await _adsManager.GetAllRentalAdInfo(id));
-                return View(allRentalAdInfo);
+                var allRentalAdInfo = await _adsManager.GetAllRentalAdInfo(id);
+                var allRentalAdInfoView = new AllRentalAdInfoView
+                {
+                    AditionalAdData = _mapper.Map<AditionalAdDataView>(allRentalAdInfo.AditionalAdData),
+                    ContactPerson = _mapper.Map<ContactPersonView>(allRentalAdInfo.ContactPerson),
+                    Photos = _mapper.Map<IEnumerable<HousingPhotoView>>(allRentalAdInfo.Photos),
+                    IsOriginal = allRentalAdInfo.IsOriginal,
+                };
+                var userId = User.Identity.Name is null ? default : _usersManager.FindByEmail(User.Identity.Name).Id;
+                var userFavoriteAds = userId is null ? default : await _adsManager.GetUserFavoriteAds(userId);
+
+                if (allRentalAdInfo.RentalAd is DailyRentalAd)
+                {
+                    allRentalAdInfoView.RentalAd = _mapper.Map<DailyRentalAdView>(allRentalAdInfo.RentalAd);
+                }
+                else
+                {
+                    allRentalAdInfoView.RentalAd = _mapper.Map<LongTermRentalAdView>(allRentalAdInfo.RentalAd);
+                }
+
+                if (!(userFavoriteAds is null))
+                {
+                    allRentalAdInfoView.RentalAd.IsFavorite = userFavoriteAds.FirstOrDefault(userAd => userAd.RentalAdId.Equals(allRentalAdInfoView.RentalAd.Id) && userAd.UserId.Equals(userId)) is null ? false : true;
+                }
+
+                allRentalAdInfoView.MapPlace = new MapPlace
+                {
+                    GeoLong = allRentalAdInfo.RentalAd.XMapCoordinate,
+                    GeoLat = allRentalAdInfo.RentalAd.YMapCoordinate,
+                };
+
+                return View(allRentalAdInfoView);
             }
             catch (Exception exception)
             {
@@ -245,11 +275,12 @@
         /// Add ad to favourites.
         /// </summary>
         /// <param name="rentalAdId">Rental ad unique number.</param>
+        /// <param name="returnUrl">Return url.</param>
         /// <returns>Task result.</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrRemoveFavorite(string rentalAdId)
+        public async Task<IActionResult> AddOrRemoveFavorite(string rentalAdId, string returnUrl)
         {
             try
             {
@@ -261,7 +292,14 @@
                 _logger.LogError($"Error : {exception.Message}");
             }
 
-            return RedirectToAction("Index", "Home");
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return Redirect(returnUrl);
+            }
         }
 
         /// <summary>

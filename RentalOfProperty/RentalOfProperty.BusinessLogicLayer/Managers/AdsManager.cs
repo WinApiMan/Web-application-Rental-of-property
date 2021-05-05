@@ -704,7 +704,14 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
             if (rentalAds.Count() != default)
             {
-                allRentalAdInfo.RentalAd = _mapper.Map<RentalAd>(rentalAds.First());
+                if (rentalAds.First() is DailyRentalAdDTO)
+                {
+                    allRentalAdInfo.RentalAd = _mapper.Map<DailyRentalAd>(rentalAds.First());
+                }
+                else
+                {
+                    allRentalAdInfo.RentalAd = _mapper.Map<LongTermRentalAd>(rentalAds.First());
+                }
 
                 var contactPersons = await _contactPersonsRepository.Get(person => person.Id.Equals(allRentalAdInfo.RentalAd.ContactPersonId));
 

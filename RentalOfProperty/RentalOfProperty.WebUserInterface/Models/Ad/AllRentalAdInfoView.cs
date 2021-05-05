@@ -33,6 +33,11 @@ namespace RentalOfProperty.WebUserInterface.Models
         public IEnumerable<HousingPhotoView> Photos { get; set; }
 
         /// <summary>
+        /// Gets or sets place on google map.
+        /// </summary>
+        public MapPlace MapPlace { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether is ad create on this site.
         /// </summary>
         public bool IsOriginal { get; set; }

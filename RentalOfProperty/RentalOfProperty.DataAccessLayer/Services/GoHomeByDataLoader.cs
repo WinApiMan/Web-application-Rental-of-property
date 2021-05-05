@@ -843,14 +843,14 @@ namespace RentalOfProperty.DataAccessLayer.Services
 
             if (!(uSDPrices is null))
             {
-                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText.Replace(EmptyEntrie, ' '), DigitsPattern)
+                uSDPrice = Convert.ToDouble(Regex.Split(uSDPrices.First().InnerText.Replace(' ', EmptyEntrie), DigitsPattern)
                     .Where(tempString => !string.IsNullOrEmpty(tempString))
                     .ToArray()[NameIndex].Replace(Point, Comma));
             }
 
             if (!(bYNPrices is null))
             {
-                bYNPrice = Convert.ToDouble(Regex.Split(bYNPrices.First().InnerText.Replace(EmptyEntrie, ' '), DigitsPattern)
+                bYNPrice = Convert.ToDouble(Regex.Split(bYNPrices.First().InnerText.Replace(' ', EmptyEntrie), DigitsPattern)
                     .Where(tempString => !string.IsNullOrEmpty(tempString))
                     .ToArray()[NameIndex].Replace(Point, Comma));
             }
