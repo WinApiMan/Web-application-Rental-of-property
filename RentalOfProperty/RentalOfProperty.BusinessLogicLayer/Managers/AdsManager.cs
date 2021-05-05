@@ -718,10 +718,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 if (contactPersons.Count() != default)
                 {
                     allRentalAdInfo.ContactPerson = _mapper.Map<ContactPerson>(contactPersons.First());
-                    allRentalAdInfo.IsOriginal = false;
                 }
                 else
                 {
+                    allRentalAdInfo.IsOriginal = true;
+
                     var user = await _usersRepository.FindById(allRentalAdInfo.RentalAd.ContactPersonId);
 
                     if (user is null)
@@ -741,7 +742,6 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                     }
                 }
 
-                allRentalAdInfo.IsOriginal = true;
                 allRentalAdInfo.Photos = await GetHousingPhotosByRentalAdId(id);
                 var aditionalAdDatas = await _aditionalAdDatasRepository.Get(data => data.Id.Equals(allRentalAdInfo.RentalAd.Id));
 

@@ -96,6 +96,12 @@
         <div class="col-md-6 mt-1" asp-display-for="@Model.ContactPerson.AdditionalPhoneNumber"></div>
     }
 </div>
+@if (Model.IsOriginal)
+{
+    <div class="col-md-6 text-right mt-3">
+        <button class="btn btn-danger">@Localizer["RemoveAd"]</button>
+    </div>
+}
 <div class="col-md-12 row mt-4 ml-2 pb-2" style="background-color: #90EE90">
     <h5 class="col-md-12 text-center">@Localizer["Price"]</h5>
     @if (Model.RentalAd is LongTermRentalAdView)
@@ -166,7 +172,7 @@
         <p>@Model.RentalAd.Floor/@Model.RentalAd.TotalFloors</p>
     </div>
 </div>
-<div class="col-md-12 row ml-2 pt-2 mb-2" style="background-color:lightgray">
+<div class="col-md-12 row ml-2 pt-2 mb-2" style="background-color:lightgray;padding-bottom:100px">
     <div class="col-md-6 row">
         <div class="col-md-6">
             @if (!string.IsNullOrEmpty(Model.RentalAd.Description))
@@ -231,8 +237,9 @@
 {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-<script type="text/javascript">
+        if (Model.RentalAd.XMapCoordinate >= 0 && Model.RentalAd.YMapCoordinate >= 0)
+        {
+            <script type="text/javascript">
         window.onload = function () {
             L.mapquest.key = 'E2Jg6ZmyVEGZd4RkMnIT7ntfAKOnUhtt';
 
@@ -249,5 +256,7 @@
 
             map.addControl(L.mapquest.control());
         }
-</script>
+            </script>
+        }
+    }
 }
