@@ -5,6 +5,7 @@
 namespace RentalOfProperty.WebUserInterface.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using RentalOfProperty.WebUserInterface.Models.Ad;
 
     /// <summary>
@@ -40,6 +41,7 @@ namespace RentalOfProperty.WebUserInterface.Models
         /// <summary>
         /// Gets or sets a value indicating whether is ad create on this site.
         /// </summary>
+        [Display(Name = "IsOriginal")]
         public bool IsOriginal { get; set; }
     }
 }

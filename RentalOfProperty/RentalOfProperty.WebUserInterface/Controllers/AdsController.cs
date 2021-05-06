@@ -99,6 +99,16 @@
         }
 
         /// <summary>
+        /// Create view.
+        /// </summary>
+        /// <returns>Redirect to create page.</returns>
+        [Authorize]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Long term rent get query.
         /// </summary>
         /// <param name="adsTypeMenuItem">Ads type menu item.</param>

@@ -1,7 +1,7 @@
 ﻿@model RentalOfProperty.WebUserInterface.Models.AllRentalAdInfoView
 @using RentalOfProperty.WebUserInterface.Models.Ad;
 @{
-    ViewData["Title"] = "RentalAd";
+    ViewData["Title"] = Localizer["RentalAd"];
 }
 
 <div class="col-md-12 row mt-5">
@@ -233,6 +233,7 @@
 </div>
 <div id="map" class="w-100 ml-2 mt-2" style="height:500px; margin-bottom:100px"></div>
 
+
 @section Scripts
 {
     @{
@@ -254,8 +255,10 @@
                 draggable: false
             }).bindPopup('@(Model.RentalAd.Address)').addTo(map);
 
+            let layerGroup = L.layerGroup().addTo(map);
+
             map.addControl(L.mapquest.control());
-        }
+                }
             </script>
         }
     }
