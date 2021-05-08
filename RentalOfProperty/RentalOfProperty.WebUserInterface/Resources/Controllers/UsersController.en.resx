@@ -145,6 +145,9 @@
     <value>Incorrect login or password</value>
     <comment>Incorrect login or password</comment>
   </data>
+  <data name="NotConfirmedAccount" xml:space="preserve">
+    <value>Not confirmed account</value>
+  </data>
   <data name="RegistrationFinish" xml:space="preserve">
     <value>To complete, check your email and the registration link in the letter.</value>
     <comment>Registration finish</comment>

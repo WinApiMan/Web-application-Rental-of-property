@@ -138,6 +138,9 @@
   <data name="DistrictLengthError" xml:space="preserve">
     <value>Max district length - 200</value>
   </data>
+  <data name="Facilities" xml:space="preserve">
+    <value>Facilities</value>
+  </data>
   <data name="FinishBYNPrice" xml:space="preserve">
     <value>Finish byn price</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="FinishUSDPricePerPerson" xml:space="preserve">
     <value>Finish USD price per person</value>
   </data>
+  <data name="Floor" xml:space="preserve">
+    <value>Floor</value>
+  </data>
   <data name="FloorError" xml:space="preserve">
     <value>The floors value must be between 1 and 1,000</value>
   </data>
@@ -186,6 +192,15 @@
   <data name="IsLastFloor" xml:space="preserve">
     <value>Is not last floor</value>
   </data>
+  <data name="KitchenArea" xml:space="preserve">
+    <value>Kitchen area</value>
+  </data>
+  <data name="LandArea" xml:space="preserve">
+    <value>Land area</value>
+  </data>
+  <data name="LivingArea" xml:space="preserve">
+    <value>Living area</value>
+  </data>
   <data name="Locality" xml:space="preserve">
     <value>Locality</value>
   </data>
@@ -194,6 +209,9 @@
   </data>
   <data name="MoneyError" xml:space="preserve">
     <value>The price value must be between 1 and 1,000,000</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
   </data>
   <data name="Region" xml:space="preserve">
     <value>Region</value>
@@ -245,5 +263,8 @@
   </data>
   <data name="StartUSDPricePerPerson" xml:space="preserve">
     <value>Start USD price per person</value>
+  </data>
+  <data name="TotalArea" xml:space="preserve">
+    <value>Total area</value>
   </data>
 </root>

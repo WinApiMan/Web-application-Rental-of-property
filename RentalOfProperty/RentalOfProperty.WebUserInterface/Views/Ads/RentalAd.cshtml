@@ -17,17 +17,20 @@
             <h3>..........</h3>
         }
     </div>
-    <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@Model.RentalAd.Id" asp-route-returnUrl="/Ads/RentalAd/@Model.RentalAd.Id" class="form-check col-md-4 text-center">
-        @if (Model.RentalAd.IsFavorite)
-        {
-            <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-controller="Ads" asp-action="AddOrRemoveFavorite" asp-route-rentalAdId="@Model.RentalAd.Id" asp-route-returnUrl="/Ads/RentalAd/@Model.RentalAd.Id" class="form-check col-md-4 text-center">
+            @if (Model.RentalAd.IsFavorite)
+            {
+                <input class="btn btn-danger" type="submit" value="@Localizer["RemoveFromFavorites"]" />
 
-        }
-        else
-        {
-            <input class="btn btn-success" type="submit" value="@Localizer["AddToFavorites"]" />
-        }
-    </form>
+            }
+            else
+            {
+                <input class="btn btn-success" type="submit" value="@Localizer["AddToFavorites"]" />
+            }
+        </form>
+    }
     <div class="col-md-4 text-left">
         <h5 class="w-100">
             <a href="@Model.RentalAd.SourceLink" class="text-warning col-md-12 pt-3">@Model.RentalAd.SourceLink</a>
@@ -96,10 +99,13 @@
         <div class="col-md-6 mt-1" asp-display-for="@Model.ContactPerson.AdditionalPhoneNumber"></div>
     }
 </div>
-@if (Model.IsOriginal)
+@if (User.Identity.IsAuthenticated && Model.IsOriginal && (Model.ContactPerson.Email.Equals(User.Identity.Name) || User.IsInRole("Administrator")))
 {
     <div class="col-md-6 text-right mt-3">
-        <button class="btn btn-danger">@Localizer["RemoveAd"]</button>
+        <button class="btn btn-danger w-50">@Localizer["RemoveAd"]</button>
+    </div>
+    <div class="col-md-6 text-right mt-3">
+        <button class="btn btn-success w-50">@Localizer["EditAd"]</button>
     </div>
 }
 <div class="col-md-12 row mt-4 ml-2 pb-2" style="background-color: #90EE90">
@@ -231,7 +237,9 @@
         }
     </div>
 </div>
-<div id="map" class="w-100 ml-2 mt-2" style="height:500px; margin-bottom:100px"></div>
+<div class="col-md-10 offset-1">
+    <div id="map" style="height:500px;margin-bottom:100px"></div>
+</div>
 
 
 @section Scripts
@@ -254,8 +262,6 @@
                 icon: L.mapquest.icons.marker(),
                 draggable: false
             }).bindPopup('@(Model.RentalAd.Address)').addTo(map);
-
-            let layerGroup = L.layerGroup().addTo(map);
 
             map.addControl(L.mapquest.control());
                 }

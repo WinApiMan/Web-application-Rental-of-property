@@ -145,6 +145,9 @@
     <value>Неверный логин или пароль</value>
     <comment>Incorrect login or password</comment>
   </data>
+  <data name="NotConfirmedAccount" xml:space="preserve">
+    <value>Аккаунт не подтвержден почтой</value>
+  </data>
   <data name="RegistrationFinish" xml:space="preserve">
     <value>Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме.</value>
     <comment>Registration finish</comment>

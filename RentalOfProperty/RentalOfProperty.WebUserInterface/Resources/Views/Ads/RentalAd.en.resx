@@ -148,6 +148,9 @@
     <value>Contract</value>
     <comment>Contract parice</comment>
   </data>
+  <data name="EditAd" xml:space="preserve">
+    <value>Edit ad</value>
+  </data>
   <data name="Floors" xml:space="preserve">
     <value>Floors</value>
     <comment>Floors</comment>

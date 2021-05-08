@@ -544,6 +544,11 @@ namespace RentalOfProperty.WebUserInterface.Controllers
 
                         await _emailService.SendEmailAsync(message, GetBasicSendEmailSetting());
                     }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, _localizer["NotConfirmedAccount"]);
+                        return View(forgotPasswordView);
+                    }
 
                     return Content(_localizer["RestoreFinish"]);
                 }

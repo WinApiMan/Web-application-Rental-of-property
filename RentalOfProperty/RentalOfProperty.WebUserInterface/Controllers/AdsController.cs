@@ -16,6 +16,7 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using RentalOfProperty.WebUserInterface.Models;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Ads controller.
@@ -105,6 +106,32 @@
         [Authorize]
         public IActionResult Create()
         {
+            ViewBag.Regions = new SelectList(
+                new List<string>
+                {
+                    "Любая область",
+                    "Брестская область",
+                    "Витебская область",
+                    "Гомельская область",
+                    "Гродненская область",
+                    "Минская область",
+                    "Могилёвская область",
+                });
+
+            ViewBag.RoomsCount = new SelectList(
+                new List<string>
+                {
+                    string.Empty,
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                });
             return View();
         }
 
@@ -490,6 +517,19 @@
                 DailySearch = dailySearchView,
                 IsSuccess = false,
             });
+        }
+
+        /// <summary>
+        /// Create ad.
+        /// </summary>
+        /// <param name="photos">Ad photos.</param>
+        /// <returns>Redirect to action.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(IFormFileCollection photos)
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }

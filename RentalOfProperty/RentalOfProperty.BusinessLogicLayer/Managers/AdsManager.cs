@@ -297,7 +297,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Ads list.</returns>
         public async Task<IEnumerable<RentalAd>> GetAdsForPage(int pageNumber, int pageSize)
         {
-            var adsDTO = await _adsFilterRepository.GetAdsForPage(pageNumber, pageSize);
+            var adsDTO = await _adsFilterRepository.GetAdsForPage(item => item.IsPublished, pageNumber, pageSize);
             var ads = new List<RentalAd>();
 
             foreach (var ad in adsDTO)
@@ -326,8 +326,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         {
             var adsDTO = adsTypeMenuItem switch
             {
-                AdsTypeMenu.LongTermAds => await _adsFilterRepository.GetAdsForPage(ad => ad is LongTermRentalAdDTO, pageNumber, pageSize),
-                AdsTypeMenu.DayilyAds => await _adsFilterRepository.GetAdsForPage(ad => ad is DailyRentalAdDTO, pageNumber, pageSize),
+                AdsTypeMenu.LongTermAds => await _adsFilterRepository.GetAdsForPage(ad => ad is LongTermRentalAdDTO && ad.IsPublished, pageNumber, pageSize),
+                AdsTypeMenu.DayilyAds => await _adsFilterRepository.GetAdsForPage(ad => ad is DailyRentalAdDTO && ad.IsPublished, pageNumber, pageSize),
                 _ => new List<RentalAdDTO>(),
             };
 
@@ -354,7 +354,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Ads count.</returns>
         public int GetRentalAdsCount()
         {
-            return _adsFilterRepository.GetRentalAdsCount();
+            return _adsFilterRepository.GetRentalAdsCount(item => item.IsPublished);
         }
 
         /// <summary>
@@ -366,8 +366,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         {
             return adsTypeMenuItem switch
             {
-                AdsTypeMenu.LongTermAds => _adsFilterRepository.GetRentalAdsCount(ad => ad is LongTermRentalAdDTO),
-                AdsTypeMenu.DayilyAds => _adsFilterRepository.GetRentalAdsCount(ad => ad is DailyRentalAdDTO),
+                AdsTypeMenu.LongTermAds => _adsFilterRepository.GetRentalAdsCount(ad => ad is LongTermRentalAdDTO && ad.IsPublished),
+                AdsTypeMenu.DayilyAds => _adsFilterRepository.GetRentalAdsCount(ad => ad is DailyRentalAdDTO && ad.IsPublished),
                 _ => default,
             };
         }
@@ -649,6 +649,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 query = string.Concat(query, $"and BYNPricePerDay <= {dailySearch.FinishBYNPricePerDay} ");
             }
 
+            query = string.Concat(query, $"and IsPublished = (1) ");
+
             return query;
         }
 
@@ -683,6 +685,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 query = string.Concat(query, $"and USDPrice <= {longTermSearch.FinishUSDPrice} ");
             }
 
+            query = string.Concat(query, $"and IsPublished = (1) ");
+
             return query;
         }
 
@@ -695,7 +699,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         {
             var allRentalAdInfo = new AllRentalAdInfo();
 
-            IEnumerable<RentalAdDTO> rentalAds = await _dailyRentalAdsRepository.Get(ad => ad.Id.Equals(id));
+            IEnumerable<RentalAdDTO> rentalAds = await _dailyRentalAdsRepository.Get(ad => ad.Id.Equals(id) && ad.IsPublished);
 
             if (rentalAds.Count() == default)
             {

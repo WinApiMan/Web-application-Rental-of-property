@@ -138,6 +138,9 @@
   <data name="DistrictLengthError" xml:space="preserve">
     <value>Максимальная длина района - 200</value>
   </data>
+  <data name="Facilities" xml:space="preserve">
+    <value>Удобства</value>
+  </data>
   <data name="FinishBYNPrice" xml:space="preserve">
     <value>Конечная граница цены</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="FinishUSDPricePerPerson" xml:space="preserve">
     <value>Кон. цена за чел. в долларах.</value>
   </data>
+  <data name="Floor" xml:space="preserve">
+    <value>Этаж</value>
+  </data>
   <data name="FloorError" xml:space="preserve">
     <value>Этаж должен быть между 1 и 1000</value>
   </data>
@@ -186,6 +192,15 @@
   <data name="IsLastFloor" xml:space="preserve">
     <value>Не последний этаж</value>
   </data>
+  <data name="KitchenArea" xml:space="preserve">
+    <value>Площадь кухни</value>
+  </data>
+  <data name="LandArea" xml:space="preserve">
+    <value>Площадь участка</value>
+  </data>
+  <data name="LivingArea" xml:space="preserve">
+    <value>Жилая площадь</value>
+  </data>
   <data name="Locality" xml:space="preserve">
     <value>Город</value>
   </data>
@@ -194,6 +209,9 @@
   </data>
   <data name="MoneyError" xml:space="preserve">
     <value>Цена должна быть между 1 и 1000000</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
   </data>
   <data name="Region" xml:space="preserve">
     <value>Область</value>
@@ -245,5 +263,8 @@
   </data>
   <data name="StartUSDPricePerPerson" xml:space="preserve">
     <value>Нач. цена за чел. в долларах.</value>
+  </data>
+  <data name="TotalArea" xml:space="preserve">
+    <value>Общая площадь</value>
   </data>
 </root>

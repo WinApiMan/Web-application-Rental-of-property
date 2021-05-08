@@ -148,6 +148,9 @@
     <value>Договорная</value>
     <comment>Contract parice</comment>
   </data>
+  <data name="EditAd" xml:space="preserve">
+    <value>Редактировать объявление</value>
+  </data>
   <data name="Floors" xml:space="preserve">
     <value>Этажность</value>
     <comment>Floors</comment>

@@ -203,6 +203,7 @@ namespace RentalOfProperty.DataAccessLayer.Services
                         ad.RentalAd.ContactPersonId = ad.ContactPerson.Id;
                         ad.AditionalAdData.Id = ad.RentalAd.Id;
                         ad.AditionalAdData.RentalAdNumber = ad.RentalAd.RentalAdNumber;
+                        ad.RentalAd.IsPublished = true;
 
                         foreach (var photo in ad.HousingPhotos)
                         {

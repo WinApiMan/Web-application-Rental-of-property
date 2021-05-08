@@ -145,5 +145,10 @@ namespace RentalOfProperty.DataAccessLayer.Models
         /// Gets or sets land area.
         /// </summary>
         public double LandArea { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether is ad published.
+        /// </summary>
+        public bool IsPublished { get; set; }
     }
 }
