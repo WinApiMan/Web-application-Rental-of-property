@@ -120,8 +120,14 @@
   <data name="Address" xml:space="preserve">
     <value>Адрес</value>
   </data>
+  <data name="AddressError" xml:space="preserve">
+    <value>Длина адреса должна быть между 1 и 100</value>
+  </data>
   <data name="AddressLengthError" xml:space="preserve">
     <value>Максимальная длина адреса - 200</value>
+  </data>
+  <data name="AddressRequired" xml:space="preserve">
+    <value>Адрес обязателен</value>
   </data>
   <data name="AreaError" xml:space="preserve">
     <value>Площадь должна быть между 1 и 200</value>
@@ -129,26 +135,68 @@
   <data name="Bathroom" xml:space="preserve">
     <value>Санузел</value>
   </data>
+  <data name="BathroomError" xml:space="preserve">
+    <value>Длина санузла должна быть между 1 и 70</value>
+  </data>
+  <data name="BathroomRequired" xml:space="preserve">
+    <value>Данные санузла обязательны</value>
+  </data>
   <data name="BYNPrice" xml:space="preserve">
     <value>Цена в бел. руб.</value>
+  </data>
+  <data name="BYNPriceError" xml:space="preserve">
+    <value>Цена в бел. руб. должна быть между 0.0 и 1000000000.0</value>
   </data>
   <data name="BYNPricePerDay" xml:space="preserve">
     <value>Цена за сутки в бел. руб.</value>
   </data>
+  <data name="BYNPricePerDayError" xml:space="preserve">
+    <value>Цена за сутки в бел. руб. должна быть между 0.0 и 1000000000.0</value>
+  </data>
+  <data name="BYNPricePerDayRequired" xml:space="preserve">
+    <value>Цена за сутки в бел. руб. обязательна</value>
+  </data>
   <data name="BYNPricePerPerson" xml:space="preserve">
     <value>Цена за чел. в бел. руб.</value>
+  </data>
+  <data name="BYNPricePerPersonError" xml:space="preserve">
+    <value>Цена за человека в бел. руб. должна быть между 0.0 и 1000000000.0</value>
+  </data>
+  <data name="BYNPricePerPersonRequired" xml:space="preserve">
+    <value>Цена за человека в бел. руб. обязательна</value>
+  </data>
+  <data name="BYNPriceRequired" xml:space="preserve">
+    <value>Цена в бел. руб. обязательна</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="DescriptionError" xml:space="preserve">
+    <value>Длина описания должна быть между 1 и 300</value>
+  </data>
+  <data name="DescriptionRequired" xml:space="preserve">
+    <value>Описание обязательно</value>
+  </data>
   <data name="District" xml:space="preserve">
     <value>Район</value>
+  </data>
+  <data name="DistrictError" xml:space="preserve">
+    <value>Длина района должна быть между 1 и 70</value>
   </data>
   <data name="DistrictLengthError" xml:space="preserve">
     <value>Максимальная длина района - 200</value>
   </data>
+  <data name="DistrictRequired" xml:space="preserve">
+    <value>Район обязателен</value>
+  </data>
   <data name="Facilities" xml:space="preserve">
     <value>Удобства</value>
+  </data>
+  <data name="FacilitiesError" xml:space="preserve">
+    <value>Длина поля удобства должна быть между 1 и 200</value>
+  </data>
+  <data name="FacilitiesRequired" xml:space="preserve">
+    <value>Удобства обязательны</value>
   </data>
   <data name="FinishBYNPrice" xml:space="preserve">
     <value>Конечная граница цены</value>
@@ -195,6 +243,9 @@
   <data name="FloorError" xml:space="preserve">
     <value>Этаж должен быть между 1 и 1000</value>
   </data>
+  <data name="FloorRequired" xml:space="preserve">
+    <value>Этаж обязателен</value>
+  </data>
   <data name="IsFirstFloor" xml:space="preserve">
     <value>Не первый этаж</value>
   </data>
@@ -204,17 +255,41 @@
   <data name="KitchenArea" xml:space="preserve">
     <value>Площадь кухни</value>
   </data>
+  <data name="KitchenAreaError" xml:space="preserve">
+    <value>Площадь кухни должны быть между 1.0 и 1000000.0</value>
+  </data>
+  <data name="KitchenAreaRequired" xml:space="preserve">
+    <value>Площадь кухни обязательна</value>
+  </data>
   <data name="LandArea" xml:space="preserve">
     <value>Площадь участка</value>
+  </data>
+  <data name="LandAreaError" xml:space="preserve">
+    <value> Площадь участка должны быть между 1.0 и 1000000.0</value>
+  </data>
+  <data name="LandAreaRequired" xml:space="preserve">
+    <value>Площадь участка обязательная</value>
   </data>
   <data name="LivingArea" xml:space="preserve">
     <value>Жилая площадь</value>
   </data>
+  <data name="LivingAreaError" xml:space="preserve">
+    <value>Жилая площадь должны быть между 1.0 и 1000000.0</value>
+  </data>
+  <data name="LivingAreaRequired" xml:space="preserve">
+    <value>Жилая площадь обязательна</value>
+  </data>
   <data name="Locality" xml:space="preserve">
     <value>Город</value>
   </data>
+  <data name="LocalityError" xml:space="preserve">
+    <value>Длина города должна быть между 1 и 70</value>
+  </data>
   <data name="LocalityLengthError" xml:space="preserve">
     <value>Максимальная длина города - 200</value>
+  </data>
+  <data name="LocalityRequired" xml:space="preserve">
+    <value>Город обязателен</value>
   </data>
   <data name="MoneyError" xml:space="preserve">
     <value>Цена должна быть между 1 и 1000000</value>
@@ -222,11 +297,20 @@
   <data name="Notes" xml:space="preserve">
     <value>Примечания</value>
   </data>
+  <data name="NotesError" xml:space="preserve">
+    <value>Длина примечания должна быть между 1 и 100</value>
+  </data>
   <data name="Region" xml:space="preserve">
     <value>Область</value>
   </data>
+  <data name="RegionError" xml:space="preserve">
+    <value>Длина области должна быть между 1 и 70</value>
+  </data>
   <data name="RegionLengthError" xml:space="preserve">
     <value>Максимальная длина области - 200</value>
+  </data>
+  <data name="RegionRequired" xml:space="preserve">
+    <value>Область обязательна</value>
   </data>
   <data name="RentalAdNumber" xml:space="preserve">
     <value>Номер объявления</value>
@@ -234,8 +318,17 @@
   <data name="RentalType" xml:space="preserve">
     <value>Тип объявления</value>
   </data>
+  <data name="RentalTypeRequired" xml:space="preserve">
+    <value>Тип объявления обязателен</value>
+  </data>
   <data name="RentCountOfRooms" xml:space="preserve">
     <value>Количество сдаваемых комнат</value>
+  </data>
+  <data name="RentCountOfRoomsError" xml:space="preserve">
+    <value> Количество сдаваемых комнат должно быть между 1 и 10000</value>
+  </data>
+  <data name="RentCountOfRoomsRequired" xml:space="preserve">
+    <value>Количество сдаваемых комнат обязательно</value>
   </data>
   <data name="RoomError" xml:space="preserve">
     <value>Количество комнат должно быть между 1 и 1000</value>
@@ -282,19 +375,55 @@
   <data name="TotalArea" xml:space="preserve">
     <value>Общая площадь</value>
   </data>
+  <data name="TotalAreaError" xml:space="preserve">
+    <value>Общая площадь должны быть между 1.0 и 1000000.0</value>
+  </data>
+  <data name="TotalAreaRequired" xml:space="preserve">
+    <value>Общая площадь обязательна</value>
+  </data>
   <data name="TotalCountOfRooms" xml:space="preserve">
     <value>Общее количество комнат</value>
+  </data>
+  <data name="TotalCountOfRoomsError" xml:space="preserve">
+    <value>Общее количество комнат должно быть между 1 и 10000</value>
+  </data>
+  <data name="TotalCountOfRoomsRequired" xml:space="preserve">
+    <value>Общее количество комнат обязательно</value>
   </data>
   <data name="TotalFloors" xml:space="preserve">
     <value>Общее количество этажей</value>
   </data>
+  <data name="TotalFloorsError" xml:space="preserve">
+    <value>Общее количество этажей должно быть между 1 и 1000</value>
+  </data>
+  <data name="TotalFloorsRequired" xml:space="preserve">
+    <value>Общее количество этажей обязательно</value>
+  </data>
   <data name="USDPrice" xml:space="preserve">
     <value>Цена в долларах</value>
+  </data>
+  <data name="USDPriceError" xml:space="preserve">
+    <value>Цена в долларах должна быть между 0.0 и 1000000000.0</value>
   </data>
   <data name="USDPricePerDay" xml:space="preserve">
     <value>Цена за сутки в долларах</value>
   </data>
+  <data name="USDPricePerDayError" xml:space="preserve">
+    <value>Цена за сутки в долларах должна быть между 0.0 и 1000000000.0</value>
+  </data>
+  <data name="USDPricePerDayRequired" xml:space="preserve">
+    <value>Цена за сутки в долларах обязательна</value>
+  </data>
   <data name="USDPricePerPerson" xml:space="preserve">
     <value>Цена за чел. в долларах</value>
+  </data>
+  <data name="USDPricePerPersonError" xml:space="preserve">
+    <value>Цена за человека в долларах должна быть между 0.0 и 1000000000.0</value>
+  </data>
+  <data name="USDPricePerPersonRequired" xml:space="preserve">
+    <value>Цена за человека в долларах. обязательна</value>
+  </data>
+  <data name="USDPriceRequired" xml:space="preserve">
+    <value>Цена в долларах обязательна</value>
   </data>
 </root>

@@ -120,8 +120,14 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="AddressError" xml:space="preserve">
+    <value>Address must be between 1 and 100</value>
+  </data>
   <data name="AddressLengthError" xml:space="preserve">
     <value>Max address length - 200</value>
+  </data>
+  <data name="AddressRequired" xml:space="preserve">
+    <value>Address is required</value>
   </data>
   <data name="AreaError" xml:space="preserve">
     <value>The area value must be between 1 and 1,000,000.0</value>
@@ -129,26 +135,68 @@
   <data name="Bathroom" xml:space="preserve">
     <value>Bathroom</value>
   </data>
+  <data name="BathroomError" xml:space="preserve">
+    <value>Bathrom length must be between 1 and 70</value>
+  </data>
+  <data name="BathroomRequired" xml:space="preserve">
+    <value>Bathroom is required</value>
+  </data>
   <data name="BYNPrice" xml:space="preserve">
     <value>BYN price</value>
+  </data>
+  <data name="BYNPriceError" xml:space="preserve">
+    <value>BYN price must be between 0.0 and 1000000000.0</value>
   </data>
   <data name="BYNPricePerDay" xml:space="preserve">
     <value>BYN price per day</value>
   </data>
+  <data name="BYNPricePerDayError" xml:space="preserve">
+    <value>BYN price per day must be between 0.0 and 1000000000.0</value>
+  </data>
+  <data name="BYNPricePerDayRequired" xml:space="preserve">
+    <value>BYN price per day is required</value>
+  </data>
   <data name="BYNPricePerPerson" xml:space="preserve">
     <value>BYN price per person</value>
+  </data>
+  <data name="BYNPricePerPersonError" xml:space="preserve">
+    <value>BYN price per person must be between 0.0 and 1000000000.0</value>
+  </data>
+  <data name="BYNPricePerPersonRequired" xml:space="preserve">
+    <value>BYN price per person is required</value>
+  </data>
+  <data name="BYNPriceRequired" xml:space="preserve">
+    <value>BYN price is required</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="DescriptionError" xml:space="preserve">
+    <value>Description length must be between 1 and 300</value>
+  </data>
+  <data name="DescriptionRequired" xml:space="preserve">
+    <value>Description is required</value>
+  </data>
   <data name="District" xml:space="preserve">
     <value>District</value>
+  </data>
+  <data name="DistrictError" xml:space="preserve">
+    <value>Deistrict length must be between 1 and 70</value>
   </data>
   <data name="DistrictLengthError" xml:space="preserve">
     <value>Max district length - 200</value>
   </data>
+  <data name="DistrictRequired" xml:space="preserve">
+    <value>District is required</value>
+  </data>
   <data name="Facilities" xml:space="preserve">
     <value>Facilities</value>
+  </data>
+  <data name="FacilitiesError" xml:space="preserve">
+    <value>Facilities length must be between 1 and 200</value>
+  </data>
+  <data name="FacilitiesRequired" xml:space="preserve">
+    <value>Facilities is required</value>
   </data>
   <data name="FinishBYNPrice" xml:space="preserve">
     <value>Finish byn price</value>
@@ -195,6 +243,9 @@
   <data name="FloorError" xml:space="preserve">
     <value>The floors value must be between 1 and 1,000</value>
   </data>
+  <data name="FloorRequired" xml:space="preserve">
+    <value>Floor is required</value>
+  </data>
   <data name="IsFirstFloor" xml:space="preserve">
     <value>Is not first floor</value>
   </data>
@@ -204,17 +255,41 @@
   <data name="KitchenArea" xml:space="preserve">
     <value>Kitchen area</value>
   </data>
+  <data name="KitchenAreaError" xml:space="preserve">
+    <value>Kitchen area must be between 1.0 and 1000000.0</value>
+  </data>
+  <data name="KitchenAreaRequired" xml:space="preserve">
+    <value>Kitchen area is required</value>
+  </data>
   <data name="LandArea" xml:space="preserve">
     <value>Land area</value>
+  </data>
+  <data name="LandAreaError" xml:space="preserve">
+    <value>Lang area must be between 1.0 and 1000000.0</value>
+  </data>
+  <data name="LandAreaRequired" xml:space="preserve">
+    <value>Land area is required</value>
   </data>
   <data name="LivingArea" xml:space="preserve">
     <value>Living area</value>
   </data>
+  <data name="LivingAreaError" xml:space="preserve">
+    <value>Living area must be between 1.0 and 1000000.0</value>
+  </data>
+  <data name="LivingAreaRequired" xml:space="preserve">
+    <value>Living area is required</value>
+  </data>
   <data name="Locality" xml:space="preserve">
     <value>Locality</value>
   </data>
+  <data name="LocalityError" xml:space="preserve">
+    <value>Localitylength must be between 1 and 70</value>
+  </data>
   <data name="LocalityLengthError" xml:space="preserve">
     <value>Max locality length - 200</value>
+  </data>
+  <data name="LocalityRequired" xml:space="preserve">
+    <value>Locality is required</value>
   </data>
   <data name="MoneyError" xml:space="preserve">
     <value>The price value must be between 1 and 1,000,000</value>
@@ -222,11 +297,20 @@
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="NotesError" xml:space="preserve">
+    <value>Notes length must be between 1 and 100</value>
+  </data>
   <data name="Region" xml:space="preserve">
     <value>Region</value>
   </data>
+  <data name="RegionError" xml:space="preserve">
+    <value>Regoin length must be between 1 and 70</value>
+  </data>
   <data name="RegionLengthError" xml:space="preserve">
     <value>Max region length - 200</value>
+  </data>
+  <data name="RegionRequired" xml:space="preserve">
+    <value>Region is required</value>
   </data>
   <data name="RentalAdNumber" xml:space="preserve">
     <value>Rental ad number</value>
@@ -234,8 +318,17 @@
   <data name="RentalType" xml:space="preserve">
     <value>Rental type</value>
   </data>
+  <data name="RentalTypeRequired" xml:space="preserve">
+    <value>Rental type is required</value>
+  </data>
   <data name="RentCountOfRooms" xml:space="preserve">
     <value>Rent count of rooms</value>
+  </data>
+  <data name="RentCountOfRoomsError" xml:space="preserve">
+    <value>Rent count of rooms must be between 1 and 10000</value>
+  </data>
+  <data name="RentCountOfRoomsRequired" xml:space="preserve">
+    <value>Rent сount of rooms is required</value>
   </data>
   <data name="RoomError" xml:space="preserve">
     <value>The rooms value must be between 1 and 1,000</value>
@@ -282,19 +375,55 @@
   <data name="TotalArea" xml:space="preserve">
     <value>Total area</value>
   </data>
+  <data name="TotalAreaError" xml:space="preserve">
+    <value>Total area must be between 1.0 and 1000000.0</value>
+  </data>
+  <data name="TotalAreaRequired" xml:space="preserve">
+    <value>Total area is required</value>
+  </data>
   <data name="TotalCountOfRooms" xml:space="preserve">
     <value>Total count of rooms</value>
+  </data>
+  <data name="TotalCountOfRoomsError" xml:space="preserve">
+    <value>Total count of rooms must be between 1 and 10000</value>
+  </data>
+  <data name="TotalCountOfRoomsRequired" xml:space="preserve">
+    <value>Total count of rooms is required</value>
   </data>
   <data name="TotalFloors" xml:space="preserve">
     <value>Total floors</value>
   </data>
+  <data name="TotalFloorsError" xml:space="preserve">
+    <value>Total floors must be between 1 and 1000</value>
+  </data>
+  <data name="TotalFloorsRequired" xml:space="preserve">
+    <value>Total floors is required</value>
+  </data>
   <data name="USDPrice" xml:space="preserve">
     <value>USD price</value>
+  </data>
+  <data name="USDPriceError" xml:space="preserve">
+    <value>USD price must be between 0.0 and 1000000000.0</value>
   </data>
   <data name="USDPricePerDay" xml:space="preserve">
     <value>USD price per day</value>
   </data>
+  <data name="USDPricePerDayError" xml:space="preserve">
+    <value>USD price per day must be between 0.0 and 1000000000.0</value>
+  </data>
+  <data name="USDPricePerDayRequired" xml:space="preserve">
+    <value>USD price per day is required</value>
+  </data>
   <data name="USDPricePerPerson" xml:space="preserve">
     <value>USD price per person</value>
+  </data>
+  <data name="USDPricePerPersonError" xml:space="preserve">
+    <value>USD price per person must be between 0.0 and 1000000000.0</value>
+  </data>
+  <data name="USDPricePerPersonRequired" xml:space="preserve">
+    <value>USD price per person is required</value>
+  </data>
+  <data name="USDPriceRequired" xml:space="preserve">
+    <value>USD price is required</value>
   </data>
 </root>

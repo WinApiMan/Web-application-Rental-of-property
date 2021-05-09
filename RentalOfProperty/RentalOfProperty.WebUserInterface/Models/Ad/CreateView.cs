@@ -130,7 +130,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// </summary>
         [Display(Name = "Description")]
         [Required(ErrorMessage = "DescriptionRequired")]
-        [StringLength(300, ErrorMessage = "NotesError", MinimumLength = 1)]
+        [StringLength(300, ErrorMessage = "DescriptionError", MinimumLength = 1)]
         public string Description { get; set; }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// </summary>
         [Display(Name = "Facilities")]
         [Required(ErrorMessage = "FacilitiesRequired")]
-        [StringLength(200, ErrorMessage = "NotesError", MinimumLength = 1)]
+        [StringLength(200, ErrorMessage = "FacilitiesError", MinimumLength = 1)]
         public string Facilities { get; set; }
 
         /// <summary>
@@ -146,14 +146,13 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// </summary>
         [Display(Name = "RentalType")]
         [Required(ErrorMessage = "RentalTypeRequired")]
-        [Range(1.0, 1000000.0, ErrorMessage = "RentalTypeError")]
         public AdsTypeMenu RentalType { get; set; }
 
         /// <summary>
         /// Gets or sets land area.
         /// </summary>
         [Display(Name = "LandArea")]
-        [Required(ErrorMessage = "FacilitiesRequired")]
+        [Required(ErrorMessage = "LandAreaRequired")]
         [Range(1.0, 1000000.0, ErrorMessage = "LandAreaError")]
         public double LandArea { get; set; }
 
@@ -161,6 +160,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets BYN per person price.
         /// </summary>
         [Display(Name = "BYNPricePerPerson")]
+        [Required(ErrorMessage = "BYNPricePerPersonRequired")]
         [Range(0.0, 1000000000.0, ErrorMessage = "BYNPricePerPersonError")]
         public double BYNPricePerPerson { get; set; }
 
@@ -168,6 +168,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets USD per person price.
         /// </summary>
         [Display(Name = "USDPricePerPerson")]
+        [Required(ErrorMessage = "USDPricePerPersonRequired")]
         [Range(0.0, 1000000000.0, ErrorMessage = "USDPricePerPersonError")]
         public double USDPricePerPerson { get; set; }
 
@@ -175,6 +176,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets USD per day price.
         /// </summary>
         [Display(Name = "USDPricePerDay")]
+        [Required(ErrorMessage = "USDPricePerDayRequired")]
         [Range(0.0, 1000000000.0, ErrorMessage = "USDPricePerDayError")]
         public double USDPricePerDay { get; set; }
 
@@ -182,6 +184,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets BYN per day price.
         /// </summary>
         [Display(Name = "BYNPricePerDay")]
+        [Required(ErrorMessage = "BYNPricePerDayRequired")]
         [Range(0.0, 1000000000.0, ErrorMessage = "BYNPricePerDayError")]
         public double BYNPricePerDay { get; set; }
 
@@ -189,6 +192,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets BYN price.
         /// </summary>
         [Display(Name = "BYNPrice")]
+        [Required(ErrorMessage = "BYNPriceRequired")]
         [Range(0.0, 1000000000.0, ErrorMessage = "BYNPriceError")]
         public double BYNPrice { get; set; }
 
@@ -196,6 +200,7 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets USD price.
         /// </summary>
         [Display(Name = "USDPrice")]
+        [Required(ErrorMessage = "USDPriceRequired")]
         [Range(0.0, 1000000000.0, ErrorMessage = "USDPriceError")]
         public double USDPrice { get; set; }
     }
