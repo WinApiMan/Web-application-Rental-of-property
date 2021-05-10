@@ -605,7 +605,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Sql query string.</returns>
         public string CreateDailySearchSqlQueryString(DailySearch dailySearch)
         {
-            const string Query = "Select Id, ContactPersonId, SourceLink, RentalAdNumber, UpdateDate, Region, District, Locality, Address, TotalCountOfRooms, RentCountOfRooms, TotalArea, LivingArea, KitchenArea, TotalFloors, Floor, XMapCoordinate, YMapCoordinate, Bathroom, Notes, Description, Facilities, RentalType, TotalViews, MonthViews, WeekViews, LandArea, Discriminator, BYNPricePerPerson, USDPricePerPerson, USDPricePerDay, BYNPricePerDay from dbo.RentalAds ";
+            const string Query = "Select Id, ContactPersonId, IsPublished, UserId, SourceLink, RentalAdNumber, UpdateDate, Region, District, Locality, Address, TotalCountOfRooms, RentCountOfRooms, TotalArea, LivingArea, KitchenArea, TotalFloors, Floor, XMapCoordinate, YMapCoordinate, Bathroom, Notes, Description, Facilities, RentalType, TotalViews, MonthViews, WeekViews, LandArea, Discriminator, BYNPricePerPerson, USDPricePerPerson, USDPricePerDay, BYNPricePerDay from dbo.RentalAds ";
 
             string query = CreateBasicSearchSqlQueryString(AdsTypeMenu.DayilyAds, dailySearch, Query);
 
@@ -661,7 +661,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <returns>Sql query string.</returns>
         public string CreateLongTermSearchSqlQueryString(LongTermSearch longTermSearch)
         {
-            const string Query = "Select Id, ContactPersonId, SourceLink, RentalAdNumber, UpdateDate, Region, District, Locality, Address, TotalCountOfRooms, RentCountOfRooms, TotalArea, LivingArea, KitchenArea, TotalFloors, Floor, XMapCoordinate, YMapCoordinate, Bathroom, Notes, Description, Facilities, RentalType, TotalViews, MonthViews, WeekViews, LandArea, Discriminator, BYNPrice, USDPrice from dbo.RentalAds ";
+            const string Query = "Select Id, ContactPersonId, IsPublished, UserId, SourceLink, RentalAdNumber, UpdateDate, Region, District, Locality, Address, TotalCountOfRooms, RentCountOfRooms, TotalArea, LivingArea, KitchenArea, TotalFloors, Floor, XMapCoordinate, YMapCoordinate, Bathroom, Notes, Description, Facilities, RentalType, TotalViews, MonthViews, WeekViews, LandArea, Discriminator, BYNPrice, USDPrice from dbo.RentalAds ";
 
             string query = CreateBasicSearchSqlQueryString(AdsTypeMenu.LongTermAds, longTermSearch, Query);
 
@@ -699,7 +699,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         {
             var allRentalAdInfo = new AllRentalAdInfo();
 
-            IEnumerable<RentalAdDTO> rentalAds = await _dailyRentalAdsRepository.Get(ad => ad.Id.Equals(id) && ad.IsPublished);
+            IEnumerable<RentalAdDTO> rentalAds = await _dailyRentalAdsRepository.Get(ad => ad.Id.Equals(id));
 
             if (rentalAds.Count() == default)
             {
@@ -727,7 +727,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 {
                     allRentalAdInfo.IsOriginal = true;
 
-                    var user = await _usersRepository.FindById(allRentalAdInfo.RentalAd.ContactPersonId);
+                    var user = await _usersRepository.FindById(allRentalAdInfo.RentalAd.UserId);
 
                     if (user is null)
                     {
@@ -770,6 +770,113 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             {
                 throw new NullReferenceException("Rental ad not found");
             }
+        }
+
+        /// <summary>
+        /// Add new ad.
+        /// </summary>
+        /// <param name="createModel">Ad parametrs.</param>
+        /// <param name="userId">User id.</param>
+        /// <param name="hostUrl">Host url to creating source link.</param>
+        /// <param name="photosUrls">Path to photos.</param>
+        /// <returns>Task result.</returns>
+        public async Task<string> CreateAd(CreateModel createModel, string userId, string hostUrl, IEnumerable<string> photosUrls)
+        {
+            var date = DateTime.Now;
+            string rentalAdId = Guid.NewGuid().ToString();
+            var rentalAd = CreateBasicAdModel(createModel, userId, date);
+
+            if (createModel.RentalType == AdsTypeMenu.DayilyAds)
+            {
+                var dailyRentalAd = _mapper.Map<DailyRentalAdDTO>(rentalAd);
+                dailyRentalAd.BYNPricePerDay = createModel.BYNPricePerDay;
+                dailyRentalAd.BYNPricePerPerson = createModel.BYNPricePerPerson;
+                dailyRentalAd.USDPricePerDay = createModel.USDPricePerDay;
+                dailyRentalAd.USDPricePerPerson = createModel.USDPricePerPerson;
+                dailyRentalAd.Id = rentalAdId;
+                dailyRentalAd.SourceLink = $"/Ads/RentalAd/{rentalAdId}";
+
+                await _dailyRentalAdsRepository.Create(dailyRentalAd);
+            }
+            else
+            {
+                var longTermRentalAd = _mapper.Map<LongTermRentalAdDTO>(rentalAd);
+                longTermRentalAd.BYNPrice = createModel.BYNPrice;
+                longTermRentalAd.USDPrice = createModel.USDPrice;
+                longTermRentalAd.Id = rentalAdId;
+                longTermRentalAd.SourceLink = $"{hostUrl}/Ads/RentalAd/{rentalAdId}";
+
+                await _longTermRentalAdsRepository.Create(longTermRentalAd);
+            }
+
+            await _aditionalAdDatasRepository.Create(CreateAditionalAdData(rentalAdId, date));
+
+            await _housingPhotosRepository.CreateRange(photosUrls.Select(item => new HousingPhotoDTO
+            {
+                PathToPhoto = item,
+                RentalAdId = rentalAdId,
+            }));
+
+            return rentalAdId;
+        }
+
+        /// <summary>
+        /// Create basic rental of property mode.
+        /// </summary>
+        /// <param name="createModel">Create parametrs.</param>
+        /// <param name="userId">User id.</param>
+        /// <param name="updateDate">Update date.</param>
+        /// <returns>Basic rental of property model.</returns>
+        public RentalAdDTO CreateBasicAdModel(CreateModel createModel, string userId, DateTime updateDate)
+        {
+            return new RentalAdDTO()
+            {
+                Address = createModel.Address,
+                Bathroom = createModel.Bathroom,
+                UserId = userId,
+                Description = createModel.Description,
+                District = createModel.District,
+                Facilities = createModel.Facilities,
+                Floor = createModel.Floor,
+                IsPublished = false,
+                KitchenArea = createModel.KitchenArea,
+                LandArea = createModel.LandArea,
+                LivingArea = createModel.LivingArea,
+                Locality = createModel.Locality,
+                Notes = createModel.Notes,
+                Region = createModel.Region,
+                RentCountOfRooms = createModel.RentCountOfRooms,
+                TotalArea = createModel.TotalArea,
+                TotalCountOfRooms = createModel.TotalCountOfRooms,
+                TotalFloors = createModel.TotalFloors,
+                XMapCoordinate = createModel.XMapCoordinate,
+                YMapCoordinate = createModel.YMapCoordinate,
+                TotalViews = default,
+                MonthViews = default,
+                WeekViews = default,
+                UpdateDate = updateDate,
+                RentalType = (int)createModel.RentalType,
+                RentalAdNumber = default,
+            };
+        }
+
+        /// <summary>
+        /// Create default aditional ad data.
+        /// </summary>
+        /// <param name="id">Rental ad id.</param>
+        /// <param name="updateDate">Date of create aditional ad data.</param>
+        /// <returns>Aditional ad data object.</returns>
+        public AditionalAdDataDTO CreateAditionalAdData(string id, DateTime updateDate)
+        {
+            return new AditionalAdDataDTO
+            {
+                Id = id,
+                RentalAdNumber = default,
+                TotalViews = default,
+                MonthViews = default,
+                WeekViews = default,
+                UpdateDate = updateDate,
+            };
         }
     }
 }

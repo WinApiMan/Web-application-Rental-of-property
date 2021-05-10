@@ -41,6 +41,7 @@ namespace RentalOfProperty.WebUserInterface.Mapper
             CreateMap<SearchView, Search>().ReverseMap();
             CreateMap<DailySearchView, DailySearch>().ReverseMap();
             CreateMap<LongTermSearchView, LongTermSearch>().ReverseMap();
+            CreateMap<CreateView, CreateModel>().ReverseMap();
         }
     }
 }

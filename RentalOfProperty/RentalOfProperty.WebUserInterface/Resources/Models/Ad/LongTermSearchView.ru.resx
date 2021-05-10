@@ -208,7 +208,7 @@
     <value>Нач. знач. общей площади</value>
   </data>
   <data name="StartTotalFloor" xml:space="preserve">
-    <value>Нач. знач. текущего этажа</value>
+    <value>Нач. знач. общего кол. этажей</value>
   </data>
   <data name="StartUSDPrice" xml:space="preserve">
     <value>Нач. цена в долларах</value>

@@ -17,6 +17,9 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using RentalOfProperty.WebUserInterface.Models;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Hosting;
+    using System.IO;
+    using Microsoft.Extensions.Localization;
 
     /// <summary>
     /// Ads controller.
@@ -29,9 +32,13 @@
 
         private readonly ILogger<AdsController> _logger;
 
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+
         private readonly IAdsManager _adsManager;
 
         private readonly IUsersManager _usersManager;
+
+        private readonly IWebHostEnvironment _applicationEnvironment;
 
         private readonly IMapper _mapper;
 
@@ -42,12 +49,13 @@
         /// <param name="usersManager">Users manager model.</param>
         /// <param name="mapper">Mapper model..</param>
         /// <param name="logger">Error logger.</param>
-        public AdsController(IAdsManager adsManager, IUsersManager usersManager, IMapper mapper, ILogger<AdsController> logger)
+        public AdsController(IAdsManager adsManager, IUsersManager usersManager, IMapper mapper, ILogger<AdsController> logger, IWebHostEnvironment applicationEnvironment)
         {
             _adsManager = adsManager;
             _usersManager = usersManager;
             _mapper = mapper;
             _logger = logger;
+            _applicationEnvironment = applicationEnvironment;
         }
 
         /// <summary>
@@ -523,12 +531,42 @@
         /// Create ad.
         /// </summary>
         /// <param name="photos">Ad photos.</param>
+        /// <param name="createView">Ad parametrs.</param>
         /// <returns>Redirect to action.</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFileCollection photos)
+        public async Task<IActionResult> Create(IFormFileCollection photos, CreateView createView)
         {
+            try
+            {
+                const string ImagePath = @"\Files\RentalOfPropertyPhotos\";
+                var urls = new List<string>();
+                var user = _usersManager.FindByEmail(User.Identity.Name);
+
+                foreach (var photo in photos)
+                {
+                    string filePath = string.Concat(ImagePath, $"{Guid.NewGuid()}{photo.FileName}");
+                    string currentFilePath = string.Concat(_applicationEnvironment.WebRootPath, filePath);
+
+                    urls.Add(filePath);
+
+                    // Save file to /Files/Images in wwwroot
+                    using (var fileStream = new FileStream(currentFilePath, FileMode.Create))
+                    {
+                        await photo.CopyToAsync(fileStream);
+                    }
+                }
+
+                string rentalAdId = await _adsManager.CreateAd(_mapper.Map<CreateModel>(createView), user.Id, $"https://{Request.Host.Value}", urls);
+
+                return RedirectToAction("RentalAd", "Ads", new { id = rentalAdId });
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+            }
+
             return RedirectToAction("Index", "Home");
         }
     }

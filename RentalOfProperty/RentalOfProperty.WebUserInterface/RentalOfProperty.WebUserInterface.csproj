@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="wwwroot\Files\Images\" />
+    <Folder Include="wwwroot\Files\RentalOfPropertyPhotos\" />
   </ItemGroup>
 
   <ItemGroup>

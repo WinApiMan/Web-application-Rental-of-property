@@ -1,45 +1,16 @@
-﻿// <copyright file="RentalAd.cs" company="PlaceholderCompany">
+﻿// <copyright file="CreateModel.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
+
 namespace RentalOfProperty.BusinessLogicLayer.Models
 {
-    using System;
+    using RentalOfProperty.BusinessLogicLayer.Enums;
 
     /// <summary>
-    /// Rental ad model.
+    /// Create ad model.
     /// </summary>
-    public class RentalAd
+    public class CreateModel
     {
-        /// <summary>
-        /// Gets or sets unique key.
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets contact person unique key.
-        /// </summary>
-        public string ContactPersonId { get; set; }
-
-        /// <summary>
-        /// Gets or sets user unique key.
-        /// </summary>
-        public string UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets unique link.
-        /// </summary>
-        public string SourceLink { get; set; }
-
-        /// <summary>
-        /// Gets or sets rental ad number.
-        /// </summary>
-        public int RentalAdNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets update date.
-        /// </summary>
-        public DateTime UpdateDate { get; set; }
-
         /// <summary>
         /// Gets or sets region.
         /// </summary>
@@ -128,22 +99,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         /// <summary>
         /// Gets or sets RentalType.
         /// </summary>
-        public int RentalType { get; set; }
-
-        /// <summary>
-        /// Gets or sets total views
-        /// </summary>
-        public int TotalViews { get; set; }
-
-        /// <summary>
-        /// Gets or sets month views.
-        /// </summary>
-        public int MonthViews { get; set; }
-
-        /// <summary>
-        /// Gets or sets week views.
-        /// </summary>
-        public int WeekViews { get; set; }
+        public AdsTypeMenu RentalType { get; set; }
 
         /// <summary>
         /// Gets or sets land area.
@@ -151,8 +107,33 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         public double LandArea { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is ad published.
+        /// Gets or sets BYN per person price.
         /// </summary>
-        public bool IsPublished { get; set; }
+        public double BYNPricePerPerson { get; set; }
+
+        /// <summary>
+        /// Gets or sets USD per person price.
+        /// </summary>
+        public double USDPricePerPerson { get; set; }
+
+        /// <summary>
+        /// Gets or sets USD per day price.
+        /// </summary>
+        public double USDPricePerDay { get; set; }
+
+        /// <summary>
+        /// Gets or sets BYN per day price.
+        /// </summary>
+        public double BYNPricePerDay { get; set; }
+
+        /// <summary>
+        /// Gets or sets BYN price.
+        /// </summary>
+        public double BYNPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets USD price.
+        /// </summary>
+        public double USDPrice { get; set; }
     }
 }

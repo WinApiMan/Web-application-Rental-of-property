@@ -22,6 +22,11 @@ namespace RentalOfProperty.DataAccessLayer.Models
         public string ContactPersonId { get; set; }
 
         /// <summary>
+        /// Gets or sets user unique key.
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
         /// Gets or sets unique link.
         /// </summary>
         public string SourceLink { get; set; }

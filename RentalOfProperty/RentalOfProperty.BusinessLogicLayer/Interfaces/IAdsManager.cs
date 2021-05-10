@@ -118,5 +118,15 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="id">Unique key.</param>
         /// <returns>Rental ad.</returns>
         Task<AllRentalAdInfo> GetAllRentalAdInfo(string id);
+
+        /// <summary>
+        /// Add new ad.
+        /// </summary>
+        /// <param name="createModel">Ad parametrs.</param>
+        /// <param name="userId">User id.</param>
+        /// <param name="hostUrl">Host url to creating source link.</param>
+        /// <param name="photosUrls">Path to photos.</param>
+        /// <returns>Task result.</returns>
+        Task<string> CreateAd(CreateModel createModel, string userId, string hostUrl, IEnumerable<string> photosUrls);
     }
 }

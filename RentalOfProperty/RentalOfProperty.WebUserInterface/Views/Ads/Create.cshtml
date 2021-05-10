@@ -213,8 +213,8 @@
             <input type="file" onchange="getCount('@Localizer["ChoosingFiles"]')" class="invisible" name="photos" id="photos" multiple accept=".jpg, .jpeg, .png" />
         </div>
 
-        <div class="d-none" id="XMapCoordinate"></div>
-        <div class="d-none" id="YMapCoordinate"></div>
+        <input asp-for="XMapCoordinate" class="d-none" id="XMapCoordinate" />
+        <input asp-for="YMapCoordinate" class="d-none" id="YMapCoordinate" />
 
         <div class="col-md-12">
             <h5>@Localizer["ChooseCoordinates"]</h5>
@@ -273,8 +273,8 @@
                 map.addControl(L.mapquest.control());
                 map.on('click', function (e) {
 
-                    document.getElementById('XMapCoordinate').setAttribute("value", e.latlng.lat);
-                    document.getElementById('YMapCoordinate').setAttribute("value", e.latlng.lng);
+                    document.getElementById('XMapCoordinate').setAttribute("value", `${e.latlng.lat}`.replace('.',','));
+                    document.getElementById('YMapCoordinate').setAttribute("value", `${e.latlng.lng}`.replace('.', ','));
 
                     layerGroup.clearLayers();
                     L.marker([e.latlng.lat, e.latlng.lng], {
