@@ -176,9 +176,27 @@
                         .Take(PageSize);
                 }
             }
+            else if (adsTypeMenuItem == AdsTypeMenu.MyAds)
+            {
+                if (User.Identity.Name is null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    var user = _usersManager.FindByEmail(User.Identity.Name);
+                    ads = await _adsManager.GetUserAds(user.Id);
+                    favoriteCount = ads.Count();
+
+                    ads = ads
+                        .Skip((pageNumber - DefaultPage) * PageSize)
+                        .Take(PageSize);
+                }
+            }
             else
             {
                 ads = await _adsManager.GetAdsForPage(_mapper.Map<BLLAdsTypeMenu>(adsTypeMenuItem), pageNumber, PageSize);
+                favoriteCount = _adsManager.GetRentalAdsCount(_mapper.Map<BLLAdsTypeMenu>(adsTypeMenuItem));
             }
 
             var adViews = new List<AdView>();
@@ -252,7 +270,7 @@
                 {
                     PageNumber = pageNumber,
                     PageSize = PageSize,
-                    TotalItems = adsTypeMenuItem == AdsTypeMenu.FavoriteAds ? favoriteCount : _adsManager.GetRentalAdsCount(_mapper.Map<BLLAdsTypeMenu>(adsTypeMenuItem)),
+                    TotalItems = favoriteCount,
                 },
                 IsSuccess = false,
             });
@@ -568,6 +586,29 @@
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Remove ad.
+        /// </summary>
+        /// <param name="id">Ad unique key.</param>
+        /// <returns>Action result object.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(string id)
+        {
+            try
+            {
+                var user = _usersManager.FindByEmail(User.Identity.Name);
+                await _adsManager.Remove(id, user.Id, User.IsInRole(UserRoles.Administrator));
+                return RedirectToAction("AdsByType", "Ads", new { adsTypeMenuItem = AdsTypeMenu.MyAds });
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

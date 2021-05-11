@@ -33,5 +33,10 @@ namespace RentalOfProperty.WebUserInterface.Enums
         /// Daily ads searching.
         /// </summary>
         DailySearch,
+
+        /// <summary>
+        /// Current user ads.
+        /// </summary>
+        MyAds,
     }
 }

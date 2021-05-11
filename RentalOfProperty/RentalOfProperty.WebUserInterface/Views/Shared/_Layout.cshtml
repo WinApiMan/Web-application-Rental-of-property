@@ -101,7 +101,7 @@
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name</button>
                                 <div class="dropdown-menu w-100 text-center">
-                                    <button type="submit" class="dropdown-item">@Localizer["MyAds"] </button>
+                                    <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.MyAds" class="dropdown-item">@Localizer["MyAds"] </a>
                                     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.FavoriteAds" class="dropdown-item">@Localizer["MyFavourites"]</a>
                                     <a asp-controller="Users" asp-action="EditUserData" class="dropdown-item">@Localizer["UpdatePersonalData"]</a>
                                     <a asp-controller="Users" asp-action="ChangePassword" class="dropdown-item">@Localizer["UpdatePassword"]</a>

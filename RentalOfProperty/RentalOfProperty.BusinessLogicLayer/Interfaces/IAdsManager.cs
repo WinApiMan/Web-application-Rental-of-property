@@ -81,6 +81,13 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         Task<IEnumerable<RentalAd>> GetFavoriteAds(string userId);
 
         /// <summary>
+        /// Get user ads.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <returns>Favorite ads list.</returns>
+        Task<IEnumerable<RentalAd>> GetUserAds(string userId);
+
+        /// <summary>
         /// Search long term ads use parametrs.
         /// </summary>
         /// <param name="longTermSearch">Parametrs for searching.</param>
@@ -128,5 +135,14 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="photosUrls">Path to photos.</param>
         /// <returns>Task result.</returns>
         Task<string> CreateAd(CreateModel createModel, string userId, string hostUrl, IEnumerable<string> photosUrls);
+
+        /// <summary>
+        /// Remove ad.
+        /// </summary>
+        /// <param name="id">Ad unique key.</param>
+        /// <param name="userId">User unique key.</param>
+        /// <param name="isAdministrator">Is user administrator.</param>
+        /// <returns>Remove result.</returns>
+        Task Remove(string id, string userId, bool isAdministrator);
     }
 }

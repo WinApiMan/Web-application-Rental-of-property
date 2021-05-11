@@ -2,7 +2,16 @@
 @using RentalOfProperty.WebUserInterface.Models.Ad
 
 @{
-    ViewData["Title"] = Localizer["AdsByType"];
+    ViewData["Title"] = ViewBag.AdsTypeMenuItem switch
+    {
+        AdsTypeMenu.DayilyAds => Localizer["RentForADay"].Value,
+        AdsTypeMenu.LongTermAds => Localizer["LongTermRent"].Value,
+        AdsTypeMenu.FavoriteAds => Localizer["MyFavourites"].Value,
+        AdsTypeMenu.LongTermSearch => Localizer["LongTermAdsSearching"].Value,
+        AdsTypeMenu.DailySearch => Localizer["DailyAdsSearching"].Value,
+        AdsTypeMenu.MyAds => Localizer["MyAds"].Value,
+        _ => default,
+    };
 }
 <script src="~/js/Index.js"></script>
 <div class="sticky-top container bg-light" style="z-index:2">
@@ -286,6 +295,7 @@
             AdsTypeMenu.FavoriteAds => Localizer["MyFavourites"].Value,
             AdsTypeMenu.LongTermSearch => Localizer["LongTermAdsSearching"].Value,
             AdsTypeMenu.DailySearch => Localizer["DailyAdsSearching"].Value,
+            AdsTypeMenu.MyAds => Localizer["MyAds"].Value,
             _ => default,
         };
     }
@@ -443,9 +453,21 @@
                                             @(longTermAd.USDPrice <= 0 ? Localizer["ContractPrice"].Value : $"{longTermAd.USDPrice} $")
                                         </div>
                                     </div>
-                                    <div class="col-md-12 pt-5 mt-3">
+                                    <div class="col-md-6 pt-5 mt-3">
                                         @Localizer["UpdateDateOnThisSite"] @ad.RentalAdView.UpdateDate.ToShortDateString().ToString(CultureInfo.CurrentUICulture)
                                     </div>
+                                    @if (ad.RentalAdView.IsPublished && ViewBag.AdsTypeMenuItem == AdsTypeMenu.MyAds)
+                                    {
+                                        <div class="col-md-6 pt-5 mt-3">
+                                            @Localizer["Published"]
+                                        </div>
+                                    }
+                                    @if (!ad.RentalAdView.IsPublished && ViewBag.AdsTypeMenuItem == AdsTypeMenu.MyAds)
+                                    {
+                                        <div class="col-md-6 pt-5 mt-3">
+                                            @Localizer["UnderConsideration"]
+                                        </div>
+                                    }
                                 </div>
                             </td>
                             <td class="text-md-center">

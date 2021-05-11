@@ -168,6 +168,9 @@
   <data name="LongTermRent" xml:space="preserve">
     <value>Long term rent</value>
   </data>
+  <data name="MyAds" xml:space="preserve">
+    <value>My ads</value>
+  </data>
   <data name="MyFavourites" xml:space="preserve">
     <value>Favourites</value>
     <comment>Favourites</comment>
@@ -196,6 +199,9 @@
     <value>Price per person</value>
     <comment>Price per person</comment>
   </data>
+  <data name="Published" xml:space="preserve">
+    <value>Published</value>
+  </data>
   <data name="RealEstateData" xml:space="preserve">
     <value>Real estate data</value>
     <comment>Real estate data</comment>
@@ -219,6 +225,9 @@
   <data name="Square" xml:space="preserve">
     <value>Square</value>
     <comment>Square</comment>
+  </data>
+  <data name="UnderConsideration" xml:space="preserve">
+    <value>Not published (under consideration)</value>
   </data>
   <data name="UpdateDateOnThisSite" xml:space="preserve">
     <value>Update date on site source:</value>

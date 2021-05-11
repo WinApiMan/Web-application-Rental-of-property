@@ -102,8 +102,12 @@
 @if (User.Identity.IsAuthenticated && Model.IsOriginal && (Model.ContactPerson.Email.Equals(User.Identity.Name) || User.IsInRole("Administrator")))
 {
     <div class="col-md-6 text-right mt-3">
-        <button class="btn btn-danger w-50">@Localizer["RemoveAd"]</button>
+        <button class="btn btn-danger w-50" onclick="removeConfirm()">@Localizer["RemoveAd"]</button>
     </div>
+    <form asp-controller="Ads" asp-action="Remove" asp-route-id="@Model.RentalAd.Id" class="d-none">
+        <input type="submit" class="d-none" id="removeSubmit" />
+        <button class="btn btn-danger w-50" onclick="removeConfirm()">@Localizer["RemoveAd"]</button>
+    </form>
     <div class="col-md-6 text-right mt-3">
         <button class="btn btn-success w-50">@Localizer["EditAd"]</button>
     </div>
@@ -265,6 +269,12 @@
 
             map.addControl(L.mapquest.control());
                 }
+
+                function removeConfirm() {
+                    if (confirm("@Localizer["RemoveConfirmMessage"]")) {
+                    document.getElementById('removeSubmit').click();
+                }
+            }
             </script>
         }
     }

@@ -169,6 +169,9 @@
     <value>Долгосрочная аренда</value>
     <comment>Long term rent</comment>
   </data>
+  <data name="MyAds" xml:space="preserve">
+    <value>Мои объявления</value>
+  </data>
   <data name="MyFavourites" xml:space="preserve">
     <value>Избранное</value>
     <comment>Favourites</comment>
@@ -197,6 +200,9 @@
     <value>Цена за человка</value>
     <comment>Price per person</comment>
   </data>
+  <data name="Published" xml:space="preserve">
+    <value>Опубликовано</value>
+  </data>
   <data name="RealEstateData" xml:space="preserve">
     <value>Данные о недвижимости</value>
     <comment>Real estate data</comment>
@@ -220,6 +226,9 @@
   <data name="Square" xml:space="preserve">
     <value>Площадь</value>
     <comment>Square</comment>
+  </data>
+  <data name="UnderConsideration" xml:space="preserve">
+    <value>Не опубликовано (на рассмотрении)</value>
   </data>
   <data name="UpdateDateOnThisSite" xml:space="preserve">
     <value>Дата обновления на сайте источнике:</value>

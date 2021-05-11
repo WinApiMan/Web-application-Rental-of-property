@@ -172,5 +172,10 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets a value indicating whether is favorite.
         /// </summary>
         public bool IsFavorite { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether is ad published.
+        /// </summary>
+        public bool IsPublished { get; set; }
     }
 }

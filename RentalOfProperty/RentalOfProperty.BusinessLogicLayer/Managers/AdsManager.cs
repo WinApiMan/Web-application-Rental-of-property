@@ -470,6 +470,39 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Get user ads.
+        /// </summary>
+        /// <param name="userId">User unique key.</param>
+        /// <returns>Favorite ads list.</returns>
+        public async Task<IEnumerable<RentalAd>> GetUserAds(string userId)
+        {
+            if (userId is null)
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else
+            {
+                var ads = await _rentalAdsRepository.Get(item => item.UserId.Equals(userId));
+                var rentalAds = new List<RentalAd>();
+
+                foreach (var ad in ads)
+                {
+
+                    if (ad is DailyRentalAdDTO)
+                    {
+                        rentalAds.Add(_mapper.Map<DailyRentalAd>(ad as DailyRentalAdDTO));
+                    }
+                    else
+                    {
+                        rentalAds.Add(_mapper.Map<LongTermRentalAd>(ad as LongTermRentalAdDTO));
+                    }
+                }
+
+                return rentalAds;
+            }
+        }
+
+        /// <summary>
         /// Search long term ads use parametrs.
         /// </summary>
         /// <param name="longTermSearch">Parametrs for searching.</param>
@@ -877,6 +910,44 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 WeekViews = default,
                 UpdateDate = updateDate,
             };
+        }
+
+        /// <summary>
+        /// Remove ad.
+        /// </summary>
+        /// <param name="id">Ad unique key.</param>
+        /// <param name="userId">User unique key.</param>
+        /// <param name="isAdministrator">Is user administrator.</param>
+        /// <returns>Remove result.</returns>
+        public async Task Remove(string id, string userId, bool isAdministrator)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException("Ad id is null");
+            }
+            else
+            {
+                var ads = await _rentalAdsRepository.Get(item => item.Id.Equals(id));
+
+                if (ads.Count() == default)
+                {
+                    throw new NullReferenceException("Ad not found");
+                }
+                else
+                {
+                    if (isAdministrator || ads.First().UserId.Equals(userId))
+                    {
+                        var aditionalAdDatas = await _aditionalAdDatasRepository.Get(item => item.Id.Equals(ads.First().Id));
+
+                        await _aditionalAdDatasRepository.Remove(aditionalAdDatas.First());
+                        await _rentalAdsRepository.Remove(ads.First());
+                    }
+                    else
+                    {
+                        throw new Exception("You can't remove ad");
+                    }
+                }
+            }
         }
     }
 }

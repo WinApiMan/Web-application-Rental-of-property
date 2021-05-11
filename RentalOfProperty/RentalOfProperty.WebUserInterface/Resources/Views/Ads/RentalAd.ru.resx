@@ -196,6 +196,9 @@
   <data name="RemoveAd" xml:space="preserve">
     <value>Удалить объявление</value>
   </data>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить это объявление?</value>
+  </data>
   <data name="RemoveFromFavorites" xml:space="preserve">
     <value>Убрать из избранного</value>
     <comment>Remove from favorites</comment>

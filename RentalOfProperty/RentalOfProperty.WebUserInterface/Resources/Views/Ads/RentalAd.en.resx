@@ -196,6 +196,9 @@
   <data name="RemoveAd" xml:space="preserve">
     <value>Remove ad</value>
   </data>
+  <data name="RemoveConfirmMessage" xml:space="preserve">
+    <value>Are you sure that you want remove this ad?</value>
+  </data>
   <data name="RemoveFromFavorites" xml:space="preserve">
     <value>Remove from favorites</value>
     <comment>Remove from favorites</comment>
