@@ -1,0 +1,305 @@
+﻿@model RentalOfProperty.WebUserInterface.Models.Ad.CreateView
+@{
+    ViewData["Title"] = Localizer["EditAd"].Value;
+
+    var rentalTypes = new SelectList(new List<SelectListItem>
+    {
+        new SelectListItem
+        {
+            Text = Localizer["LongTermAd"].Value,
+            Value = "0",
+        },
+        new SelectListItem
+        {
+            Text = Localizer["DayilyAd"].Value,
+            Value = "1",
+        }
+    }, "Value", "Text");
+
+    if (Model.USDPrice <= 0 && Model.BYNPrice <= 0)
+    {
+        rentalTypes.Last().Selected = true;
+    }
+    else
+    {
+        rentalTypes.First().Selected = true;
+    }
+}
+
+<div>
+    <h1 class="text-center pt-2 pb-2">@Localizer["EditAd"]</h1>
+    <form class="row" asp-controller="Ads" asp-action="Create" enctype="multipart/form-data">
+        <div class="col-md-6">
+            <h5 asp-display-name-for="RentalType"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <select name="RentalType" id="rentalType" asp-items="rentalTypes" class="form-control"></select>
+            <span asp-validation-for="RentalType" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Region"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <select name="Region" asp-items="ViewBag.Regions" class="form-control"></select>
+            <span asp-validation-for="Region" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="District"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="District" class="form-control" />
+            <span asp-validation-for="District" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Locality"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Locality" class="form-control" />
+            <span asp-validation-for="Locality" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Address"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="TotalCountOfRooms"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="TotalCountOfRooms" class="form-control" />
+            <span asp-validation-for="TotalCountOfRooms" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="RentCountOfRooms"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="RentCountOfRooms" class="form-control" />
+            <span asp-validation-for="RentCountOfRooms" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="TotalArea"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="TotalArea" class="form-control" />
+            <span asp-validation-for="TotalArea" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="LivingArea"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="LivingArea" class="form-control" />
+            <span asp-validation-for="LivingArea" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="KitchenArea"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="KitchenArea" class="form-control" />
+            <span asp-validation-for="KitchenArea" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="LandArea"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="LandArea" class="form-control" />
+            <span asp-validation-for="LandArea" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="TotalFloors"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="TotalFloors" class="form-control" />
+            <span asp-validation-for="TotalFloors" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Floor"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Floor" class="form-control" />
+            <span asp-validation-for="Floor" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Bathroom"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Bathroom" class="form-control" />
+            <span asp-validation-for="Bathroom" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Notes"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Notes" class="form-control" />
+            <span asp-validation-for="Notes" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Description"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 asp-display-name-for="Facilities"></h5>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input asp-for="Facilities" class="form-control" />
+            <span asp-validation-for="Facilities" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 longTermPrices">
+            <h5 asp-display-name-for="BYNPrice"></h5>
+        </div>
+        <div class="col-md-6 mb-2 longTermPrices">
+            <input asp-for="BYNPrice" class="form-control" />
+            <span asp-validation-for="BYNPrice" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 longTermPrices">
+            <h5 asp-display-name-for="USDPrice"></h5>
+        </div>
+        <div class="col-md-6 mb-2 longTermPrices">
+            <input asp-for="USDPrice" class="form-control" />
+            <span asp-validation-for="USDPrice" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 dailyPrices" style="display:none">
+            <h5 asp-display-name-for="BYNPricePerPerson"></h5>
+        </div>
+        <div class="col-md-6 mb-2 dailyPrices" style="display:none">
+            <input asp-for="BYNPricePerPerson" class="form-control" />
+            <span asp-validation-for="BYNPricePerPerson" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 dailyPrices" style="display:none">
+            <h5 asp-display-name-for="USDPricePerPerson"></h5>
+        </div>
+        <div class="col-md-6 mb-2 dailyPrices" style="display:none">
+            <input asp-for="USDPricePerPerson" class="form-control" />
+            <span asp-validation-for="USDPricePerPerson" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 dailyPrices" style="display:none">
+            <h5 asp-display-name-for="BYNPricePerDay"></h5>
+        </div>
+        <div class="col-md-6 mb-2 dailyPrices" style="display:none">
+            <input asp-for="BYNPricePerDay" class="form-control" />
+            <span asp-validation-for="BYNPricePerDay" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 dailyPrices" style="display:none">
+            <h5 asp-display-name-for="USDPricePerDay"></h5>
+        </div>
+        <div class="col-md-6 mb-2 dailyPrices" style="display:none">
+            <input asp-for="USDPricePerDay" class="form-control" />
+            <span asp-validation-for="USDPricePerDay" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <h5 for="photos">@Localizer["Photos"]</h5>
+        </div>
+        <div class="col-md-6">
+            <label for="photos" class="btn btn-warning">@Localizer["SelectPhotos"]</label>
+            <label id="count">@Localizer["ChoosingFiles"]: @ViewBag.PhotosCount</label>
+            <input type="file" onchange="getCount('@Localizer["ChoosingFiles"]')" class="invisible" name="photos" id="photos" multiple accept=".jpg, .jpeg, .png" />
+        </div>
+
+        <input asp-for="XMapCoordinate" class="d-none" id="XMapCoordinate" />
+        <input asp-for="YMapCoordinate" class="d-none" id="YMapCoordinate" />
+
+        <div class="col-md-12">
+            <h5>@Localizer["ChooseCoordinates"]</h5>
+            <div id="map" style="height:400px"></div>
+        </div>
+
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-success mt-3" style="margin-bottom: 100px">@Localizer["EditRentalAd"]</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script type="text/javascript">
+            function getCount(choosingFiles) {
+                let photos = document.getElementById('photos');
+                document.getElementById('count').innerHTML = `${choosingFiles}: ${photos.files.length}`
+                    ;
+            }
+
+            document.getElementById('rentalType').addEventListener('change', (event) => {
+                let prices = document.getElementsByClassName('longTermPrices');
+                let dailyPrices = document.getElementsByClassName('dailyPrices');
+                if (event.target.value == "0") {
+                    for (let index = 0; index < prices.length; index++) {
+                        prices[index].style.display = "block";
+                    }
+                    for (let index = 0; index < dailyPrices.length; index++) {
+                        dailyPrices[index].style.display = "none";
+                    }
+                }
+                if (event.target.value == "1") {
+                    for (let index = 0; index < dailyPrices.length; index++) {
+                        dailyPrices[index].style.display = "block";
+                    }
+                    for (let index = 0; index < prices.length; index++) {
+                        prices[index].style.display = "none";
+                    }
+                }
+            });
+
+            window.onload = function () {
+                document.getElementById('XMapCoordinate').setAttribute("value", `@(Model.XMapCoordinate.ToString())`);
+                document.getElementById('YMapCoordinate').setAttribute("value", `@(Model.YMapCoordinate.ToString())`);
+
+                L.mapquest.key = 'E2Jg6ZmyVEGZd4RkMnIT7ntfAKOnUhtt';
+
+                var map = L.mapquest.map('map', {
+                    center: [@(Model.XMapCoordinate.ToString().Replace(',','.')), @(Model.YMapCoordinate.ToString().Replace(',', '.'))],
+                    layers: L.mapquest.tileLayer('map'),
+                    zoom: 10
+                });
+
+                let layerGroup = L.layerGroup().addTo(map);
+
+                map.addControl(L.mapquest.control());
+
+                L.marker([@(Model.XMapCoordinate.ToString().Replace(',','.')), @(Model.YMapCoordinate.ToString().Replace(',', '.'))], {
+                icon: L.mapquest.icons.marker(),
+                draggable: false
+                }).bindPopup('@(Model.Address)').addTo(map);
+
+                map.on('click', function (e) {
+
+                    document.getElementById('XMapCoordinate').setAttribute("value", `${e.latlng.lat}`.replace('.',','));
+                    document.getElementById('YMapCoordinate').setAttribute("value", `${e.latlng.lng}`.replace('.', ','));
+
+                    layerGroup.clearLayers();
+                    L.marker([e.latlng.lat, e.latlng.lng], {
+                        icon: L.mapquest.icons.marker(),
+                        draggable: false
+                    }).bindPopup('@Localizer["NewAddress"]').addTo(layerGroup);
+                });
+            }
+        </script>
+    }
+}

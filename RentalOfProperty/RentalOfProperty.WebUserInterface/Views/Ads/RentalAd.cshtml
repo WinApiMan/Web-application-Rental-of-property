@@ -109,7 +109,7 @@
         <button class="btn btn-danger w-50" onclick="removeConfirm()">@Localizer["RemoveAd"]</button>
     </form>
     <div class="col-md-6 text-right mt-3">
-        <button class="btn btn-success w-50">@Localizer["EditAd"]</button>
+        <a class="btn btn-success w-50" asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.RentalAd.Id">@Localizer["EditAd"]</a>
     </div>
 }
 <div class="col-md-12 row mt-4 ml-2 pb-2" style="background-color: #90EE90">

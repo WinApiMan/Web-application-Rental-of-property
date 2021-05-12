@@ -144,6 +144,102 @@
         }
 
         /// <summary>
+        /// Edit view.
+        /// </summary>
+        /// <param name="id">Unique key.</param>
+        /// <returns>Redirect to edit page.</returns>
+        [Authorize]
+        public async Task<IActionResult> Edit(string id)
+        {
+            try
+            {
+                var user = _usersManager.FindByEmail(User.Identity.Name);
+                var ad = await _adsManager.GetAllRentalAdInfo(id);
+
+                if (ad.RentalAd.UserId.Equals(user.Id) || User.IsInRole(UserRoles.Administrator))
+                {
+                    var editView = new CreateView
+                    {
+                        Address = ad.RentalAd.Address,
+                        Bathroom = ad.RentalAd.Bathroom,
+                        Description = ad.RentalAd.Description,
+                        District = ad.RentalAd.District,
+                        Facilities = ad.RentalAd.Facilities,
+                        Floor = ad.RentalAd.Floor,
+                        KitchenArea = ad.RentalAd.KitchenArea,
+                        LandArea = ad.RentalAd.KitchenArea,
+                        LivingArea = ad.RentalAd.LivingArea,
+                        Locality = ad.RentalAd.Locality,
+                        Notes = ad.RentalAd.Notes,
+                        Region = ad.RentalAd.Region,
+                        RentalType = (BLLAdsTypeMenu)ad.RentalAd.RentalType,
+                        RentCountOfRooms = ad.RentalAd.RentCountOfRooms,
+                        TotalArea = ad.RentalAd.TotalArea,
+                        TotalCountOfRooms = ad.RentalAd.TotalCountOfRooms,
+                        TotalFloors = ad.RentalAd.TotalFloors,
+                        XMapCoordinate = ad.RentalAd.XMapCoordinate,
+                        YMapCoordinate = ad.RentalAd.YMapCoordinate,
+                    };
+
+                    if (ad.RentalAd is DailyRentalAd)
+                    {
+                        var dailyAd = ad.RentalAd as DailyRentalAd;
+                        editView.USDPricePerDay = dailyAd.USDPricePerDay;
+                        editView.USDPricePerPerson = dailyAd.USDPricePerPerson;
+                        editView.BYNPricePerDay = dailyAd.BYNPricePerDay;
+                        editView.BYNPricePerPerson = dailyAd.BYNPricePerPerson;
+                    }
+                    else
+                    {
+                        var longTermAd = ad.RentalAd as LongTermRentalAd;
+                        editView.BYNPrice = longTermAd.BYNPrice;
+                        editView.USDPrice = longTermAd.USDPrice;
+                    }
+
+                    ViewBag.PhotosCount = ad.Photos.Count();
+
+                    ViewBag.Regions = new SelectList(
+                        new List<string>
+                        {
+                    "Любая область",
+                    "Брестская область",
+                    "Витебская область",
+                    "Гомельская область",
+                    "Гродненская область",
+                    "Минская область",
+                    "Могилёвская область",
+                        });
+
+                    ViewBag.RoomsCount = new SelectList(
+                        new List<string>
+                        {
+                    string.Empty,
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                        });
+
+                    return View(editView);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        /// <summary>
         /// Long term rent get query.
         /// </summary>
         /// <param name="adsTypeMenuItem">Ads type menu item.</param>
@@ -570,10 +666,8 @@
                     urls.Add(filePath);
 
                     // Save file to /Files/Images in wwwroot
-                    using (var fileStream = new FileStream(currentFilePath, FileMode.Create))
-                    {
-                        await photo.CopyToAsync(fileStream);
-                    }
+                    using var fileStream = new FileStream(currentFilePath, FileMode.Create);
+                    await photo.CopyToAsync(fileStream);
                 }
 
                 string rentalAdId = await _adsManager.CreateAd(_mapper.Map<CreateModel>(createView), user.Id, $"https://{Request.Host.Value}", urls);
@@ -601,7 +695,15 @@
             try
             {
                 var user = _usersManager.FindByEmail(User.Identity.Name);
+                var photos = await _adsManager.GetHousingPhotosByRentalAdId(id);
+                var photosPath = photos.Select(item => item.PathToPhoto);
                 await _adsManager.Remove(id, user.Id, User.IsInRole(UserRoles.Administrator));
+
+                foreach (var path in photosPath)
+                {
+                    System.IO.File.Delete($"{_applicationEnvironment.WebRootPath}{path}");
+                }
+
                 return RedirectToAction("AdsByType", "Ads", new { adsTypeMenuItem = AdsTypeMenu.MyAds });
             }
             catch (Exception exception)
