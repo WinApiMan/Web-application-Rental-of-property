@@ -189,6 +189,12 @@
     <value>Price per person</value>
     <comment>Price per person</comment>
   </data>
+  <data name="Publish" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="Publishing" xml:space="preserve">
+    <value>publishing</value>
+  </data>
   <data name="RealEstateData" xml:space="preserve">
     <value>Real estate data</value>
     <comment>Real estate data</comment>
@@ -228,6 +234,12 @@
   <data name="SuccessfulLoad" xml:space="preserve">
     <value>Successful load</value>
     <comment>SucccessfulLoad</comment>
+  </data>
+  <data name="Unpublish" xml:space="preserve">
+    <value>Unpublish</value>
+  </data>
+  <data name="Unpublishing" xml:space="preserve">
+    <value>unpublishing</value>
   </data>
   <data name="UnsuccessfullLoad" xml:space="preserve">
     <value>Load error</value>

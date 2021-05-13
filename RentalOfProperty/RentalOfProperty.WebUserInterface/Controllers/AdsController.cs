@@ -42,6 +42,8 @@
 
         private readonly IMapper _mapper;
 
+        public const string ImagePath = @"\Files\RentalOfPropertyPhotos\";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AdsController"/> class.
         /// </summary>
@@ -160,6 +162,7 @@
                 {
                     var editView = new CreateView
                     {
+                        Id = ad.RentalAd.Id,
                         Address = ad.RentalAd.Address,
                         Bathroom = ad.RentalAd.Bathroom,
                         Description = ad.RentalAd.Description,
@@ -287,6 +290,21 @@
                     ads = ads
                         .Skip((pageNumber - DefaultPage) * PageSize)
                         .Take(PageSize);
+                }
+            }
+            else if (adsTypeMenuItem == AdsTypeMenu.AdsForPublish)
+            {
+                if (User.IsInRole(UserRoles.Administrator))
+                {
+                    ads = await _adsManager.GetAdsForPublish();
+                    favoriteCount = ads.Count();
+                    ads = ads
+                        .Skip((pageNumber - DefaultPage) * PageSize)
+                        .Take(PageSize);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
@@ -654,7 +672,6 @@
         {
             try
             {
-                const string ImagePath = @"\Files\RentalOfPropertyPhotos\";
                 var urls = new List<string>();
                 var user = _usersManager.FindByEmail(User.Identity.Name);
 
@@ -705,6 +722,76 @@
                 }
 
                 return RedirectToAction("AdsByType", "Ads", new { adsTypeMenuItem = AdsTypeMenu.MyAds });
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        /// <summary>
+        /// Edit ad.
+        /// </summary>
+        /// <param name="photos">Ad photos.</param>
+        /// <param name="createView">Ad parametrs.</param>
+        /// <returns>Redirect to action.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(IFormFileCollection photos, CreateView createView)
+        {
+            try
+            {
+                var user = _usersManager.FindByEmail(User.Identity.Name);
+                var oldPhotos = await _adsManager.GetHousingPhotosByRentalAdId(createView.Id);
+                var photosPath = oldPhotos.Select(item => item.PathToPhoto);
+
+                foreach (var path in photosPath)
+                {
+                    System.IO.File.Delete($"{_applicationEnvironment.WebRootPath}{path}");
+                }
+
+                var photosUrl = photos.Select(photo => string.Concat(ImagePath, $"{Guid.NewGuid()}{photo.FileName}")).ToArray();
+
+                await _adsManager.Edit(_mapper.Map<CreateModel>(createView), user.Id, User.IsInRole(UserRoles.Administrator), photosUrl);
+
+                int index = 0;
+
+                foreach (var photo in photos)
+                {
+                    string currentFilePath = string.Concat(_applicationEnvironment.WebRootPath, photosUrl[index]);
+
+                    // Save file to /Files/Images in wwwroot
+                    using var fileStream = new FileStream(currentFilePath, FileMode.Create);
+                    await photo.CopyToAsync(fileStream);
+
+                    index++;
+                }
+
+                return RedirectToAction("RentalAd", "Ads", new { id = createView.Id });
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError($"Error : {exception.Message}");
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        /// <summary>
+        /// Publish or unpublish ad.
+        /// </summary>
+        /// <param name="id">Ad unique key.</param>
+        /// <returns>Publish result.</returns>
+        [Authorize(Roles = UserRoles.Administrator)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Publish(string id)
+        {
+            try
+            {
+                await _adsManager.Publish(id);
+                return RedirectToAction("RentalAd", "Ads", new { id });
             }
             catch (Exception exception)
             {

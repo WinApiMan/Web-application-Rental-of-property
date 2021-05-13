@@ -12,6 +12,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
     public class CreateModel
     {
         /// <summary>
+        /// Gets or sets unique key.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets region.
         /// </summary>
         public string Region { get; set; }

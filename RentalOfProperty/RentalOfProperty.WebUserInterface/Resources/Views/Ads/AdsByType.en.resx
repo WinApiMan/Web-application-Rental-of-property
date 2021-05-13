@@ -179,6 +179,9 @@
     <value>Next</value>
     <comment>Next</comment>
   </data>
+  <data name="PendingAd" xml:space="preserve">
+    <value>Pending ad</value>
+  </data>
   <data name="PostAnAd" xml:space="preserve">
     <value>Post an ad</value>
     <comment>Post an ad</comment>

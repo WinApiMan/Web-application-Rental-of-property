@@ -38,5 +38,10 @@ namespace RentalOfProperty.WebUserInterface.Enums
         /// Current user ads.
         /// </summary>
         MyAds,
+
+        /// <summary>
+        /// Ads for publish.
+        /// </summary>
+        AdsForPublish,
     }
 }

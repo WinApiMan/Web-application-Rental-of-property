@@ -157,6 +157,9 @@
     <value>Post an ad</value>
     <comment>Post an ad</comment>
   </data>
+  <data name="Publishing" xml:space="preserve">
+    <value>Publishing</value>
+  </data>
   <data name="RealtByDailyAds" xml:space="preserve">
     <value>Realt, daily ads</value>
     <comment>Realt.by daily ads</comment>

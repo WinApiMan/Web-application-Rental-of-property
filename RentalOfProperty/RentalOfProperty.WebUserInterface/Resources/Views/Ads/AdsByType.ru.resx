@@ -180,6 +180,9 @@
     <value>Следующие</value>
     <comment>Next</comment>
   </data>
+  <data name="PendingAd" xml:space="preserve">
+    <value>Объявления, ожидающие рассмотрения</value>
+  </data>
   <data name="PostAnAd" xml:space="preserve">
     <value>Разместить объявл.</value>
     <comment>Post an ad</comment>

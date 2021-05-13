@@ -13,6 +13,11 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
     public class CreateView
     {
         /// <summary>
+        /// Gets or sets unique key.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets region.
         /// </summary>
         [Display(Name = "Region")]

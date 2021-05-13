@@ -189,6 +189,12 @@
     <value>Цена за человка</value>
     <comment>Price per person</comment>
   </data>
+  <data name="Publish" xml:space="preserve">
+    <value>Опубликовать</value>
+  </data>
+  <data name="Publishing" xml:space="preserve">
+    <value>опубликовано</value>
+  </data>
   <data name="RealEstateData" xml:space="preserve">
     <value>Данные о недвижимости</value>
     <comment>Real estate data</comment>
@@ -228,6 +234,12 @@
   <data name="SuccessfulLoad" xml:space="preserve">
     <value>Загрузка успешно завершена</value>
     <comment>Successful load</comment>
+  </data>
+  <data name="Unpublish" xml:space="preserve">
+    <value>Отменить публикацию</value>
+  </data>
+  <data name="Unpublishing" xml:space="preserve">
+    <value>на рассмотрении</value>
   </data>
   <data name="UnsuccessfullLoad" xml:space="preserve">
     <value>Ошибка загрузки</value>

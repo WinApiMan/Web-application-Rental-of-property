@@ -157,6 +157,9 @@
     <value>Разместить объявление</value>
     <comment>Post an ad</comment>
   </data>
+  <data name="Publishing" xml:space="preserve">
+    <value>Публикация</value>
+  </data>
   <data name="RealtByDailyAds" xml:space="preserve">
     <value>Realt, посуточные объявления</value>
     <comment>Realt.by daily ads</comment>

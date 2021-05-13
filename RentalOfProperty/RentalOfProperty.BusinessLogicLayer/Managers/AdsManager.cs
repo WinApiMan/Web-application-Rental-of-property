@@ -503,6 +503,30 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Get ads for publish.
+        /// </summary>
+        /// <returns>Ads for publish.</returns>
+        public async Task<IEnumerable<RentalAd>> GetAdsForPublish()
+        {
+            var ads = await _rentalAdsRepository.Get(item => !item.IsPublished);
+            var rentalAds = new List<RentalAd>();
+
+            foreach (var ad in ads)
+            {
+                if (ad is DailyRentalAdDTO)
+                {
+                    rentalAds.Add(_mapper.Map<DailyRentalAd>(ad as DailyRentalAdDTO));
+                }
+                else
+                {
+                    rentalAds.Add(_mapper.Map<LongTermRentalAd>(ad as LongTermRentalAdDTO));
+                }
+            }
+
+            return rentalAds;
+        }
+
+        /// <summary>
         /// Search long term ads use parametrs.
         /// </summary>
         /// <param name="longTermSearch">Parametrs for searching.</param>
@@ -947,6 +971,124 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                         throw new Exception("You can't remove ad");
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Edit ad.
+        /// </summary>
+        /// <param name="createModel">Ad parametrs.</param>
+        /// <param name="userId">User id.</param>
+        /// <param name="isAdministrator">Is administrator.</param>
+        /// <param name="photosUrls">Path to photos.</param>
+        /// <returns>Task result.</returns>
+        public async Task Edit(CreateModel createModel, string userId, bool isAdministrator, IEnumerable<string> photosUrls)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("User id is null");
+            }
+            else
+            {
+                var ads = await _rentalAdsRepository.Get(item => item.Id.Equals(createModel.Id));
+
+                if (ads.Count() == default)
+                {
+                    throw new NullReferenceException("Ad not found");
+                }
+                else
+                {
+                    var date = DateTime.Now;
+
+                    if (isAdministrator || ads.First().UserId.Equals(userId))
+                    {
+                        var rentalAd = ads.First();
+
+                        var aditionalAdDatas = await _aditionalAdDatasRepository.Get(item => item.Id.Equals(rentalAd.Id));
+                        aditionalAdDatas.First().UpdateDate = date;
+                        await _aditionalAdDatasRepository.Update(aditionalAdDatas.First());
+
+                        rentalAd.Region = createModel.Region;
+                        rentalAd.District = createModel.District;
+                        rentalAd.Locality = createModel.Locality;
+                        rentalAd.Address = createModel.Address;
+                        rentalAd.TotalCountOfRooms = createModel.TotalCountOfRooms;
+                        rentalAd.RentCountOfRooms = createModel.RentCountOfRooms;
+                        rentalAd.TotalArea = createModel.TotalArea;
+                        rentalAd.LivingArea = createModel.LivingArea;
+                        rentalAd.KitchenArea = createModel.KitchenArea;
+                        rentalAd.TotalFloors = createModel.TotalFloors;
+                        rentalAd.Floor = createModel.Floor;
+                        rentalAd.XMapCoordinate = createModel.XMapCoordinate;
+                        rentalAd.YMapCoordinate = createModel.YMapCoordinate;
+                        rentalAd.Bathroom = createModel.Bathroom;
+                        rentalAd.Notes = createModel.Notes;
+                        rentalAd.Description = createModel.Description;
+                        rentalAd.Facilities = createModel.Facilities;
+                        rentalAd.RentalType = (int)createModel.RentalType;
+                        rentalAd.LandArea = createModel.LandArea;
+                        rentalAd.UpdateDate = date;
+                        rentalAd.IsPublished = false;
+
+                        if (createModel.RentalType == AdsTypeMenu.DayilyAds)
+                        {
+                            var dailyRentalAd = _mapper.Map<DailyRentalAdDTO>(rentalAd);
+                            dailyRentalAd.BYNPricePerDay = createModel.BYNPricePerDay;
+                            dailyRentalAd.BYNPricePerPerson = createModel.BYNPricePerPerson;
+                            dailyRentalAd.USDPricePerDay = createModel.USDPricePerDay;
+                            dailyRentalAd.USDPricePerPerson = createModel.USDPricePerPerson;
+
+                            await _dailyRentalAdsRepository.Update(dailyRentalAd);
+                        }
+                        else
+                        {
+                            var longTermRentalAd = _mapper.Map<LongTermRentalAdDTO>(rentalAd);
+                            longTermRentalAd.BYNPrice = createModel.BYNPrice;
+                            longTermRentalAd.USDPrice = createModel.USDPrice;
+
+                            await _longTermRentalAdsRepository.Update(longTermRentalAd);
+                        }
+
+                        // Remove old photos
+                        await _housingPhotosRepository.RemoveRange(await _housingPhotosRepository.Get(item => item.RentalAdId.Equals(rentalAd.Id)));
+
+                        // Add new photos
+                        await _housingPhotosRepository.CreateRange(photosUrls.Select(item => new HousingPhotoDTO
+                        {
+                            PathToPhoto = item,
+                            RentalAdId = rentalAd.Id,
+                        }));
+                    }
+                    else
+                    {
+                        throw new Exception("You can't edit this ad");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Publish or unpublish ad.
+        /// </summary>
+        /// <param name="id">Rental ad unique key.</param>
+        /// <returns>Publish result.</returns>
+        public async Task Publish(string id)
+        {
+            var ads = await _rentalAdsRepository.Get(item => item.Id.Equals(id));
+
+            if (ads.Count() == default)
+            {
+                throw new NullReferenceException("Ad not found");
+            }
+            else if (ads.First().UserId is null)
+            {
+                throw new ArgumentNullException("Can't publish or unpublish ad from other sites.");
+            }
+            else
+            {
+                var ad = ads.First();
+                ad.IsPublished = ad.IsPublished ? false : true;
+                await _rentalAdsRepository.Update(ad);
             }
         }
     }

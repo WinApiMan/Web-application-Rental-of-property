@@ -8,12 +8,16 @@
     <div class="col-md-4 mt-2 text-left">
         @if (!string.IsNullOrEmpty(Model.RentalAd.Locality) && !string.IsNullOrEmpty(Model.RentalAd.Address))
         {
-            <h3>
-                @Model.RentalAd.Locality, @Model.RentalAd.Address.
-            </h3>
+        <h3>
+            @Model.RentalAd.Locality, @Model.RentalAd.Address
+            @if (Model.ContactPerson.Email.Equals(User.Identity.Name))
+            {
+                @(Model.RentalAd.IsPublished ? $"({Localizer["Publishing"].Value})." : $"({Localizer["Unpublishing"].Value}).")
+            }
+        </h3>
         }
-        else
-        {
+                else
+                {
             <h3>..........</h3>
         }
     </div>
@@ -111,6 +115,19 @@
     <div class="col-md-6 text-right mt-3">
         <a class="btn btn-success w-50" asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.RentalAd.Id">@Localizer["EditAd"]</a>
     </div>
+    if (User.IsInRole(UserRoles.Administrator))
+    {
+        <form asp-controller="Ads" class="col-md-6 text-right mt-3" asp-action="Publish" asp-route-id="@Model.RentalAd.Id">
+            @if (Model.RentalAd.IsPublished)
+            {
+            <input type="submit" class="btn btn-success w-50" id="removeSubmit" value="@Localizer["Unpublish"]" />
+            }
+            else
+            {
+            <input type="submit" class="btn btn-success w-50" id="removeSubmit" value="@Localizer["Publish"]" />
+            }
+        </form>
+    }
 }
 <div class="col-md-12 row mt-4 ml-2 pb-2" style="background-color: #90EE90">
     <h5 class="col-md-12 text-center">@Localizer["Price"]</h5>

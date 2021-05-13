@@ -28,7 +28,7 @@
 
 <div>
     <h1 class="text-center pt-2 pb-2">@Localizer["EditAd"]</h1>
-    <form class="row" asp-controller="Ads" asp-action="Create" enctype="multipart/form-data">
+    <form class="row" asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
         <div class="col-md-6">
             <h5 asp-display-name-for="RentalType"></h5>
         </div>
