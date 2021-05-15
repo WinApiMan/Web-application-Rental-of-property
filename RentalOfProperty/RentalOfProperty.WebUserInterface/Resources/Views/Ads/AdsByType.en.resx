@@ -221,9 +221,16 @@
     <value>Rooms</value>
     <comment>Rooms</comment>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Source" xml:space="preserve">
     <value>Source</value>
     <comment>Source</comment>
+  </data>
+  <data name="SourceLink" xml:space="preserve">
+    <value>Source link</value>
+    <comment>Source link</comment>
   </data>
   <data name="Square" xml:space="preserve">
     <value>Square</value>
