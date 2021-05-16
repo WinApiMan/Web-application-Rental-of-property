@@ -110,6 +110,18 @@
         }
 
         /// <summary>
+        /// Cities statistic.
+        /// </summary>
+        /// <param name="citiesViewsStatistic">Cities views statistic.</param>
+        /// <returns>Task result.</returns>
+        [Authorize(Roles = UserRoles.Administrator)]
+        public async Task<IActionResult> CitiesStatistic(CitiesViewsStatistic citiesViewsStatistic)
+        {
+            ViewBag.CitiesViewsStatistic = citiesViewsStatistic;
+            return View(_mapper.Map<IEnumerable<CityViewsModel>>(await _adsManager.GetCitiesStatistic()));
+        }
+
+        /// <summary>
         /// Create view.
         /// </summary>
         /// <returns>Redirect to create page.</returns>

@@ -184,6 +184,15 @@
     <value>Sign in</value>
     <comment>Sign in button</comment>
   </data>
+  <data name="Statistic" xml:space="preserve">
+    <value>Statistic</value>
+  </data>
+  <data name="TopDailyAds" xml:space="preserve">
+    <value>Top 20 daily ads</value>
+  </data>
+  <data name="TopLongTermAds" xml:space="preserve">
+    <value>Top 20 long term ads</value>
+  </data>
   <data name="UpdateConfirm" xml:space="preserve">
     <value>Are you sure that you want to update the data, it will take some time?</value>
     <comment>Update confirm question</comment>

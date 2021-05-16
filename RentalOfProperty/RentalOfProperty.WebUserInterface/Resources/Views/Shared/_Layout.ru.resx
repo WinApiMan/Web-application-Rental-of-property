@@ -184,6 +184,15 @@
     <value>Вход</value>
     <comment>Sign in button</comment>
   </data>
+  <data name="Statistic" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="TopDailyAds" xml:space="preserve">
+    <value>Топ 20 посуточных объявлений</value>
+  </data>
+  <data name="TopLongTermAds" xml:space="preserve">
+    <value>Топ 20 долгосрочных объявлений</value>
+  </data>
   <data name="UpdateConfirm" xml:space="preserve">
     <value>Вы уверены, что хотите обновить данные, это займет некоторое время?</value>
     <comment>Update confirm question</comment>

@@ -45,6 +45,12 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         int GetRentalAdsCount();
 
         /// <summary>
+        /// Get cities with views.
+        /// </summary>
+        /// <returns>City views models.</returns>
+        Task<IEnumerable<CityViews>> GetCitiesStatistic();
+
+        /// <summary>
         /// Get rental ads count with predicate.
         /// </summary>
         /// <param name="adsTypeMenuItem">Ads type menu item.</param>

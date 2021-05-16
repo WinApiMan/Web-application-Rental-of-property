@@ -585,6 +585,51 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Get cities with views.
+        /// </summary>
+        /// <returns>City views models.</returns>
+        public async Task<IEnumerable<CityViews>> GetCitiesStatistic()
+        {
+            var longTermAds = await _longTermRentalAdsRepository.Get();
+            var dailyAds = await _dailyRentalAdsRepository.Get();
+            var aditionalAdsDatas = await _aditionalAdDatasRepository.Get();
+
+            var cities = longTermAds.Select(item => item.Locality).Distinct().ToList();
+            cities.AddRange(dailyAds.Select(item => item.Locality).Distinct());
+            cities = cities.Distinct().ToList();
+
+            var datas = new List<CityViews>();
+
+            foreach (var city in cities)
+            {
+                var cityLongTermAds = longTermAds.Where(item => item.Locality.Equals(city));
+                var cityDailyAds = dailyAds.Where(item => item.Locality.Equals(city));
+                int aditionalViews = 0;
+
+                foreach (var ad in cityLongTermAds)
+                {
+                    var aditionalData = aditionalAdsDatas.FirstOrDefault(item => item.Id.Equals(ad.Id));
+                    aditionalViews += aditionalData is null ? 0 : aditionalData.TotalViews;
+                }
+
+                foreach (var ad in cityDailyAds)
+                {
+                    var aditionalData = aditionalAdsDatas.FirstOrDefault(item => item.Id.Equals(ad.Id));
+                    aditionalViews += aditionalData is null ? 0 : aditionalData.TotalViews;
+                }
+
+                datas.Add(new CityViews
+                {
+                    City = city,
+                    LongTermAdsViews = cityLongTermAds.Sum(item => item.TotalViews) + aditionalViews,
+                    DailyAdsViews = cityDailyAds.Sum(item => item.TotalViews) + aditionalViews,
+                });
+            }
+
+            return datas;
+        }
+
+        /// <summary>
         /// Search daily ads use parametrs.
         /// </summary>
         /// <param name="dailySearch">Parametrs for searching.</param>
