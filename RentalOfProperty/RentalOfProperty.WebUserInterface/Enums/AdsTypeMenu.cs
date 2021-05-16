@@ -43,5 +43,10 @@ namespace RentalOfProperty.WebUserInterface.Enums
         /// Ads for publish.
         /// </summary>
         AdsForPublish,
+
+        /// <summary>
+        /// General search.
+        /// </summary>
+        GeneralSearch,
     }
 }

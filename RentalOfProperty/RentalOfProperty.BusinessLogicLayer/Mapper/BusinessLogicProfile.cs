@@ -32,6 +32,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Mapper
             CreateMap<DailyRentalAdDTO, DailyRentalAd>().ReverseMap();
             CreateMap<LongTermRentalAdDTO, LongTermRentalAd>().ReverseMap();
             CreateMap<UserRentalAdDTO, UserRentalAd>().ReverseMap();
+            CreateMap<GeneralRentalAdDTO, LongTermRentalAd>().ReverseMap();
+            CreateMap<GeneralRentalAdDTO, DailyRentalAd>().ReverseMap();
         }
     }
 }

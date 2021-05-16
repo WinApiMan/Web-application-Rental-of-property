@@ -112,6 +112,15 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         Task<IEnumerable<RentalAd>> DailySearch(DailySearch dailySearch, int pageNumber, int pageSize);
 
         /// <summary>
+        /// Search long term ads use parametrs.
+        /// </summary>
+        /// <param name="generalSearch">Parametrs for searching.</param>
+        /// <param name="pageNumber">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <returns>Result ads.</returns>
+        Task<IEnumerable<RentalAd>> GeneralSearch(GeneralSearch generalSearch, int pageNumber, int pageSize);
+
+        /// <summary>
         /// Get daily search count.
         /// </summary>
         /// <param name="dailySearch">Daily search parametrs.</param>
@@ -124,6 +133,13 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="longTermSearch">Long term search parametrs.</param>
         /// <returns>Count.</returns>
         int GetLongTermSearchCount(LongTermSearch longTermSearch);
+
+        /// <summary>
+        /// Get general search count.
+        /// </summary>
+        /// <param name="generalSearch">Daily search parametrs.</param>
+        /// <returns>Count.</returns>
+        int GetGeneralSearchCount(GeneralSearch generalSearch);
 
         /// <summary>
         /// Get rental ad by id.

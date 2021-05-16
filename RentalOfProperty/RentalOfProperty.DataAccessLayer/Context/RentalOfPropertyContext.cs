@@ -54,6 +54,11 @@ namespace RentalOfProperty.DataAccessLayer.Context
         public DbSet<LongTermRentalAdDTO> LongTermRentalAds { get; set; }
 
         /// <summary>
+        /// Gets or sets general rental ads list.
+        /// </summary>
+        public DbSet<GeneralRentalAdDTO> GeneralRentalAds { get; set; }
+
+        /// <summary>
         /// Gets or sets user rental ads list.
         /// </summary>
         public DbSet<UserRentalAdDTO> UserRentalAds { get; set; }

@@ -799,5 +799,96 @@
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        /// <summary>
+        /// General search.
+        /// </summary>
+        /// <param name="generalSearchView">General search model.</param>
+        /// <param name="pageNumber">Page number.</param>
+        /// <returns>Task result.</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GeneralSearch(GeneralSearchView generalSearchView, int pageNumber = DefaultPage)
+        {
+            var ads = await _adsManager.GeneralSearch(_mapper.Map<GeneralSearch>(generalSearchView), pageNumber, PageSize);
+
+            var adViews = new List<AdView>();
+
+            var userId = User.Identity.Name is null ? default : _usersManager.FindByEmail(User.Identity.Name).Id;
+            var userFavoriteAds = userId is null ? default : await _adsManager.GetUserFavoriteAds(userId);
+
+            foreach (var ad in ads)
+            {
+                if (ad is DailyRentalAd)
+                {
+                    adViews.Add(new AdView
+                    {
+                        RentalAdView = _mapper.Map<DailyRentalAdView>(ad as DailyRentalAd),
+                        HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                    });
+
+                    if (!(userFavoriteAds is null))
+                    {
+                        adViews.Last().RentalAdView.IsFavorite = userFavoriteAds.FirstOrDefault(userAd => userAd.RentalAdId.Equals(ad.Id) && userAd.UserId.Equals(userId)) is null ? false : true;
+                    }
+                }
+                else
+                {
+                    adViews.Add(new AdView
+                    {
+                        RentalAdView = _mapper.Map<LongTermRentalAdView>(ad as LongTermRentalAd),
+                        HousingPhotos = _mapper.Map<IEnumerable<HousingPhotoView>>(await _adsManager.GetHousingPhotosByRentalAdId(ad.Id)),
+                    });
+
+                    if (!(userFavoriteAds is null))
+                    {
+                        adViews.Last().RentalAdView.IsFavorite = userFavoriteAds.FirstOrDefault(userAd => userAd.RentalAdId.Equals(ad.Id) && userAd.UserId.Equals(userId)) is null ? false : true;
+                    }
+                }
+            }
+
+            ViewBag.AdsTypeMenuItem = AdsTypeMenu.GeneralSearch;
+
+            ViewBag.Regions = new SelectList(
+                new List<string>
+                {
+                    "Любая область",
+                    "Брестская область",
+                    "Витебская область",
+                    "Гомельская область",
+                    "Гродненская область",
+                    "Минская область",
+                    "Могилёвская область",
+                });
+
+            ViewBag.RoomsCount = new SelectList(
+                new List<string>
+                {
+                    string.Empty,
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                });
+
+            return View("AdsByType", new AdsPageView
+            {
+                AdViews = adViews,
+                PageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = PageSize,
+                    TotalItems = _adsManager.GetGeneralSearchCount(_mapper.Map<GeneralSearch>(generalSearchView)),
+                },
+                GeneralSearch = generalSearchView,
+                IsSuccess = false,
+            });
+        }
     }
 }

@@ -47,6 +47,8 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
         private readonly IAdsFilter<LongTermRentalAdDTO> _longTermAdsFilterRepository;
 
+        private readonly IAdsFilter<GeneralRentalAdDTO> _generalAdsFilterRepository;
+
         private readonly IUserRepository _usersRepository;
 
         /// <summary>
@@ -64,8 +66,9 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         /// <param name="adsFilterRepository">Ads filter repository.</param>
         /// <param name="dailyAdsFilterRepository">Daily ads filter repository.</param>
         /// <param name="longTermAdsFilterRepository">Long term ads filter repository.</param>
+        /// <param name="generalAdsFilterRepository">General ads filter repository.</param>
         /// <param name="userRepository">User repository.</param>
-        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IRepository<UserRentalAdDTO> userRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository, IUserRepository userRepository, IAdsFilter<DailyRentalAdDTO> dailyAdsFilterRepository, IAdsFilter<LongTermRentalAdDTO> longTermAdsFilterRepository)
+        public AdsManager(Func<LoaderMenu, IDataLoader> serviceResolver, IMapper mapper, IRepository<AditionalAdDataDTO> aditionalAdDatasRepository, IRepository<ContactPersonDTO> contactPersonsRepository, IRepository<HousingPhotoDTO> housingPhotosRepository, IRepository<RentalAdDTO> rentalAdsRepository, IRepository<DailyRentalAdDTO> dailyRentalAdsRepository, IRepository<LongTermRentalAdDTO> longTermRentalAdsRepository, IRepository<UserRentalAdDTO> userRentalAdsRepository, IAdsFilter<RentalAdDTO> adsFilterRepository, IUserRepository userRepository, IAdsFilter<DailyRentalAdDTO> dailyAdsFilterRepository, IAdsFilter<LongTermRentalAdDTO> longTermAdsFilterRepository, IAdsFilter<GeneralRentalAdDTO> generalAdsFilterRepository)
         {
             _goHomeByDataLoader = serviceResolver(LoaderMenu.GoHomeBy);
             _realtByDataLoader = serviceResolver(LoaderMenu.RealtBY);
@@ -81,6 +84,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             _usersRepository = userRepository;
             _dailyAdsFilterRepository = dailyAdsFilterRepository;
             _longTermAdsFilterRepository = longTermAdsFilterRepository;
+            _generalAdsFilterRepository = generalAdsFilterRepository;
         }
 
         /// <summary>
@@ -540,6 +544,47 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Search long term ads use parametrs.
+        /// </summary>
+        /// <param name="generalSearch">Parametrs for searching.</param>
+        /// <param name="pageNumber">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <returns>Result ads.</returns>
+        public async Task<IEnumerable<RentalAd>> GeneralSearch(GeneralSearch generalSearch, int pageNumber, int pageSize)
+        {
+            string query = CreateGeneralSearchSqlQueryString(generalSearch);
+
+            var ads = await _generalAdsFilterRepository.GetAdsForPage(query, pageNumber, pageSize);
+
+            var result = new List<RentalAd>();
+
+            foreach (var item in ads)
+            {
+                if (item.Discriminator.Equals("LongTermRentalAdDTO"))
+                {
+                    result.Add(_mapper.Map<LongTermRentalAd>(item));
+                }
+                else
+                {
+                    result.Add(_mapper.Map<DailyRentalAd>(item));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get general search count.
+        /// </summary>
+        /// <param name="generalSearch">Daily search parametrs.</param>
+        /// <returns>Count.</returns>
+        public int GetGeneralSearchCount(GeneralSearch generalSearch)
+        {
+            string query = CreateGeneralSearchSqlQueryString(generalSearch);
+            return _generalAdsFilterRepository.GetRentalAdsCount(query);
+        }
+
+        /// <summary>
         /// Search daily ads use parametrs.
         /// </summary>
         /// <param name="dailySearch">Parametrs for searching.</param>
@@ -722,6 +767,46 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
 
             string query = CreateBasicSearchSqlQueryString(AdsTypeMenu.LongTermAds, longTermSearch, Query);
 
+            if (!(longTermSearch.StartTotalArea is null))
+            {
+                query = string.Concat(query, $"and TotalArea >= {longTermSearch.StartTotalArea} ");
+            }
+
+            if (!(longTermSearch.FinishTotalArea is null))
+            {
+                query = string.Concat(query, $"and TotalArea <= {longTermSearch.FinishTotalArea} ");
+            }
+
+            if (!(longTermSearch.StartLivingArea is null))
+            {
+                query = string.Concat(query, $"and LivingArea >= {longTermSearch.StartLivingArea} ");
+            }
+
+            if (!(longTermSearch.FinishLivingArea is null))
+            {
+                query = string.Concat(query, $"and LivingArea <= {longTermSearch.FinishLivingArea} ");
+            }
+
+            if (!(longTermSearch.StartKitchenArea is null))
+            {
+                query = string.Concat(query, $"and KitchenArea >= {longTermSearch.StartKitchenArea} ");
+            }
+
+            if (!(longTermSearch.FinishKitchenArea is null))
+            {
+                query = string.Concat(query, $"and KitchenArea <= {longTermSearch.FinishKitchenArea} ");
+            }
+
+            if (!(longTermSearch.StartLandArea is null))
+            {
+                query = string.Concat(query, $"and LandArea >= {longTermSearch.StartLandArea} ");
+            }
+
+            if (!(longTermSearch.FinishLandArea is null))
+            {
+                query = string.Concat(query, $"and LandArea <= {longTermSearch.FinishLandArea} ");
+            }
+
             if (!(longTermSearch.StartBYNPrice is null))
             {
                 query = string.Concat(query, $"and BYNPrice >= {longTermSearch.StartBYNPrice} ");
@@ -743,6 +828,63 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             }
 
             query = string.Concat(query, $"and IsPublished = (1) ");
+
+            return query;
+        }
+
+        /// <summary>
+        /// Create general search sql query string.
+        /// </summary>
+        /// <param name="generalSearch">Long term search parametrs.</param>
+        /// <returns>Sql query string.</returns>
+        public string CreateGeneralSearchSqlQueryString(GeneralSearch generalSearch)
+        {
+            string query = "Select Id, ContactPersonId, IsPublished, UserId, SourceLink, RentalAdNumber, UpdateDate, Region, District, Locality, Address, TotalCountOfRooms, RentCountOfRooms, TotalArea, LivingArea, KitchenArea, TotalFloors, Floor, XMapCoordinate, YMapCoordinate, Bathroom, Notes, Description, Facilities, RentalType, TotalViews, MonthViews, WeekViews, LandArea, Discriminator, BYNPricePerPerson, USDPricePerPerson, USDPricePerDay, BYNPricePerDay, BYNPrice, USDPrice from dbo.RentalAds ";
+            query = string.Concat(query, $"where IsPublished = (1) ");
+
+            if (!string.IsNullOrEmpty(generalSearch.Locality))
+            {
+                query = string.Concat(query, $"and charindex(N'{generalSearch.Locality}', Locality) > 0 ");
+            }
+
+            if (!(generalSearch.RoomsCount is null))
+            {
+                query = string.Concat(query, $"and TotalCountOfRooms = {generalSearch.RoomsCount} ");
+            }
+
+            if (!(generalSearch.StartArea is null))
+            {
+                query = string.Concat(query, $"and TotalArea >= {generalSearch.StartArea} ");
+            }
+
+            if (!(generalSearch.FinishArea is null))
+            {
+                query = string.Concat(query, $"and TotalArea <= {generalSearch.FinishArea} ");
+            }
+
+            if (!(generalSearch.StartUSDPrice is null) || !(generalSearch.FinishUSDPrice is null))
+            {
+                query = string.Concat(query, "and (");
+
+                if (!(generalSearch.StartUSDPrice is null))
+                {
+                    query = string.Concat(query, $"USDPricePerDay >= {generalSearch.StartUSDPrice} ");
+                    query = string.Concat(query, $"or USDPrice >= {generalSearch.StartUSDPrice} ");
+                }
+
+                if (!(generalSearch.FinishUSDPrice is null))
+                {
+                    if (!(generalSearch.StartUSDPrice is null))
+                    {
+                        query = string.Concat(query, "or ");
+                    }
+
+                    query = string.Concat(query, $"USDPricePerDay <= {generalSearch.FinishUSDPrice} ");
+                    query = string.Concat(query, $"or USDPrice <= {generalSearch.FinishUSDPrice} ");
+                }
+
+                query = string.Concat(query, ")");
+            }
 
             return query;
         }

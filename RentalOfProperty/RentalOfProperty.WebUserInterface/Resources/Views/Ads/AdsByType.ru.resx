@@ -133,6 +133,9 @@
     <value>Объявления не найдены</value>
     <comment>Ads not found</comment>
   </data>
+  <data name="AdvancedSearch" xml:space="preserve">
+    <value>Расширенный поиск</value>
+  </data>
   <data name="BYN" xml:space="preserve">
     <value>Руб</value>
     <comment>BYN</comment>
@@ -156,6 +159,9 @@
   <data name="Floors" xml:space="preserve">
     <value>Этажность</value>
     <comment>Floors</comment>
+  </data>
+  <data name="GeneralSearch" xml:space="preserve">
+    <value>Общий поиск</value>
   </data>
   <data name="ImageNotFound" xml:space="preserve">
     <value>Изображение не найдено</value>

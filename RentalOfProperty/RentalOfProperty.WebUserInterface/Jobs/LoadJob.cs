@@ -36,6 +36,8 @@ namespace RentalOfProperty.WebUserInterface.Jobs
         {
             await _adsManager.LoadLongTermAdsFromGoHomeBy(LoadDataFromSourceMenu.GoHomeByDailyAds);
             await _adsManager.LoadLongTermAdsFromGoHomeBy(LoadDataFromSourceMenu.GoHomeByLongTermAds);
+            await _adsManager.LoadLongTermAdsFromGoHomeBy(LoadDataFromSourceMenu.RealtByDailyAds);
+            await _adsManager.LoadLongTermAdsFromGoHomeBy(LoadDataFromSourceMenu.RealtByLongTermAds);
         }
     }
 }

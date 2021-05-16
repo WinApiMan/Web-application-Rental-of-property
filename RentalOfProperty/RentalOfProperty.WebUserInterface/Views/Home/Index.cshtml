@@ -13,15 +13,52 @@
         <a asp-controller="Ads" asp-action="Create" class="col-md-2 offset-md-1 text-center btn btn-success text-white h3 mt-md-2 pl-md-1">@Localizer["PostAnAd"]</a>
     }
 </div>
-<div class="container text-center mb-3">
-    <div class="col-md-6">
+<form asp-controller="Ads" asp-action="GeneralSearch" class="container bg-light">
+    <h4 class="col-md-12 text-center pb-2">@Localizer["Search"]</h4>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.Locality"></label>
+        <input name="Locality" class="form-control" />
+        <span asp-validation-for="GeneralSearch.Locality" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.RoomsCount"></label>
+        <select name="RoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+        <span asp-validation-for="GeneralSearch.RoomsCount" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.StartArea"></label>
+        <input name="StartArea" class="form-control" />
+        <span asp-validation-for="GeneralSearch.StartArea" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.FinishArea"></label>
+        <input name="FinishArea" class="form-control" />
+        <span asp-validation-for="GeneralSearch.FinishArea" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.StartUSDPrice"></label>
+        <input name="StartUSDPrice" class="form-control" />
+        <span asp-validation-for="GeneralSearch.StartUSDPrice" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.FinishUSDPrice"></label>
+        <input name="FinishUSDPrice" class="form-control" />
+        <span asp-validation-for="GeneralSearch.FinishUSDPrice" class="text-danger"></span>
+    </div>
+    <div class="col-md-3 offset-md-9 pb-3">
+        <button class="btn btn-block btn-success mt-3" type="submit">@Localizer["Search"]</button>
+    </div>
+</form>
+<div class="container text-center bg-info">
+    <h4 class="col-md-12 mb-3 text-dark">@Localizer["AdvancedSearch"]</h4>
+    <div class="col-md-6 pb-4">
         <input type="button" value="@Localizer["LongTermAdsSearching"]" onclick="longTermVisible()" class="btn btn-success w-75" />
     </div> 
-    <div class="col-md-6">
+    <div class="col-md-6 pb-4">
         <input type="button" value="@Localizer["DailyAdsSearching"]" onclick="dailyVisible()" class="btn btn-success w-75" />
     </div>
 </div>
-<form asp-action="LongTermSearch" asp-controller="Ads" class="bg-info container" style="display:block" id="longTermAdsSearching">
+<form asp-action="LongTermSearch" asp-controller="Ads" class="bg-info container" style="display:none" id="longTermAdsSearching">
     <h4 class="col-md-12 text-center text-dark">@Localizer["LongTermAdsSearching"]</h4>
     <div class="row">
         <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">

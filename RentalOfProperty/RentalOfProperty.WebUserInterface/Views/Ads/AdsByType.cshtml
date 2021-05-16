@@ -11,11 +11,12 @@
         AdsTypeMenu.DailySearch => Localizer["DailyAdsSearching"].Value,
         AdsTypeMenu.MyAds => Localizer["MyAds"].Value,
         AdsTypeMenu.AdsForPublish => Localizer["PendingAd"].Value,
+        AdsTypeMenu.GeneralSearch => Localizer["GeneralSearch"].Value,
         _ => default,
     };
 }
 <script src="~/js/Index.js"></script>
-<div class="sticky-top container bg-light" style="z-index:2">
+<div class="sticky-top container bg-light mb-3" style="z-index:2">
     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.LongTermAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["LongTermRent"]</a>
     <a asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.DayilyAds" class="col-md-3 offset-md-1 text-center text-danger h3 mt-md-2">@Localizer["RentForADay"]</a>
     @if (User.Identity.IsAuthenticated)
@@ -23,15 +24,52 @@
     <a asp-controller="Ads" asp-action="Create" class="col-md-2 offset-md-1 text-center btn btn-success text-white h3 mt-md-2 pl-md-1">@Localizer["PostAnAd"]</a>
     }
 </div>
-<div class="container text-center mb-3 mt-3">
-    <div class="col-md-6">
+<form asp-controller="Ads" asp-action="GeneralSearch" class="container bg-light">
+    <h4 class="col-md-12 text-center pb-2">@Localizer["Search"]</h4>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.Locality"></label>
+        <input name="Locality" class="form-control" />
+        <span asp-validation-for="GeneralSearch.Locality" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.RoomsCount"></label>
+        <select name="RoomsCount" asp-items="ViewBag.RoomsCount" class="form-control"></select>
+        <span asp-validation-for="GeneralSearch.RoomsCount" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.StartArea"></label>
+        <input name="StartArea" class="form-control" />
+        <span asp-validation-for="GeneralSearch.StartArea" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.FinishArea"></label>
+        <input name="FinishArea" class="form-control" />
+        <span asp-validation-for="GeneralSearch.FinishArea" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.StartUSDPrice"></label>
+        <input name="StartUSDPrice" class="form-control" />
+        <span asp-validation-for="GeneralSearch.StartUSDPrice" class="text-danger"></span>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="GeneralSearch.FinishUSDPrice"></label>
+        <input name="FinishUSDPrice" class="form-control" />
+        <span asp-validation-for="GeneralSearch.FinishUSDPrice" class="text-danger"></span>
+    </div>
+    <div class="col-md-3 offset-md-9 pb-3">
+        <button class="btn btn-block btn-success mt-3" type="submit">@Localizer["Search"]</button>
+    </div>
+</form>
+<div class="container text-center bg-info">
+    <h4 class="col-md-12 mb-3 text-dark">@Localizer["AdvancedSearch"]</h4>
+    <div class="col-md-6 pb-4">
         <input type="button" value="@Localizer["LongTermAdsSearching"]" onclick="longTermVisible()" class="btn btn-success w-75" />
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 pb-4">
         <input type="button" value="@Localizer["DailyAdsSearching"]" onclick="dailyVisible()" class="btn btn-success w-75" />
     </div>
 </div>
-<form asp-action="LongTermSearch" asp-controller="Ads" class="bg-info container" style="display:block" id="longTermAdsSearching">
+<form asp-action="LongTermSearch" asp-controller="Ads" class="bg-info container" style="display:none" id="longTermAdsSearching">
     <h4 class="col-md-12 text-center text-dark">@Localizer["LongTermAdsSearching"]</h4>
     <div class="row">
         <div class="col-md-6 row bg-light text-dark ml-md-1 mt-md-1 mb-md-1 p-md-1">
@@ -298,6 +336,7 @@
             AdsTypeMenu.DailySearch => Localizer["DailyAdsSearching"].Value,
             AdsTypeMenu.MyAds => Localizer["MyAds"].Value,
             AdsTypeMenu.AdsForPublish => Localizer["PendingAd"].Value,
+            AdsTypeMenu.GeneralSearch => Localizer["GeneralSearch"].Value,
             _ => default,
         };
     }
@@ -790,6 +829,163 @@
                                           asp-route-StartTotalArea="@Model.LongTermSearch.StartTotalArea"
                                           asp-route-StartTotalFloor="@Model.LongTermSearch.StartTotalFloor"
                                           asp-route-StartUSDPrice="@Model.LongTermSearch.StartUSDPrice"
+                                          class="page-link">
+                                        @index
+                                        <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
+                                    </form>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </nav>
+                        }
+        else if(ViewBag.AdsTypeMenuItem == AdsTypeMenu.GeneralSearch)
+        {
+            <nav aria-label="Page navigation example" class="mb-md-5 ml-md-4">
+                <ul class="pagination">
+                    @{
+                        const int PagesLinks = 3, DefaultPageCount = 0;
+
+                        if (Model.PageInfo.PageNumber - PagesLinks > DefaultPageCount && Model.AdViews.Count() > DefaultPageCount)
+                        {
+                            <li class="page-item" onclick="document.getElementById('pageLink-1').click()">
+                                <form asp-action="GeneralSearch" asp-route-pageNumber="1"
+                                      asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      class="page-link">
+                                    1
+                                    <button type='submit' class="d-none" id="pageLink-1"></button>
+                                </form>
+                            </li>
+                            <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber - PagesLinks - 1}")').click()">
+                                <form asp-action="GeneralSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber - PagesLinks - 1)"
+                                      asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      class="page-link">
+                                    @Localizer["Previous"]
+                                    <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - PagesLinks - 1}")"></button>
+                                </form>
+                            </li>
+
+                            for (int index = PagesLinks; index > DefaultPageCount; index--)
+                            {
+                                <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber - index}")').click()">
+                                    <form asp-action="GeneralSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber - index)"
+                                          asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          class="page-link">
+                                        @(Model.PageInfo.PageNumber - index)
+                                        <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - index}")"></button>
+                                    </form>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            for (int index = 1; index < Model.PageInfo.PageNumber; index++)
+                            {
+                                <li class="page-item" onclick="document.getElementById('@($"pageLink-{index}")').click()">
+                                    <form asp-action="GeneralSearch" asp-route-pageNumber="@index"
+                                          asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          class="page-link">
+                                        @index
+                                        <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
+                                    </form>
+                                </li>
+                            }
+                        }
+                        @if (Model.PageInfo.TotalItems > 30)
+                        {
+                            <li class="page-item active" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber}")').click()">
+                                <form asp-action="GeneralSearch" asp-controller="Ads" asp-route-pageNumber="@Model.PageInfo.PageNumber"
+                                      asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      class="page-link">
+                                    @Model.PageInfo.PageNumber
+                                    <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber}")"></button>
+                                </form>
+                            </li>
+                        }
+                        if (Model.PageInfo.PageNumber + PagesLinks <= Model.PageInfo.TotalPages)
+                        {
+                            for (int index = DefaultPageCount + 1; index <= PagesLinks; index++)
+                            {
+                                <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber + index}")').click()">
+                                    <form asp-action="GeneralSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber + index)"
+                                          asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          class="page-link">
+                                        @(Model.PageInfo.PageNumber + index)
+                                        <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + index}")"></button>
+                                    </form>
+                                </li>
+                            }
+
+                            <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.PageNumber + PagesLinks + 1}")').click()">
+                                <form asp-action="GeneralSearch" asp-route-pageNumber="@(Model.PageInfo.PageNumber + PagesLinks + 1)"
+                                      asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      class="page-link">
+                                    @Localizer["Next"]
+                                    <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + PagesLinks + 1}")"></button>
+                                </form>
+                            </li>
+                            <li class="page-item" onclick="document.getElementById('@($"pageLink-{Model.PageInfo.TotalPages}")').click()">
+                                <form asp-action="GeneralSearch" asp-route-pageNumber="@Model.PageInfo.TotalPages"
+                                      asp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      class="page-link">
+                                    @Model.PageInfo.TotalPages
+                                    <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.TotalPages}")"></button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            for (int index = Model.PageInfo.PageNumber + 1; index <= Model.PageInfo.TotalPages; index++)
+                            {
+                                <li class="page-item" onclick="document.getElementById('@($"pageLink-{index}")').click()">
+                                    <form asp-action="GeneralSearch" asp-route-pageNumber="@index"
+                                          aasp-route-Locality="@Model.GeneralSearch.Locality"
+                                      asp-route-RoomsCount="@Model.GeneralSearch.RoomsCount"
+                                      asp-route-StartArea="@Model.GeneralSearch.StartArea"
+                                      asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
+                                      asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
+                                      asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
                                           class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>

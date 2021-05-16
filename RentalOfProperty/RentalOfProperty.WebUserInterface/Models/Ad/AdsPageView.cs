@@ -35,5 +35,10 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         /// Gets or sets long term search view.
         /// </summary>
         public LongTermSearchView LongTermSearch { get; set; }
+
+        /// <summary>
+        /// Gets or sets general search view.
+        /// </summary>
+        public GeneralSearchView GeneralSearch { get; set; }
     }
 }
