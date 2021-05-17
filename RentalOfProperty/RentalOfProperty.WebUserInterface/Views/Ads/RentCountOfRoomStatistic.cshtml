@@ -1,0 +1,48 @@
+﻿@model IEnumerable<RentalOfProperty.WebUserInterface.Models.Ad.RentCountOfRoomStatisticView>
+
+@{
+    ViewData["Title"] = Localizer["NumberOfAdsPerNumberOfRooms"];
+    string countsOfRentRoomJson = JsonSerializer.Serialize(Model.Select(item => item.RentCountOfRoom));
+    string longTermAdsAveragePriceJson = JsonSerializer.Serialize(Model.Select(item => item.LongTermAdsAveragePrice));
+    string dailyAdsAveragePriceJson = JsonSerializer.Serialize(Model.Select(item => item.DailyAdsAveragePrice));
+}
+
+<div style="height:90vh">
+    <h3 class="text-center pb-2 pt-2">@Localizer["NumberOfAdsPerNumberOfRooms"]</h3>
+    <canvas id="densityCanvas"></canvas>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let countsOfRentRoom = JSON.parse(JSON.stringify(@Html.Raw(countsOfRentRoomJson)));
+        let longTermAdsAveragePrice = JSON.parse(JSON.stringify(@Html.Raw(longTermAdsAveragePriceJson)));
+        let dailyAdsAveragePrice = JSON.parse(JSON.stringify(@Html.Raw(dailyAdsAveragePriceJson)));
+
+        var densityData = {
+            label: '@Localizer["DailyAds"]',
+            data: dailyAdsAveragePrice,
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor:'rgb(75, 192, 192)'
+        };
+        var densityData1 = {
+            label: '@Localizer["LongTermAds"]',
+            data: longTermAdsAveragePrice,
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgb(255, 99, 132)'
+        };
+
+        var ctxA = document.getElementById('densityCanvas');
+        var barChart = new Chart(ctxA, {
+        type: 'bar',
+            data: {
+                labels: countsOfRentRoom,
+        datasets: [densityData, densityData1]
+        }
+        });
+    </script>
+}

@@ -630,6 +630,34 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
         }
 
         /// <summary>
+        /// Get cities with views.
+        /// </summary>
+        /// <returns>City views models.</returns>
+        public async Task<IEnumerable<RentCountOfRoomStatistic>> GetCountOfRoomsAdsStatistic()
+        {
+            var longTermAds = await _longTermRentalAdsRepository.Get();
+            var dailyAds = await _dailyRentalAdsRepository.Get();
+
+            var rentCountOfRooms = longTermAds.Select(item => item.RentCountOfRooms).Distinct().ToList();
+            rentCountOfRooms.AddRange(dailyAds.Select(item => item.RentCountOfRooms).Distinct());
+            rentCountOfRooms = rentCountOfRooms.Distinct().ToList();
+
+            var countOfRoomAdsStatistic = new List<RentCountOfRoomStatistic>();
+
+            foreach (int item in rentCountOfRooms)
+            {
+                countOfRoomAdsStatistic.Add(new RentCountOfRoomStatistic
+                {
+                    RentCountOfRoom = item,
+                    LongTermAdsAveragePrice = longTermAds.Where(ad => ad.RentCountOfRooms == item).Count(),
+                    DailyAdsAveragePrice = dailyAds.Where(ad => ad.RentCountOfRooms == item).Count(),
+                });
+            }
+
+            return countOfRoomAdsStatistic.OrderBy(item => item.RentCountOfRoom);
+        }
+
+        /// <summary>
         /// Search daily ads use parametrs.
         /// </summary>
         /// <param name="dailySearch">Parametrs for searching.</param>

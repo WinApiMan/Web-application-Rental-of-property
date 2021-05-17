@@ -189,5 +189,11 @@ namespace RentalOfProperty.BusinessLogicLayer.Interfaces
         /// <param name="id">Rental ad unique key.</param>
         /// <returns>Publish result.</returns>
         Task Publish(string id);
+
+        /// <summary>
+        /// Get cities with views.
+        /// </summary>
+        /// <returns>City views models.</returns>
+        Task<IEnumerable<RentCountOfRoomStatistic>> GetCountOfRoomsAdsStatistic();
     }
 }

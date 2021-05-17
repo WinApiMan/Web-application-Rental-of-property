@@ -153,6 +153,9 @@
     <value>Favourites</value>
     <comment>Favourites</comment>
   </data>
+  <data name="NumberOfAdsPerNumberOfRooms" xml:space="preserve">
+    <value>Number of ads per number of rooms</value>
+  </data>
   <data name="PostAnAd" xml:space="preserve">
     <value>Post an ad</value>
     <comment>Post an ad</comment>

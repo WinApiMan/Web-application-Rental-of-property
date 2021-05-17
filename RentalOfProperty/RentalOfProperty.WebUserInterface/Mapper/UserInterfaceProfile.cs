@@ -44,6 +44,7 @@ namespace RentalOfProperty.WebUserInterface.Mapper
             CreateMap<CreateView, CreateModel>().ReverseMap();
             CreateMap<GeneralSearchView, GeneralSearch>().ReverseMap();
             CreateMap<CityViewsModel, CityViews>().ReverseMap();
+            CreateMap<RentCountOfRoomStatisticView, RentCountOfRoomStatistic>().ReverseMap();
         }
     }
 }

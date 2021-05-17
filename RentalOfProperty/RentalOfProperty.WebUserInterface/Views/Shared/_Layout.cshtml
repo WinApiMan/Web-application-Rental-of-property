@@ -85,20 +85,30 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item">
-                        <a class="btn btn-secondary" asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.AdsForPublish">@Localizer["Publishing"]</a>
-                        </li>
-                        <li class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @Localizer["Statistic"]
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Ads" asp-action="CitiesStatistic" asp-route-citiesViewsStatistic="@CitiesViewsStatistic.LongTermAds">@Localizer["TopLongTermAds"]</a>
-                                    <a class="dropdown-item" asp-controller="Ads" asp-action="CitiesStatistic" asp-route-citiesViewsStatistic="@CitiesViewsStatistic.DailyAds">@Localizer["TopDailyAds"]</a>
+                        @if (User.IsInRole(UserRoles.Administrator))
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-secondary" asp-controller="Ads" asp-action="AdsByType" asp-route-adsTypeMenuItem="@AdsTypeMenu.AdsForPublish">@Localizer["Publishing"]</a>
+                            </li>
+                        }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @Localizer["Statistic"]
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @if (User.IsInRole(UserRoles.Administrator))
+                                        {
+                                            <a class="dropdown-item" asp-controller="Ads" asp-action="CitiesStatistic" asp-route-citiesViewsStatistic="@CitiesViewsStatistic.LongTermAds">@Localizer["TopLongTermAds"]</a>
+                                            <a class="dropdown-item" asp-controller="Ads" asp-action="CitiesStatistic" asp-route-citiesViewsStatistic="@CitiesViewsStatistic.DailyAds">@Localizer["TopDailyAds"]</a>
+                                        }
+                                        <a class="dropdown-item" asp-controller="Ads" asp-action="RentCountOfRoomStatistic">@Localizer["NumberOfAdsPerNumberOfRooms"]</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        }
                     }
                 </ul>
                 <ul class="navbar-nav">

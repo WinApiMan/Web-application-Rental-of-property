@@ -122,6 +122,17 @@
         }
 
         /// <summary>
+        /// Cities statistic.
+        /// </summary>
+        /// <param name="citiesViewsStatistic">Cities views statistic.</param>
+        /// <returns>Task result.</returns>
+        [Authorize]
+        public async Task<IActionResult> RentCountOfRoomStatistic()
+        {
+            return View(_mapper.Map<IEnumerable<RentCountOfRoomStatisticView>>(await _adsManager.GetCountOfRoomsAdsStatistic()));
+        }
+
+        /// <summary>
         /// Create view.
         /// </summary>
         /// <returns>Redirect to create page.</returns>

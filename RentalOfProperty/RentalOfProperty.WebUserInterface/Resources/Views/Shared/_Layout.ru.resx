@@ -153,6 +153,9 @@
     <value>Избранное</value>
     <comment>Favourites</comment>
   </data>
+  <data name="NumberOfAdsPerNumberOfRooms" xml:space="preserve">
+    <value>Кол. объявлений на кол. комнат</value>
+  </data>
   <data name="PostAnAd" xml:space="preserve">
     <value>Разместить объявление</value>
     <comment>Post an ad</comment>
