@@ -172,7 +172,7 @@ namespace RentalOfProperty.DataAccessLayer.Repositories
         public async Task<IEnumerable<TEntity>> GetAdsForPage(string query, int pageNumber, int pageSize)
         {
             const int DefaultIndex = 1;
-            query = string.Concat(query, $"order by Region offset {(pageNumber - DefaultIndex) * pageSize} rows fetch next {pageSize} rows only");
+            query = string.Concat(query, $"order by Region desc offset {(pageNumber - DefaultIndex) * pageSize} rows fetch next {pageSize} rows only");
             return await _dbSet.FromSqlRaw(query)
                 .ToListAsync();
         }

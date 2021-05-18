@@ -654,7 +654,7 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
                 });
             }
 
-            return countOfRoomAdsStatistic.OrderBy(item => item.RentCountOfRoom);
+            return countOfRoomAdsStatistic.Where(item => item.RentCountOfRoom > 0).OrderBy(item => item.RentCountOfRoom);
         }
 
         /// <summary>
@@ -923,6 +923,16 @@ namespace RentalOfProperty.BusinessLogicLayer.Managers
             if (!(generalSearch.RoomsCount is null))
             {
                 query = string.Concat(query, $"and TotalCountOfRooms = {generalSearch.RoomsCount} ");
+            }
+
+            if (generalSearch.LongTerm && !generalSearch.Daily)
+            {
+                query = string.Concat(query, $"and Discriminator = 'LongTermRentalAdDTO' ");
+            }
+
+            if (!generalSearch.LongTerm && generalSearch.Daily)
+            {
+                query = string.Concat(query, $"and Discriminator = 'DailyRentalAdDTO' ");
             }
 
             if (!(generalSearch.StartArea is null))

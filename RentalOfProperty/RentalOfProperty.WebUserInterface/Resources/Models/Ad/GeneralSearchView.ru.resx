@@ -126,6 +126,9 @@
   <data name="AreaError" xml:space="preserve">
     <value>Площадь должна быть между 1 и 200</value>
   </data>
+  <data name="Daily" xml:space="preserve">
+    <value>Посуточные</value>
+  </data>
   <data name="District" xml:space="preserve">
     <value>Район</value>
   </data>
@@ -173,6 +176,9 @@
   </data>
   <data name="LocalityLengthError" xml:space="preserve">
     <value>Максимальная длина города - 200</value>
+  </data>
+  <data name="LongTerm" xml:space="preserve">
+    <value>Долгосрочные</value>
   </data>
   <data name="MoneyError" xml:space="preserve">
     <value>Цена должна быть между 1 и 1000000</value>

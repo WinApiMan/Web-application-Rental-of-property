@@ -126,6 +126,9 @@
   <data name="AreaError" xml:space="preserve">
     <value>The area value must be between 1 and 1,000,000.0</value>
   </data>
+  <data name="Daily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
   <data name="District" xml:space="preserve">
     <value>District</value>
   </data>
@@ -173,6 +176,9 @@
   </data>
   <data name="LocalityLengthError" xml:space="preserve">
     <value>Max locality length - 200</value>
+  </data>
+  <data name="LongTerm" xml:space="preserve">
+    <value>Long term</value>
   </data>
   <data name="MoneyError" xml:space="preserve">
     <value>The price value must be between 1 and 1,000,000</value>

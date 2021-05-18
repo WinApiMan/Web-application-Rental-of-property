@@ -191,10 +191,10 @@
     <value>Статистика</value>
   </data>
   <data name="TopDailyAds" xml:space="preserve">
-    <value>Топ 20 посуточных объявлений</value>
+    <value>Топ посуточных объявлений</value>
   </data>
   <data name="TopLongTermAds" xml:space="preserve">
-    <value>Топ 20 долгосрочных объявлений</value>
+    <value>Топ долгосрочных объявлений</value>
   </data>
   <data name="UpdateConfirm" xml:space="preserve">
     <value>Вы уверены, что хотите обновить данные, это займет некоторое время?</value>

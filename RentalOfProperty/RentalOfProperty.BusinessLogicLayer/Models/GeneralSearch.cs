@@ -38,5 +38,15 @@ namespace RentalOfProperty.BusinessLogicLayer.Models
         /// Gets or sets finish USD price.
         /// </summary>
         public double? FinishUSDPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets long term.
+        /// </summary>
+        public bool LongTerm { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets daily.
+        /// </summary>
+        public bool Daily { get; set; }
     }
 }

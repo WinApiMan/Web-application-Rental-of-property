@@ -267,7 +267,7 @@
 {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        if (Model.RentalAd.XMapCoordinate >= 0 && Model.RentalAd.YMapCoordinate >= 0)
+        if (Model.RentalAd.XMapCoordinate > 0 && Model.RentalAd.YMapCoordinate > 0)
         {
             <script type="text/javascript">
         window.onload = function () {

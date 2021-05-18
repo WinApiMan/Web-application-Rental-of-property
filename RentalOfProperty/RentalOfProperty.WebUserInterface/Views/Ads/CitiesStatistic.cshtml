@@ -7,11 +7,11 @@
 
     if (ViewBag.CitiesViewsStatistic == CitiesViewsStatistic.DailyAds)
     {
-        datas = Model.OrderByDescending(item => item.DailyAdsViews).ThenByDescending(item => item.LongTermAdsViews).Take(20);
+        datas = Model.OrderByDescending(item => item.DailyAdsViews).ThenByDescending(item => item.LongTermAdsViews);
     }
     else
     {
-        datas = Model.OrderByDescending(item => item.LongTermAdsViews).ThenByDescending(item => item.DailyAdsViews).Take(20);
+        datas = Model.OrderByDescending(item => item.LongTermAdsViews).ThenByDescending(item => item.DailyAdsViews);
     }
 
     string citiesJson = JsonSerializer.Serialize(datas.Select(item => item.City));
@@ -19,11 +19,25 @@
     string dailyAdsViewsJson = JsonSerializer.Serialize(datas.Select(item => item.DailyAdsViews));
 }
 
-<div style="height:90vh">
-    <h3 class="text-center pb-2 pt-2">@Localizer["СityViewsStatistics"]</h3>
-    <canvas id="densityCanvas"></canvas>
+<div class="row">
+    <h3 class="col-md-12 text-center mb-0">@Localizer["СityViewsStatistics"]</h3>
+    <div class="dropdown col-md-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:11pt">
+            @Localizer["OutputTop"]
+        </button>
+        <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="outputTop(5)">@Localizer["Top"] 5</button>
+            <button class="dropdown-item" onclick="outputTop(10)">@Localizer["Top"] 10</button>
+            <button class="dropdown-item" onclick="outputTop(15)">@Localizer["Top"] 15</button>
+            <button class="dropdown-item" onclick="outputTop(20)">@Localizer["Top"] 20</button>
+            <button class="dropdown-item" onclick="outputTop(30)">@Localizer["Top"] 30</button>
+            <button class="dropdown-item" onclick="outputTop(40)">@Localizer["Top"] 40</button>
+            <button class="dropdown-item" onclick="outputTop(50)">@Localizer["Top"] 50</button>
+            <buttont class="dropdown-item" onclick="outputTop()">@Localizer["All"]</buttont>
+        </div>
+    </div>
+    <canvas class="col-md-12 pb-3 mb-2" id="densityCanvas"></canvas>
 </div>
-
 
 @section Scripts
 {
@@ -32,30 +46,54 @@
     }
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        let cities = JSON.parse(JSON.stringify(@Html.Raw(citiesJson)));
-        let longTermAdsViewsJson = JSON.parse(JSON.stringify(@Html.Raw(longTermAdsViewsJson)));
-        let dailyAdsViewsJson = JSON.parse(JSON.stringify(@Html.Raw(dailyAdsViewsJson)));
-
-        var densityData = {
-            label: '@Localizer["DailyAds"]',
-            data: dailyAdsViewsJson,
-            borderColor: 'rgb(75, 192, 192)',
-            backgroundColor:'rgb(75, 192, 192)'
-        };
-        var densityData1 = {
-            label: '@Localizer["LongTermAds"]',
-            data: longTermAdsViewsJson,
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgb(255, 99, 132)'
-        };
-
         var ctxA = document.getElementById('densityCanvas');
+        var densityData = {
+                label: '@Localizer["DailyAds"]',
+                data: JSON.parse(JSON.stringify(@Html.Raw(dailyAdsViewsJson))).slice(0, 5),
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor:'rgb(75, 192, 192)'
+            };
+            var densityData1 = {
+                label: '@Localizer["LongTermAds"]',
+                data: JSON.parse(JSON.stringify(@Html.Raw(longTermAdsViewsJson))).slice(0, 5),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgb(255, 99, 132)'
+            };
         var barChart = new Chart(ctxA, {
-        type: 'bar',
+            type: 'bar',
             data: {
-                labels: cities,
-        datasets: [densityData, densityData1]
-        }
+                labels: JSON.parse(JSON.stringify(@Html.Raw(citiesJson))).slice(0, 5),
+                datasets: [densityData, densityData1]
+            }
         });
+
+        function outputTop(count) {
+            let cities = JSON.parse(JSON.stringify(@Html.Raw(citiesJson))).slice(0,count);
+            let longTermAdsViewsJson = JSON.parse(JSON.stringify(@Html.Raw(longTermAdsViewsJson))).slice(0, count);
+            let dailyAdsViewsJson = JSON.parse(JSON.stringify(@Html.Raw(dailyAdsViewsJson))).slice(0, count);
+
+            var densityData = {
+                label: '@Localizer["DailyAds"]',
+                data: dailyAdsViewsJson,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor:'rgb(75, 192, 192)'
+            };
+            var densityData1 = {
+                label: '@Localizer["LongTermAds"]',
+                data: longTermAdsViewsJson,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgb(255, 99, 132)'
+            };
+
+            ctxA = document.getElementById('densityCanvas');
+            barChart.destroy();
+            barChart = new Chart(ctxA, {
+            type: 'bar',
+                data: {
+                    labels: cities,
+            datasets: [densityData, densityData1]
+            }
+            });
+        }
     </script>
 }

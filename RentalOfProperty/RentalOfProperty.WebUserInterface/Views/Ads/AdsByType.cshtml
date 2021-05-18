@@ -56,8 +56,20 @@
         <input name="FinishUSDPrice" class="form-control" />
         <span asp-validation-for="GeneralSearch.FinishUSDPrice" class="text-danger"></span>
     </div>
-    <div class="col-md-3 offset-md-9 pb-3">
-        <button class="btn btn-block btn-success mt-3" type="submit">@Localizer["Search"]</button>
+    <div class="col-md-12 pt-2 pr-0">
+        <div class="col-md-2 ml-2">
+            <input asp-for="GeneralSearch.LongTerm" name="LongTerm" class="form-check-input" />
+            <p asp-display-name-for="GeneralSearch.LongTerm"></p>
+            <span asp-validation-for="GeneralSearch.LongTerm" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
+            <input asp-for="GeneralSearch.Daily" name="Daily" class="form-check-input" />
+            <p asp-display-name-for="GeneralSearch.Daily"></p>
+            <span asp-validation-for="GeneralSearch.Daily" class="text-danger"></span>
+        </div>
+        <div class="offset-md-4 col-md-3 pb-3">
+            <button class="btn btn-block btn-success mt-3" type="submit">@Localizer["Search"]</button>
+        </div>
     </div>
 </form>
 <div class="container text-center bg-info">
@@ -857,6 +869,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                       class="page-link">
                                     1
                                     <button type='submit' class="d-none" id="pageLink-1"></button>
@@ -870,6 +884,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                       class="page-link">
                                     @Localizer["Previous"]
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - PagesLinks - 1}")"></button>
@@ -886,6 +902,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                           class="page-link">
                                         @(Model.PageInfo.PageNumber - index)
                                         <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber - index}")"></button>
@@ -905,6 +923,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                           class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>
@@ -922,6 +942,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                       class="page-link">
                                     @Model.PageInfo.PageNumber
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber}")"></button>
@@ -940,6 +962,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                           class="page-link">
                                         @(Model.PageInfo.PageNumber + index)
                                         <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + index}")"></button>
@@ -955,6 +979,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                       class="page-link">
                                     @Localizer["Next"]
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.PageNumber + PagesLinks + 1}")"></button>
@@ -968,6 +994,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                      asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                       class="page-link">
                                     @Model.PageInfo.TotalPages
                                     <button type='submit' class="d-none" id="@($"pageLink-{Model.PageInfo.TotalPages}")"></button>
@@ -986,6 +1014,8 @@
                                       asp-route-FinishArea="@Model.GeneralSearch.FinishArea"
                                       asp-route-StartUSDPrice="@Model.GeneralSearch.StartUSDPrice"
                                       asp-route-FinishUSDPrice="@Model.GeneralSearch.FinishUSDPrice"
+                                          asp-route-Daily="@Model.GeneralSearch.Daily"
+                                      asp-route-LongTerm="@Model.GeneralSearch.LongTerm"
                                           class="page-link">
                                         @index
                                         <button type='submit' class="d-none" id="@($"pageLink-{index}")"></button>

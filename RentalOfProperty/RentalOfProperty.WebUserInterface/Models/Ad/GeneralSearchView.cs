@@ -52,5 +52,17 @@ namespace RentalOfProperty.WebUserInterface.Models.Ad
         [Range(1, 1000000.0, ErrorMessage = "MoneyError")]
         [Display(Name = "FinishUSDPrice")]
         public double? FinishUSDPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets long term.
+        /// </summary>
+        [Display(Name = "LongTerm")]
+        public bool LongTerm { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets daily.
+        /// </summary>
+        [Display(Name = "Daily")]
+        public bool Daily { get; set; }
     }
 }
